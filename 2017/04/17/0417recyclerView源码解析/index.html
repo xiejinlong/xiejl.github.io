@@ -87,12 +87,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="一个被裁的菜鸟程序员">
-<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/index.html">
+<meta name="description" content="recyclerView简介自从google官方推出了recyclerView这个控件来替代listView之后，就意味着listView要慢慢的退出历史的舞台了。因为recyclerView基本上能实现listView的所有功能，还能实现很多用listView很难实现的功能。我们来看看recyclerView的官方定义：1A flexible view for providing a limit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="recyclerView源码解析">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/04/17/0417recyclerView源码解析/index.html">
 <meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="recyclerView简介自从google官方推出了recyclerView这个控件来替代listView之后，就意味着listView要慢慢的退出历史的舞台了。因为recyclerView基本上能实现listView的所有功能，还能实现很多用listView很难实现的功能。我们来看看recyclerView的官方定义：1A flexible view for providing a limit">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/RecyclerView_anchor%E7%9A%84%E5%89%AF%E6%9C%AC.png">
+<meta property="og:updated_time" content="2017-04-20T11:47:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个被裁的菜鸟程序员">
+<meta name="twitter:title" content="recyclerView源码解析">
+<meta name="twitter:description" content="recyclerView简介自从google官方推出了recyclerView这个控件来替代listView之后，就意味着listView要慢慢的退出历史的舞台了。因为recyclerView基本上能实现listView的所有功能，还能实现很多用listView很难实现的功能。我们来看看recyclerView的官方定义：1A flexible view for providing a limit">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/RecyclerView_anchor%E7%9A%84%E5%89%AF%E6%9C%AC.png">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/04/17/0417recyclerView源码解析/"/>
 
 
 
 
 
-  <title> 一个被裁的菜鸟程序员 </title>
+  <title> recyclerView源码解析 | 一个被裁的菜鸟程序员 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -151,9 +157,7 @@
     
   
 
-  <div class="container sidebar-position-right 
-   page-home 
- ">
+  <div class="container sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -236,9 +240,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -268,10 +272,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/xiejl.github.io/2017/04/17/0417recyclerView源码解析/" itemprop="url">
-                  recyclerView源码解析
-                </a>
+                recyclerView源码解析
               
             
           </h1>
@@ -322,9 +323,7 @@
       
 
       
-        
-          
-            <h1 id="recyclerView简介"><a href="#recyclerView简介" class="headerlink" title="recyclerView简介"></a>recyclerView简介</h1><p>自从google官方推出了recyclerView这个控件来替代listView之后，就意味着listView要慢慢的退出历史的舞台了。因为recyclerView基本上能实现listView的所有功能，还能实现很多用listView很难实现的功能。我们来看看recyclerView的官方定义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A flexible view for providing a limited window into a large data set。</div></pre></td></tr></table></figure><br>即，在一个有限的窗口显示大量的数据集的一个复杂的View，简单的说，就是可以通过这个RecyclerView以列表的形式将大量的数据显示出来。</p>
+        <h1 id="recyclerView简介"><a href="#recyclerView简介" class="headerlink" title="recyclerView简介"></a>recyclerView简介</h1><p>自从google官方推出了recyclerView这个控件来替代listView之后，就意味着listView要慢慢的退出历史的舞台了。因为recyclerView基本上能实现listView的所有功能，还能实现很多用listView很难实现的功能。我们来看看recyclerView的官方定义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A flexible view for providing a limited window into a large data set。</div></pre></td></tr></table></figure><br>即，在一个有限的窗口显示大量的数据集的一个复杂的View，简单的说，就是可以通过这个RecyclerView以列表的形式将大量的数据显示出来。</p>
 <h1 id="recyclerView简单相关"><a href="#recyclerView简单相关" class="headerlink" title="recyclerView简单相关"></a>recyclerView简单相关</h1><h1 id="recyclerView的简单用法"><a href="#recyclerView的简单用法" class="headerlink" title="recyclerView的简单用法"></a>recyclerView的简单用法</h1><p>其实recylerview使用起来也很方便，主要分成了以下几个组件：</p>
 <ul>
 <li>Adapter：对于数据集的处理都是在adapter中去完成。</li>
@@ -382,20 +381,27 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 <h2 id="recyclerView-缓存处理"><a href="#recyclerView-缓存处理" class="headerlink" title="recyclerView 缓存处理"></a>recyclerView 缓存处理</h2><p>b</p>
 <h2 id="一些关于recyclerView相关的应用"><a href="#一些关于recyclerView相关的应用" class="headerlink" title="一些关于recyclerView相关的应用"></a>一些关于recyclerView相关的应用</h2><p>c</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
@@ -403,481 +409,38 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/04/09/0409anotation的基本原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一个被裁的菜鸟程序员">
-    </span>
-
-    
-      <header class="post-header">
-
         
-        
-          <h1 class="post-title" itemprop="name headline">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/xiejl.github.io/2017/04/09/0409anotation的基本原理/" rel="next" title="annotation(注解)的基本原理">
+                <i class="fa fa-chevron-left"></i> annotation(注解)的基本原理
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/xiejl.github.io/2017/04/09/0409anotation的基本原理/" itemprop="url">
-                  annotation(注解)的基本原理
-                </a>
-              
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-09T13:14:52+08:00">
-                2017-04-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="关于注解"><a href="#关于注解" class="headerlink" title="关于注解"></a>关于注解</h1><h2 id="注解的概念"><a href="#注解的概念" class="headerlink" title="注解的概念"></a>注解的概念</h2><p>首先，注解只是一种描述数据的数据，俗称是元数据。注解，即Annotation,这个类位于java.lang.annotation包下。在android里面，Annotation有以下几个元注解，元注解是指用来定义annotation的annotation，</p>
-<ul>
-<li>Documented:表明了这个注解是否要被包含在java文档中</li>
-<li>Inherited:表明了这个注解类型是否可以继承。</li>
-<li>Retention:表明这个注解的存活时间，可选值封装在RetentionPolicy里面，可选值有source（源码期间），class（编译时），runtime（运行时），</li>
-<li>Target:表示可以用来修饰的元素,封装在ElementType这个枚举类里面，可选属性有TYPE,METHOD,FIELD,PARAMENTER,CONSTRUCT等</li>
-<li>Repeatable:表明这个注解是否可以重复声明，这个是在java8中新增的，java提供了重复注解的语法糖。</li>
-</ul>
-<p>上面几个元注解的定义上都是大同小异的，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Documented</div><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">@Target(ElementType.ANNOTATION_TYPE)</div><div class="line">public @interface Documented &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h2><p>对于注解的使用，首先我们先从java中已经给我们定义好的override这个注解进行分析。我们都知道，@override注解可以在我们编写代码的时候进行查错，是否该注解方法是否真的是从父类继承而来的。下面时override注解的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@Target(ElementType.METHOD)</div><div class="line">@Retention(RetentionPolicy.SOURCE)</div><div class="line">public @interface Override&#123;   </div><div class="line">&#125;</div></pre></td></tr></table></figure><br>首先，定义注解的目标为方法，注解存活时间仅仅在编码时。在我们编写代码时，编译器会替我们去寻找该方法是否在父类方法中存在，如果不存在则报错。</p>
-<h3 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h3><p>在很多框架中，都是用的自定义注解来实现aoc，也就是所谓的以来注入。<br>下面我们来自定义一个注解：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@Document</div><div class="line">@Inherite</div><div class="line">@Retetion(RetetionPolicy.RUNTIME)</div><div class="line">@Target(ElementType.MOTHED)</div><div class="line">public @interface AuthorXie&#123;</div><div class="line">    String name();</div><div class="line">    String webSite() default &quot;hhhhhh&quot;;</div><div class="line">    int reversion() default 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>自定义注解必须遵守下面的规则：</p>
-<ul>
-<li>接口方法不带参数</li>
-<li>接口方法的返回值类型限制</li>
-<li>接口方法能有默认值</li>
-</ul>
-<p>在我们定义完了注解之后，我们便可以在方法中使用注解。如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class AnnotationTest&#123;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        new AnnotationTest.myTest();</div><div class="line">    &#125;</div><div class="line">    @AuthorXie(&quot;haha&quot;, &quot;xixi&quot;, 2)</div><div class="line">    private int myTest()&#123;</div><div class="line">        System.out.println(&quot;i am xiexie&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>因为这个注解的policy我们选择的运行时，所以会在程序的运行期间进行反射转换。在反射中，有一个专门用于解析注解的接口，annotateElement，有几个核心的方法：</p>
-<ul>
-<li>getAnnotationClass –返回该元素上的指定类型的注解</li>
-<li>getAnnotations –返回该元素上的所有注解</li>
-<li>getDeclareAnnotations –直接存在于该元素上的所有注解</li>
-<li>isAnnotationPresent –是否存在该注解</li>
-</ul>
-<p>我们通常利用这个接口，去实现我们自定义注解的解析类，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class ParaseAnnotation&#123;</div><div class="line">    public static void main(String[] args)&#123;</div><div class="line">        String clazz = &quot;packageName&quot;;</div><div class="line">        Method[] method = ParaseAnnotation.class.getClassLoader().loadClass(class).getMethods();</div><div class="line">        for (Method methods: methed) &#123;</div><div class="line">            if (methods.isAnnotationPresent(AuthorXie)) &#123;</div><div class="line">                AuthorXie authorXie = method.getAnnotations(AuthorXie.class);</div><div class="line">                System.out.println(&quot;-----&quot;+ authorXie.name() +&quot;---- &quot; +authorXie.WebSite() + &quot;----&quot;+</div><div class="line">                authorXie.reVersion());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>所以，一般来说，我们通过AnnotateElement类去进行注解的解析。我们可以大概的概括自定义注解的实现原理：</p>
-<ul>
-<li>定义RUNTIME注解，因为只有在运行时才需要利用反射机制。</li>
-<li>在类中的方法使用我们所定义的注解。</li>
-<li>最重要的就是在解析类中，进行反射操作，在这个地方可以做很多额外的事情，很多框架利用注解也都是在这里做的，首先利用我们的类名，通过反射获取类，进而获取类里面的所有方法。对每个方法进行判断是否调用我们所定义的注解，假如调用了，利用反射接口方法getAnnotations获取注解接口。然后再进行注解的接口方法操作。</li>
-</ul>
-<h2 id="几句话了解注解的真正原理"><a href="#几句话了解注解的真正原理" class="headerlink" title="几句话了解注解的真正原理"></a>几句话了解注解的真正原理</h2><p>其实关于注解的原理非常简单，就是对一个方法用了注解，在解析的时候，通过反射，获取出类的所有方法并进行遍历，通过注解相关的类annotateElement，获取该方法上所有的注解，然后并调用注解方法。这样就是所谓的注解的解析。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/04/05/0405android自定义图片动画的尝试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一个被裁的菜鸟程序员">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/xiejl.github.io/2017/04/05/0405android自定义图片动画的尝试/" itemprop="url">
-                  android中ImageView动画的一些相关问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-05T13:14:52+08:00">
-                2017-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="图片旋转所遇到的问题"><a href="#图片旋转所遇到的问题" class="headerlink" title="图片旋转所遇到的问题"></a>图片旋转所遇到的问题</h3><p>最近项目中接触到一个动画的实现，<br>遇到的最主要的难点就是在执行view动画rotate的时候，让里面的drawable只显示上半部分，虽然到现在都还没有实现，但还是把解决问题时遇到的一些东西给记录下来，以便以后再进行解决或者回顾。<br>首先想到的第一种解决方法：<br>利用clipDrawable去进行drawbale的截断。关于clipDrawble的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//in xml</div><div class="line">&lt;clip xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    android:clipOrientation=&quot;vertical&quot;</div><div class="line">    android:drawable=&quot;@drawable/light&quot;</div><div class="line">    android:gravity=&quot;top&quot;&gt;</div><div class="line">&lt;/clip&gt;</div><div class="line">//其中，clipOrientation设置从哪个方向开始裁剪，drawable表示需要裁剪的图片，gravity表示最后保留的部分，如果设置top，则会从底部开始裁剪，设置了bottom，则会从顶部开始裁剪。</div><div class="line">//in java code</div><div class="line">    ClipDrawable cd = (ClipDrawable)lightView.getDrawable();</div><div class="line">    cd.setLevel(5000);</div><div class="line">//其中，这个level表示的是裁剪的程度，范围是0到10000，默认为0，即不进行裁剪</div></pre></td></tr></table></figure><br>通过clipDrawble这种实现方法，最终的结果是半张drawable填充满整个imageview，并进行旋转。</p>
-<p>然后尝试着第二种解法：<br>本来想着用一个与背景色同样的view去覆盖旋转的imageView的下半部分，自己写的module发现是可行的。但是工程里面的背景色是带有透明度alpha的，一旦有透明度的相同的背景相互叠加，透明度会发生改变，而且带透明度的是可以看到后面控件的。所以这种方法也不行。</p>
-<p>后面想到第三种解法：<br>当时想法是如果在自定义一个imageView并重写它的ondraw方法，每次进行ondraw时只绘制其drawable的一半。</p>
-<p>发现这种方法也不行，突然发现animator动画其实是对view也就是这个imageView的位置进行旋转，仅仅修改掉这个drawable并不能完成这个要求，在stackoverflow上找到一个比较相近的实现：<br><a href="http://stackoverflow.com/questions/36546760/how-to-show-half-of-the-imageview-which-is-rotated-using-matrix-in-android" target="_blank" rel="external">http://stackoverflow.com/questions/36546760/how-to-show-half-of-the-imageview-which-is-rotated-using-matrix-in-android</a></p>
-<h2 id="ImageView实现自定义位移的问题"><a href="#ImageView实现自定义位移的问题" class="headerlink" title="ImageView实现自定义位移的问题"></a>ImageView实现自定义位移的问题</h2><p>因为项目中有一个动画的实现是需要对imageView做一个半圆形位移，看了一下android的view动画和属性动画，基本位移都是只有对于x和y来作移动的。既然说到了android的动画，那我们就简单的来了解以下android里面的各种动画吧。</p>
-<h4 id="View动画"><a href="#View动画" class="headerlink" title="View动画"></a>View动画</h4><p>view动画，又称为补间动画，可以对View做一些简单的动画，包括scale，alpha，rotation和translate。这种这种并不会实际的改变view的属性，即如果你对一个view向右移动了50px，实际上这个view的可触摸区域还是在起始的地方，并不会随着位移的改变而改变。这几种相对比较简单，可以在xml里面写好，也可以在代码中动态的实现。</p>
-<h3 id="帧动画"><a href="#帧动画" class="headerlink" title="帧动画"></a>帧动画</h3><p>顾名思义，即不同时刻的几张图片添加到帧列表里面，然后可以设置每一帧的间隔，最后播放，就形成了动画，也就由一帧一帧的播放组成的帧动画。</p>
-<h3 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h3><p>先放些官方文档所给定的翻译：属性动画是一个能够让我们去对任何东西做动画的框架。我们可以定义在一个时间段里面去改变对象的属性的动画，但是我们必须指定我们所需要改变的属性，动画持续的时间，还有执行动画的一些相关的值。属性动画提供了下面这些属性让我们使用：</p>
-<ul>
-<li>duration：动画的持续时间，默认为300ms</li>
-<li>time interpolation：时间插值器，用于设置动画在时间内的变化速率。</li>
-<li>repeat count and behavior：repeat时用于指定动画的重复次数，默认为0，表示不重复，如果想要重复，可以设置为设为-1或infinite，表示为无限重复。 behavior用于指定动画是否能够倒着执行。</li>
-<li>animator set：用于指定一个属性动画集合，可以同时开始播放。</li>
-<li>frame refresh delay：我们可以指定动画的刷新频率，也就是每一帧的刷新频率，默认为10ms刷新一次，不过这个速度还是得依靠我们cpu的处理，如果我们cpu过于繁忙，这个刷新频率就要延后了。</li>
-</ul>
-<p>我们来看看在属性动画中一些比较重要的组件的使用。</p>
-<h4 id="ValueAnimator："><a href="#ValueAnimator：" class="headerlink" title="ValueAnimator："></a>ValueAnimator：</h4><h5 id="简单了解"><a href="#简单了解" class="headerlink" title="简单了解"></a>简单了解</h5><p>下面这个图是官方文档所给的图：稍微了解下就好，其实我们做的很多动画都是基于这张图片所显示的计算：<br><img src="http://onu21exz8.bkt.clouddn.com/animator_caculate.jpeg" alt=""><br>valueAnimator会持续的追踪属性动画的时间变化，比如说我们的动画已经持续了多久，现在属性动画的value值。在它里面还有一个TimeInterpolator和TypeEvaluetor。对于TimeInterpolator，也就是时间插值器，它决定着我们的动画在时间内的变化速率。android里面提供了很多可以直接用的插值器，如果我们自己要自定义插值器，只需要实现interpolator这个接口就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class MyInterpolator implements Interpolator &#123;</div><div class="line">    @Override</div><div class="line">    public float getInterpolation(float input) &#123;</div><div class="line">        return input;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>这个input就是我们所要改变的变化值，即如果我们要让动画先加速再减速，只需要对这个input进行先加速再减速就行了。<br>对于TypeEvaluetor，和时间插值器很类似，这个类主要是用来计算动画在某个时刻的值，我们看自带的其中一个IntEvaluator。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public Integer evaluate(float fraction, Integer startValue, Integer endValue) &#123;</div><div class="line">        int startInt = startValue;</div><div class="line">        return (int)(startInt + fraction * (endValue - startInt));</div><div class="line">    &#125;</div><div class="line">    </div></pre></td></tr></table></figure><br>其中，fraction是一个0到1的值，其实就是时间差值器中返回的input，通过这个变化率和起始位置、结束位置去进行计算，当然，这个计算只是针对于这个类型的Evaluator。实际上，接口的方法是有范型的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public T evaluate(float fraction, T startValue, T endValue);</div></pre></td></tr></table></figure><br>这就意味着我们能够定义出任何我们想要的类型，并对类型进行计算，然后返回。</p>
-<h5 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h5><p>首先我们需要创建出一个ValueAnimator实例，必须指定start和end值，当调用start方法时，动画才真正的开始执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//其中a表示start值，b表示end值</div><div class="line">ValueAnimator animator = ValueAnimator.ofArgb(int a, int b);</div><div class="line">ValueAnimator animator = ValueAnimator.ofFloat(int a, int b);</div><div class="line">ValueAnimator animator = ValueAnimator.ofInt(int a, int b);</div><div class="line"></div><div class="line">animator.setDuration(1234);//设置持续时间</div><div class="line">animator.setIntrepolator();//设置时间插值器</div><div class="line">animaotr.start();开始动画。</div><div class="line"></div><div class="line">//添加监听，指定改变的对象并进行改变。</div><div class="line">animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onAnimationUpdate(ValueAnimator animation) &#123;</div><div class="line">                float value = (float) animation.getAnimatedValue();</div><div class="line">                object.setValue(value);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure></p>
-<h4 id="ObjectAnimator"><a href="#ObjectAnimator" class="headerlink" title="ObjectAnimator"></a>ObjectAnimator</h4><p>ObjectAnimator是ValueAnimator的一个子类，主要就提供了创建动画时便指定动画的对象。其实主要看看其使用方式就行了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ObjectAnimator animator = ObjectAnimator.ofFloat(target, &quot;translationX&quot;, start, end，...);</div></pre></td></tr></table></figure><br>这个动画的使用和View动画比较类似，我们看看上面的几个参数。</p>
-<ul>
-<li>target: 执行动画的对象。</li>
-<li>translationX:指定为哪种动画。scaleY，scaleX，rotation，translationY，alpha等动画，</li>
-<li>start:指定动画的起始值</li>
-<li>end：指定动画的终止值。</li>
-<li>…：可以设置下一个参数作为下一次动画的终止值，而之前的end在动画结束后会作为动画的起始位置。</li>
-</ul>
-<h3 id="Path和PathMeasure"><a href="#Path和PathMeasure" class="headerlink" title="Path和PathMeasure"></a>Path和PathMeasure</h3><p>在动画里面，path和PathMeasure是两个非常重要的类，path主要是用于绘制路径，PathMeasure主要是用于Path路径的一些相关处理，比如说计算总长度，获取当前的postion位置，截取path的某一小段路径。<br>我们先通过一个例子来了解一下吧：这是一个关于circle动画的例子，就是spreshLayout加载的那个动画类似。现在还不知道怎么弄成gif展示，后面找到了再上图。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public PathMeasureView(Context context, AttributeSet attrs) &#123;</div><div class="line">      super(context, attrs);</div><div class="line">      mPathMeasure = new PathMeasure();</div><div class="line">      mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);</div><div class="line">      mPaint.setStyle(Paint.Style.STROKE);</div><div class="line">      mPaint.setStrokeWidth(5);</div><div class="line">      //绘制一个空心圆</div><div class="line">      mPath = new Path();</div><div class="line">      mPath.addCircle(400, 400, 100, Path.Direction.CW);</div><div class="line">      mPathMeasure.setPath(mPath, true);</div><div class="line">      //获取路径的总长度</div><div class="line">      mLength = mPathMeasure.getLength();</div><div class="line">      mDst = new Path();</div><div class="line">      </div><div class="line">      final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0,1);</div><div class="line">      valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">          @Override</div><div class="line">          public void onAnimationUpdate(ValueAnimator animation) &#123;</div><div class="line">              //在每一次动画更新时，获取现在更新的百分比，然后进行重绘</div><div class="line">              mAnimatorValue = (float) valueAnimator.getAnimatedValue();</div><div class="line">              invalidate();</div><div class="line">          &#125;</div><div class="line">      &#125;);</div><div class="line">      valueAnimator.setDuration(2000);</div><div class="line">      valueAnimator.setRepeatCount(ValueAnimator.INFINITE);</div><div class="line">      valueAnimator.start();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">   @Override</div><div class="line">  protected void onDraw(Canvas canvas) &#123;</div><div class="line">      super.onDraw(canvas);</div><div class="line">      //每次绘制时都重新将需要绘制path清空</div><div class="line">      mDst.reset();</div><div class="line">      mDst.lineTo(0,0);</div><div class="line">      //计算现在动画绘制结束的总长度</div><div class="line">      float stop = mLength * mAnimatorValue;</div><div class="line">      //计算起始点的位置</div><div class="line">      float rStart = stop - mLength * (mAnimatorValue &gt; 0.5 ? (1- mAnimatorValue) : mAnimatorValue) ;</div><div class="line">      //截取当前需要显示的片段，并进行绘制</div><div class="line">      mPathMeasure.getSegment(rStart, stop, mDst, true);</div><div class="line">      canvas.drawPath(mDst, mPaint);</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
-<h4 id="对ImageView做位移"><a href="#对ImageView做位移" class="headerlink" title="对ImageView做位移"></a>对ImageView做位移</h4><p>最后来看看如何对ImageView做指定路径的移动，其实看了上面那几个部分，应该已经了解了整个过程了吧，首先利用path生成我们所需要的曲线移动，在生成曲线的时候我们就可以利用贝塞尔曲线函数，通过提供几个点来生成。然后结合pathMeasure和ValueAnimator来进行移动。下面来看看简单的代码片段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">   private PathMeasure getPathMeasure(ImageView imageView) &#123;</div><div class="line">       ...</div><div class="line">       //生成贝塞尔曲线控制点</div><div class="line">       float startX = 0;</div><div class="line">       float startY = 0;</div><div class="line">       float endX = 0;</div><div class="line">       float endY = 0;</div><div class="line">       float controlX = 0;</div><div class="line">       float controlY = 0;</div><div class="line">       startX = imageView.getTranslationX();</div><div class="line">       startY = imageView.getTranslationY();</div><div class="line">       endX = startX;</div><div class="line">       endY = startY + imageView.getHeight() / 2;</div><div class="line">       controlX = startX - imageView.getHeight() / 4;</div><div class="line">       controlY = startY + imageView.getHeight() / 4;</div><div class="line">       ...</div><div class="line">       return initPathMeasure(startX, startY, endX, endY, controlX, controlY);</div><div class="line"></div><div class="line">   &#125;</div><div class="line">//绘制贝塞尔曲线</div><div class="line">private PathMeasure initPathMeasure(float startX, float startY, float endX, float endY,</div><div class="line">                                       float controlX, float controlY) &#123;</div><div class="line">       Path path = new Path();</div><div class="line">       path.moveTo(startX, startY);</div><div class="line">       path.quadTo(controlX, controlY, endX, endY);</div><div class="line">       PathMeasure pathMeasure = new PathMeasure(path, false);</div><div class="line">       return pathMeasure;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"> private ValueAnimator initTranslateAnimator(final ImageView imageView) &#123;</div><div class="line"></div><div class="line">       final PathMeasure pathMeasure = getPathMeasure(imageView);</div><div class="line">       final float[] mCurrentPosition = new float[2];</div><div class="line">       </div><div class="line">       ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, pathMeasure.getLength());</div><div class="line">       valueAnimator.setDuration(VIEW_ANIMATION_TIME);</div><div class="line">       valueAnimator.setInterpolator(new LinearInterpolator());</div><div class="line">       valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">           @Override</div><div class="line">           public void onAnimationUpdate(ValueAnimator animation) &#123;</div><div class="line">               //实时设置imageView的位置</div><div class="line">               float value = (float) animation.getAnimatedValue();</div><div class="line">               pathMeasure.getPosTan(value, mCurrentPosition, null);</div><div class="line">               imageView.setTranslationX(mCurrentPosition[0]);</div><div class="line">               imageView.setTranslationY(mCurrentPosition[1]);</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">       return valueAnimator;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>简单的看看上面imageView曲线移动的步骤：</p>
-<ul>
-<li>利用getPathMeasure生成贝塞尔曲线并进行绘制</li>
-<li>添加ValueAnimator监听</li>
-<li>valueAnimator的每次更新，利用pathMeasure获取出当前移动位置的position，并set到imageView的translation上。</li>
-</ul>
-<p>这样，imageView就会像我们所绘制的曲线一样移动。</p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/03/27/0327hexo结合github建博客的尝试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xie">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一个被裁的菜鸟程序员">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/xiejl.github.io/2017/03/27/0327hexo结合github建博客的尝试/" itemprop="url">
-                  hexo结合github建博客的尝试
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T18:21:24+08:00">
-                2017-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>突然有了写博客的想法，就在网上找了搭建博客的教程，发现很多人都用了hexo结合github搭建博客的方式，因此，利用这个周末的时间，自己学着来搭建下这个博客。搭建hexo博客的必要前提就是安装git和nodejs，在mac下，git是默认安装的，node需要我们手动去安装。这个我们可以从hexo的官方文档所给定的步骤来安装。简单的列举下我的搭建博客步骤。</p>
-<ol>
-<li>安装nodejs，在其官网上，下载dmg文件，并安装。附上连接：<a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a></li>
-<li>安装hexo，只需要执行<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure></li>
-<li>初始化一个hexo仓库，利用hexo init <folder>命令，创建出一个仓库，这个仓库名称通常取名为ourname.github.io,github.io,是git page的访问格式。</folder></li>
-<li>第三步创建的仅仅只是我们本地的仓库，因为我们最终的静态页面是要部署到github上面的，所以我们还需要在我们的github上去创建对应的远程仓库，需要注意的是，我们创建的仓库名称和我们本地的仓库名称需要一致，也就是仓库名称也要为ourname.github.io,github.io,至于如何在github上配置和创建仓库，我就不多说了，google也有，基本不会出现什么坑。</li>
-<li>现在，就是要让我们本地的仓库和远程github上的仓库建立连接了，我们本地的仓库还不是一个git仓库，所以我们应该要cd到我们的仓库目录的根目录下，执行下面的命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git init  //在ourname.github.io,github.io目录下，将这个仓库初始化为一个git，默认分支为master</div><div class="line">git add . //添加修改文件到暂存区</div><div class="line">git commit -m &quot;my first commit&quot;;//生成commit提交</div><div class="line">//后面的https连接就是我们github上远程仓库的地址。这就建立了连接。</div><div class="line">git git remote add origin https://github.com/username/projectName.git</div><div class="line">git push origin master.//将刚刚的修改进行提交。</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>我们必须要记住的一点就是，对于hexo和github的建站，我们只需要自己push这一次，其他的部署都是hexo自动为什么生成提交的，我刚开始并不清楚，所以每次部署完成后，都自己手动push了一次，导致github上老是build page失败。</p>
-<ol>
-<li>这个时候，我们就需要修改我们的目录下的config文件了，做一些必要的相关配置,也就是和部署相关的配置。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line"> type: git</div><div class="line"> repository: https://github.com/xiejinlong/xiejl.github.io.git</div><div class="line"> branch: master</div></pre></td></tr></table></figure>
-<p>这个config文件yaml格式要求非常严格，对于每一个映射前面必须有空格。这个deploy就是配置部署的项，repository就是部署到哪里，然后必须指定分支，部署类型设置为git，最初的部署类型为github，最后统一为git。这个设置关乎hexo是否能够部署成功。下面还有一个地方需要修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">url: https://xiejinlong.github.io/xiejl.github.io/</div><div class="line">root: /xiejl.github.io</div></pre></td></tr></table></figure>
-<p>这个是关于访问路径的配置的，假如你设置了其他的主题，那么如何这个访问路径没配置好的话，那么主题的样式是显示不出来的。</p>
-<p>7.这个时候我们就可以执行hexo命令啦，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean //清除上一次缓存</div><div class="line">hexo g      //自动生成静态页面</div><div class="line">hexo d      //执行部署</div></pre></td></tr></table></figure>
-<p>在这个时候就会把上面的生成的静态页面部署到了github上面了。</p>
-<ol>
-<li>这个时候我们访问我们的网页github.io并不能显示出正确的页面，这个时候我们还差最后一步，我们需要在我们github的对应项目仓库的做点配置。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">settings ----&gt; Github Page 项---&gt;在source下选择我们deploy的分支。</div></pre></td></tr></table></figure>
-<p>这样就部署成功啦，github就会提醒你：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Your site is published at https://xiejinlong.github.io/xiejl.github.io/</div></pre></td></tr></table></figure>
-<p>然后直接访问published所对应的地址就行了。</p>
-<p>如果我们想要替换不同的主题，我们应该将主题clone到本地仓库的theme目录下，然后对应的修改项目目录下面的config文件的theme项，设置为我们clone的项目名称就行了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Extensions</div><div class="line">## Plugins: https://hexo.io/plugins/</div><div class="line">## Themes: https://hexo.io/themes/</div><div class="line">theme: next</div></pre></td></tr></table></figure>
-<p>至于如何配置用户名和标题什么的，hexo文档里面介绍的非常清楚，如果要修改theme的样式，只需要到对应的目录下的配置文件去修改就行了。</p>
-<p>下面简单的列举遇到的坑，毕竟这么简单的流程整了整天两天。</p>
-<ul>
-<li>Deployer not found: git 这个需要执行 npm install hexo-deployer-git –save 下载deployer git插件</li>
-<li>突然出现hexo命令找不到：这个需要在我们的博客项目的根目录去执行。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -885,6 +448,10 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -904,8 +471,17 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/xiejl.github.io/images/avatar.gif"
@@ -949,6 +525,22 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#recyclerView简介"><span class="nav-number">1.</span> <span class="nav-text">recyclerView简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#recyclerView简单相关"><span class="nav-number">2.</span> <span class="nav-text">recyclerView简单相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#recyclerView的简单用法"><span class="nav-number">3.</span> <span class="nav-text">recyclerView的简单用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#recylerView简单流程"><span class="nav-number">3.1.</span> <span class="nav-text">recylerView简单流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recyclerView源码入口"><span class="nav-number">3.2.</span> <span class="nav-text">recyclerView源码入口:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些recyclerView的相关定义"><span class="nav-number">3.2.1.</span> <span class="nav-text">一些recyclerView的相关定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RecyclerView源码2"><span class="nav-number">3.3.</span> <span class="nav-text">RecyclerView源码2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recyclerView滑动处理"><span class="nav-number">3.4.</span> <span class="nav-text">recyclerView滑动处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recyclerView-缓存处理"><span class="nav-number">3.5.</span> <span class="nav-text">recyclerView 缓存处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些关于recyclerView相关的应用"><span class="nav-number">3.6.</span> <span class="nav-text">一些关于recyclerView相关的应用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1063,6 +655,10 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 
 
   
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
