@@ -531,7 +531,7 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 <li>在类中的方法使用我们所定义的注解。</li>
 <li>最重要的就是在解析类中，进行反射操作，在这个地方可以做很多额外的事情，很多框架利用注解也都是在这里做的，首先利用我们的类名，通过反射获取类，进而获取类里面的所有方法。对每个方法进行判断是否调用我们所定义的注解，假如调用了，利用反射接口方法getAnnotations获取注解接口。然后再进行注解的接口方法操作。</li>
 </ul>
-<h2 id="几句话了解注解的真正原理"><a href="#几句话了解注解的真正原理" class="headerlink" title="几句话了解注解的真正原理"></a>几句话了解注解的真正原理</h2><p>其实关于注解的原理非常简单，就是对一个方法用了注解，在解析的时候，通过反射，获取出类的所有方法并进行遍历，通过注解相关的类annotateElement，获取该方法上所有的注解，然后并调用注解方法。这样就是所谓的注解的解析。</p>
+<h2 id="几句话了解注解的真正原理"><a href="#几句话了解注解的真正原理" class="headerlink" title="几句话了解注解的真正原理"></a>几句话了解注解的真正原理</h2><p>其实关于注解的原理非常简单，就是对一个方法用了注解，在解析的时候，通过反射，获取出类的所有方法并进行遍历，通过注解相关的类annotateElement，获取该方法上所有的注解，然后并调用注解方法。这样就是所谓的注解的解析。<br>  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><br>            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
 
           
         
@@ -685,7 +685,7 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 <li>添加ValueAnimator监听</li>
 <li>valueAnimator的每次更新，利用pathMeasure获取出当前移动位置的position，并set到imageView的translation上。</li>
 </ul>
-<p>这样，imageView就会像我们所绘制的曲线一样移动。</p>
+<p>这样，imageView就会像我们所绘制的曲线一样移动。<br>  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><br>            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
 
           
         
@@ -839,7 +839,10 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
 <p>下面简单的列举遇到的坑，毕竟这么简单的流程整了整天两天。</p>
 <ul>
 <li>Deployer not found: git 这个需要执行 npm install hexo-deployer-git –save 下载deployer git插件</li>
-<li>突然出现hexo命令找不到：这个需要在我们的博客项目的根目录去执行。</li>
+<li><p>突然出现hexo命令找不到：这个需要在我们的博客项目的根目录去执行。</p>
+<p><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></p>
+<pre><code>&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;本站总访问量&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次&lt;/span&gt;
+</code></pre></li>
 </ul>
 
           

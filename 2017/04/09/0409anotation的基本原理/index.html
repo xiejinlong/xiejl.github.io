@@ -101,7 +101,7 @@ R">
 Documented:表明了这个注解是否要被包含在java文档中
 Inherited:表明了这个注解类型是否可以继承。
 R">
-<meta property="og:updated_time" content="2017-04-10T01:57:33.000Z">
+<meta property="og:updated_time" content="2017-04-23T09:38:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="annotation(注解)的基本原理">
 <meta name="twitter:description" content="关于注解注解的概念首先，注解只是一种描述数据的数据，俗称是元数据。注解，即Annotation,这个类位于java.lang.annotation包下。在android里面，Annotation有以下几个元注解，元注解是指用来定义annotation的annotation，
@@ -363,7 +363,7 @@ R">
 <li>在类中的方法使用我们所定义的注解。</li>
 <li>最重要的就是在解析类中，进行反射操作，在这个地方可以做很多额外的事情，很多框架利用注解也都是在这里做的，首先利用我们的类名，通过反射获取类，进而获取类里面的所有方法。对每个方法进行判断是否调用我们所定义的注解，假如调用了，利用反射接口方法getAnnotations获取注解接口。然后再进行注解的接口方法操作。</li>
 </ul>
-<h2 id="几句话了解注解的真正原理"><a href="#几句话了解注解的真正原理" class="headerlink" title="几句话了解注解的真正原理"></a>几句话了解注解的真正原理</h2><p>其实关于注解的原理非常简单，就是对一个方法用了注解，在解析的时候，通过反射，获取出类的所有方法并进行遍历，通过注解相关的类annotateElement，获取该方法上所有的注解，然后并调用注解方法。这样就是所谓的注解的解析。</p>
+<h2 id="几句话了解注解的真正原理"><a href="#几句话了解注解的真正原理" class="headerlink" title="几句话了解注解的真正原理"></a>几句话了解注解的真正原理</h2><p>其实关于注解的原理非常简单，就是对一个方法用了注解，在解析的时候，通过反射，获取出类的所有方法并进行遍历，通过注解相关的类annotateElement，获取该方法上所有的注解，然后并调用注解方法。这样就是所谓的注解的解析。<br>  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><br>            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
 
       
     </div>
