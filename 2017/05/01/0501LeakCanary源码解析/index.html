@@ -1,0 +1,669 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="LeakCanary简介leakCanary是square公司推出的一个用于检测内存泄漏的工具，在一个activity完全ondestroy方法执行时，我们都会希望它的内存空间能够完全被回收。但是实际上并非是这样的，往往可能会出现内存泄漏，比如说这个activity被其他没有回收的类所持有引用。那么就会造成ondestory方法执行完之后，这个activity没有被回收，造成内存泄漏。所以，为了让">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeakCanary源码解析">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/05/01/0501LeakCanary源码解析/index.html">
+<meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="LeakCanary简介leakCanary是square公司推出的一个用于检测内存泄漏的工具，在一个activity完全ondestroy方法执行时，我们都会希望它的内存空间能够完全被回收。但是实际上并非是这样的，往往可能会出现内存泄漏，比如说这个activity被其他没有回收的类所持有引用。那么就会造成ondestory方法执行完之后，这个activity没有被回收，造成内存泄漏。所以，为了让">
+<meta property="og:updated_time" content="2017-05-01T05:47:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeakCanary源码解析">
+<meta name="twitter:description" content="LeakCanary简介leakCanary是square公司推出的一个用于检测内存泄漏的工具，在一个activity完全ondestroy方法执行时，我们都会希望它的内存空间能够完全被回收。但是实际上并非是这样的，往往可能会出现内存泄漏，比如说这个activity被其他没有回收的类所持有引用。那么就会造成ondestory方法执行完之后，这个activity没有被回收，造成内存泄漏。所以，为了让">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/05/01/0501LeakCanary源码解析/"/>
+
+
+
+
+
+  <title> LeakCanary源码解析 | 一个被裁的菜鸟程序员 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个被裁的菜鸟程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/01/0501LeakCanary源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LeakCanary源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T13:14:00+08:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="LeakCanary简介"><a href="#LeakCanary简介" class="headerlink" title="LeakCanary简介"></a>LeakCanary简介</h1><p>leakCanary是square公司推出的一个用于检测内存泄漏的工具，在一个activity完全ondestroy方法执行时，我们都会希望它的内存空间能够完全被回收。但是实际上并非是这样的，往往可能会出现内存泄漏，比如说这个activity被其他没有回收的类所持有引用。那么就会造成ondestory方法执行完之后，这个activity没有被回收，造成内存泄漏。所以，为了让我们在开发测试时更容易的发现内存泄漏的情况，square公司推出了这个开源库。</p>
+<h1 id="LeakCanary流程"><a href="#LeakCanary流程" class="headerlink" title="LeakCanary流程"></a>LeakCanary流程</h1><h2 id="LeakCanary的使用"><a href="#LeakCanary的使用" class="headerlink" title="LeakCanary的使用"></a>LeakCanary的使用</h2><p>对于一个app引入leakCanary这个库是非常的简单的，只需要在gradle文件中引入下面几个依赖,这几个依赖会针对不同的编译版本引入不同的包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">   debugCompile &apos;com.squareup.leakcanary:leakcanary-android:1.5.1&apos;</div><div class="line">   releaseCompile &apos;com.squareup.leakcanary:leakcanary-android-no-op:1.5.1&apos;</div><div class="line">   testCompile &apos;com.squareup.leakcanary:leakcanary-android-no-op:1.5.1&apos;</div><div class="line"> &#125;</div></pre></td></tr></table></figure><br>然后在代码中，我们只需要在我们项目中的application类去调用install方法建立LeakCanary监测就行了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> if (LeakCanary.isInAnalyzerProcess(this)) &#123;</div><div class="line">       //这个是在分析heap的进程中，监测进程不能和分析进程在同一个。</div><div class="line">return;</div><div class="line">   &#125;</div><div class="line">   LeakCanary.install(this);</div></pre></td></tr></table></figure></p>
+<h2 id="LeakCanary的简单实现流程"><a href="#LeakCanary的简单实现流程" class="headerlink" title="LeakCanary的简单实现流程"></a>LeakCanary的简单实现流程</h2><p>在我们在Application类中调用了LeakCanary的install方法之后，就开始整个activity的监测流程。</p>
+<ol>
+<li>对application注册了一个关于activity生命周期的回调callBack，在这个回调里面，LeakCanary只关注onDestroy方法，毕竟我们需要监测内存泄漏，肯定是从onDestroy方法开始的。<br>2.一旦一个activity执行了ondestroy方法，也就是这个activity需要被销毁时，此时就开始了LeakCanary的工作，会在callBack里面执行watch方法，也就是开始监测了这个activity被销毁的过程。<br>3.在watch方法里面，会生成一个带有自定义key值的弱引用，LeakCanary通过这个弱引用来监测是否被完全回收，对于android里面的弱引用的回收，当弱引用指向的对象被gc回收时，此时会将这个弱引用添加到一个对应的队列里面。<br>4.假如watch监测出来可能出现内存溢出，此时就会利用一个叫做haha的库，这个库是回来解析heapDump文件的，然后通过这个文件分析是否真正的出现了内存溢出。出现溢出，生成溢出堆栈信息。</li>
+</ol>
+<h2 id="LeakCanary的代码实现："><a href="#LeakCanary的代码实现：" class="headerlink" title="LeakCanary的代码实现："></a>LeakCanary的代码实现：</h2><h3 id="RefWatcher的内部实现"><a href="#RefWatcher的内部实现" class="headerlink" title="RefWatcher的内部实现"></a>RefWatcher的内部实现</h3><p>在LeakCanary里面，有一个最重要的组件RefWatcher，对于内存泄漏的分析，全都依靠着这个RefWatcher，现在我们先来看看这个RefWatcher监测过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">//这个方法会在任意一个activity的ondestroy方法调用时调用</div><div class="line">public void watch(Object watchedReference, String referenceName) &#123;</div><div class="line">    //通过这个Disable参数可以仅在debug包中开启。</div><div class="line">    if (this == DISABLED) &#123;</div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line">    //引用和引用名称不能为空</div><div class="line">    checkNotNull(watchedReference, &quot;watchedReference&quot;);</div><div class="line">    checkNotNull(referenceName, &quot;referenceName&quot;);</div><div class="line">    //记录监测的开始时间</div><div class="line">    final long watchStartNanoTime = System.nanoTime();</div><div class="line">    //生成一个随机的key，保证每次生成的弱引用的key都是不同的</div><div class="line">    String key = UUID.randomUUID().toString();</div><div class="line">    //添加到维护的key数组里面去，这是一个写时复制的数组，这个数组是用来记录LeakCanary生成的弱引用所对应的key，也就是记录监测的activity的key</div><div class="line">    retainedKeys.add(key);</div><div class="line">    //在这里生成弱引用，这个是LeakCanary自定义的，添加了key和引用名称，这个queue便是弱引用指向的对象被正确回收时会被添加到的队列。</div><div class="line">    final KeyedWeakReference reference =</div><div class="line">        new KeyedWeakReference(watchedReference, key, referenceName, queue);</div><div class="line">    //开始监测这个引用的回收</div><div class="line">    ensureGoneAsync(watchStartNanoTime, reference);</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>上面的方法，除了最后一句话，其他的都是在做一些初始化操作而已，ensureGoneAsync这个方法才是执行的监测的入口,这个是一个同步方法，它会利用watchExecutor去顺序的执行每一个弱引用的回收确认：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void ensureGoneAsync(final long watchStartNanoTime, final KeyedWeakReference reference) &#123;</div><div class="line">    //excutor监测池，持续监测这个弱引用是否被回收</div><div class="line">    watchExecutor.execute(new Retryable() &#123;</div><div class="line">      @Override public Retryable.Result run() &#123;</div><div class="line">        return ensureGone(reference, watchStartNanoTime);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>通过了run方法的执行，开始通过ensureGone方法去确认每一个弱引用的回收,在阅读这个关键的方法时，我们需要先来了解两个方法removeWeaklyReachableReferences和isGone：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">private void removeWeaklyReachableReferences() &#123;</div><div class="line">    //这个会发生在finalization和垃圾收集器之前</div><div class="line">    KeyedWeakReference ref;</div><div class="line">    while ((ref = (KeyedWeakReference) queue.poll()) != null) &#123;</div><div class="line">      retainedKeys.remove(ref.key);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">=====&gt;</div><div class="line">public Reference&lt;? extends T&gt; poll() &#123;</div><div class="line">        synchronized (lock) &#123;</div><div class="line">            //queue的头为空，表示没有弱引用所指向的对象被回收</div><div class="line">            if (head == null)</div><div class="line">                return null;</div><div class="line"></div><div class="line">            return reallyPollLocked();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">=====&gt;</div><div class="line">private Reference&lt;? extends T&gt; reallyPollLocked() &#123;</div><div class="line">        if (head != null) &#123;</div><div class="line">            //获取当前head头</div><div class="line">            Reference&lt;? extends T&gt; r = head;</div><div class="line">            //头等于尾，清空</div><div class="line">            if (head == tail) &#123;</div><div class="line">                tail = null;</div><div class="line">                head = null;</div><div class="line">            &#125; else &#123;</div><div class="line">                获取下一个元素</div><div class="line">                head = head.queueNext;</div><div class="line">            &#125;</div><div class="line">            //设置queueNext属性，标记一个引用有进队或者出队操作</div><div class="line">            r.queueNext = sQueueNextUnenqueued;</div><div class="line">            return r;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return null;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>这个removeWeaklyReachableReferences方法会从前面指定的队列去获取是否存在被回收的弱引用，假如存在，则把我们保存的key数组中移除这个被成功回收的key值，剩下的就是可能存在泄漏的弱引用的key值,知道了这个，下面看看isGone的判断就比较简单了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">private boolean gone(KeyedWeakReference reference) &#123;</div><div class="line">    return !retainedKeys.contains(reference.key);</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>只需要判断retainedKeys数组中是否包含该引用的key就能知道有没有被回收了。下面来看看这这个ensureGone方法，看看是如何确认有没有造成内存泄漏的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">Retryable.Result ensureGone(final KeyedWeakReference reference, final long watchStartNanoTime) &#123;</div><div class="line">    long gcStartNanoTime = System.nanoTime();</div><div class="line">    long watchDurationMs = NANOSECONDS.toMillis(gcStartNanoTime - watchStartNanoTime);</div><div class="line">    //通过回收队列的引用去移除我们的key数组</div><div class="line">    removeWeaklyReachableReferences();</div><div class="line">    </div><div class="line">    if (debuggerControl.isDebuggerAttached()) &#123;</div><div class="line">      return RETRY;</div><div class="line">    &#125;</div><div class="line">    //如果被标记的弱引用均已被回收，那么返回。</div><div class="line">    if (gone(reference)) &#123;</div><div class="line">      return DONE;</div><div class="line">    &#125;</div><div class="line">    //在这里进行二次确认，手动执行一次gc</div><div class="line">    gcTrigger.runGc();</div><div class="line">    //在gc完成之后，再此通过queue移除我们的key数组。</div><div class="line">    removeWeaklyReachableReferences();</div><div class="line">    if (!gone(reference)) &#123;</div><div class="line">      //仍然存在没被回收的弱引用，此时可能造成内存泄漏，我们需要通过heapDump文件来分析</div><div class="line">      long startDumpHeap = System.nanoTime();</div><div class="line">      long gcDurationMs = NANOSECONDS.toMillis(startDumpHeap - gcStartNanoTime);</div><div class="line">      //根据现在内存，生成dump文件</div><div class="line">      File heapDumpFile = heapDumper.dumpHeap();</div><div class="line">      if (heapDumpFile == RETRY_LATER) &#123;</div><div class="line">        //目前不能读取，待重试状态</div><div class="line">        return RETRY;</div><div class="line">      &#125;</div><div class="line">      long heapDumpDurationMs = NANOSECONDS.toMillis(System.nanoTime() - startDumpHeap);</div><div class="line">      //heapdumpListener分析这个heapDump文件，判断是否泄漏。</div><div class="line">      heapdumpListener.analyze(</div><div class="line">          new HeapDump(heapDumpFile, reference.key, reference.name, excludedRefs, watchDurationMs,</div><div class="line">              gcDurationMs, heapDumpDurationMs));</div><div class="line">    &#125;</div><div class="line">    return DONE;</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>当有可能造成内存泄漏的时候，会通过heap内存文件分析是否真正的出现了内存泄漏，会将这个文件的分析转交给分析类去处理，而Watcher在此时就完成了自己的工作。<br>所以，watcher类主要做的事情就是在每一个ondestory调用时定义一个相对应的弱引用，并在gc后分析queue和key数组，判断是否可能造成泄漏，在有可能造成泄漏的时候，将dump文件的分析转交给其他类去处理。</p>
+<p>###<br>我们看看dump文件分析的主要代码，首先watcher会通过listener将dump文件转交给监听，下面是这个listener的调用链：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">heapdumpListener.analyze(</div><div class="line">          new HeapDump(heapDumpFile, reference.key, reference.name, excludedRefs, watchDurationMs,</div><div class="line">              gcDurationMs, heapDumpDurationMs));</div><div class="line">=======&gt;</div><div class="line">public void analyze(HeapDump heapDump) &#123;</div><div class="line">        Preconditions.checkNotNull(heapDump, &quot;heapDump&quot;);</div><div class="line">        HeapAnalyzerService.runAnalysis(this.context, heapDump, this.listenerServiceClass);</div><div class="line">    &#125;</div><div class="line">=====&gt;HeapAnalyzeService是一个IntentService，它有自己的工作线程，在这个工作线程执行完毕之后，会关闭自身service。</div><div class="line">public static void runAnalysis(Context context, HeapDump heapDump, Class&lt;? extends AbstractAnalysisResultService&gt; listenerServiceClass) &#123;</div><div class="line">        Intent intent = new Intent(context, HeapAnalyzerService.class);</div><div class="line">        intent.putExtra(&quot;listener_class_extra&quot;, listenerServiceClass.getName());</div><div class="line">        intent.putExtra(&quot;heapdump_extra&quot;, heapDump);</div><div class="line">        context.startService(intent);</div><div class="line">    &#125;</div><div class="line">======&gt;工作线程的执行</div><div class="line">protected void onHandleIntent(Intent intent) &#123;</div><div class="line">        if(intent == null) &#123;</div><div class="line">            CanaryLog.d(&quot;HeapAnalyzerService received a null intent, ignoring.&quot;, new Object[0]);</div><div class="line">        &#125; else &#123;</div><div class="line">            String listenerClassName = intent.getStringExtra(&quot;listener_class_extra&quot;);</div><div class="line">            HeapDump heapDump = (HeapDump)intent.getSerializableExtra(&quot;heapdump_extra&quot;);</div><div class="line">            //将dump文件的分析交给了HeapAnalyzer类</div><div class="line">            HeapAnalyzer heapAnalyzer = new HeapAnalyzer(heapDump.excludedRefs);</div><div class="line">            //获取泄漏的结果。</div><div class="line">            AnalysisResult result = heapAnalyzer.checkForLeak(heapDump.heapDumpFile, heapDump.referenceKey);</div><div class="line">            AbstractAnalysisResultService.sendResultToListener(this, listenerClassName, heapDump, result);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>通过着listener会开启一个IntentService，intentService与普通的service最主要的区别就是拥有自己的工作线程，而且待工作线程执行完毕之后，会自己关闭service，不用我们去手动进行控制。在HeapAnalyzerService中，又通过HeapAnalyzer去分析弱引用。我们来看看checkForLeak这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public AnalysisResult checkForLeak(File heapDumpFile, String referenceKey) &#123;</div><div class="line">      ...</div><div class="line">      //heap文件是.hprof后缀格式的</div><div class="line">      HprofBuffer buffer = new MemoryMappedFileBuffer(heapDumpFile);</div><div class="line">      //获取解析器,这个解析器库haha所提供的</div><div class="line">      HprofParser parser = new HprofParser(buffer);</div><div class="line">      //生成此时的内存快照</div><div class="line">      Snapshot snapshot = parser.parse();</div><div class="line">      </div><div class="line">      //复制gc的根对象，这个root是用来判断可达性的，从root到我们的弱引用所指向的对象，</div><div class="line">      deduplicateGcRoots(snapshot);</div><div class="line"></div><div class="line">      //寻找泄漏的引用</div><div class="line">      Instance leakingRef = findLeakingReference(referenceKey, snapshot);</div><div class="line"></div><div class="line">      if (leakingRef == null) &#123;</div><div class="line">        return noLeak(since(analysisStartNanoTime));</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      return findLeakTrace(analysisStartNanoTime, snapshot, leakingRef);</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>首先会生成内存快照，然后通过此时的快照来获取所有的根节点，通过这个根节点来判断弱引用指向对象的可达性。我们看看寻找泄漏引用的逻辑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">private Instance findLeakingReference(String key, Snapshot snapshot) &#123;</div><div class="line">    //通过自定义弱引用对象的name获取该对象</div><div class="line">    ClassObj refClass = snapshot.findClass(KeyedWeakReference.class.getName());</div><div class="line">    List&lt;String&gt; keysFound = new ArrayList&lt;&gt;();</div><div class="line">    //获取当前的实例列表</div><div class="line">    for (Instance instance : refClass.getInstancesList()) &#123;</div><div class="line">      //获取实例的参数域</div><div class="line">      List&lt;ClassInstance.FieldValue&gt; values = classInstanceValues(instance);</div><div class="line">      //获取key值</div><div class="line">      String keyCandidate = asString(fieldValue(values, &quot;key&quot;));</div><div class="line">      if (keyCandidate.equals(key)) &#123;</div><div class="line">        //如果需要寻找的key和获取出来的对象的key值一致，表示寻找到了这个弱引用，即有泄漏。</div><div class="line">        return fieldValue(values, &quot;referent&quot;);</div><div class="line">      &#125;</div><div class="line">      keysFound.add(keyCandidate);</div><div class="line">    &#125;</div><div class="line">    throw new IllegalStateException(</div><div class="line">        &quot;Could not find weak reference with key &quot; + key + &quot; in &quot; + keysFound);</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>如果返回的不为空，那么返回寻找到的泄漏的弱引用对象。</p>
+<h3 id="android页面监测"><a href="#android页面监测" class="headerlink" title="android页面监测"></a>android页面监测</h3><p>在入口通过install方法进行注册，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public static RefWatcher install(Application application) &#123;</div><div class="line">        return ((AndroidRefWatcherBuilder)refWatcher(application).listenerServiceClass(DisplayLeakService.class).excludedRefs(AndroidExcludedRefs.createAppDefaults().build())).buildAndInstall();</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在这个方法里面最后会调用buildAndInstall方法进行注册<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public RefWatcher buildAndInstall() &#123;</div><div class="line">        RefWatcher refWatcher = this.build();</div><div class="line">        if(refWatcher != RefWatcher.DISABLED) &#123;</div><div class="line">            LeakCanary.enableDisplayLeakActivity(this.context);</div><div class="line">            //这个才是重点，用于监测android里面的activity</div><div class="line">            ActivityRefWatcher.install((Application)this.context, refWatcher);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return refWatcher;</div><div class="line">    &#125;</div><div class="line">======&gt;intall</div><div class="line">public static void install(Application application, RefWatcher refWatcher) &#123;</div><div class="line">        (new ActivityRefWatcher(application, refWatcher)).watchActivities();</div><div class="line">    &#125;</div><div class="line">=====&gt;</div><div class="line">public void watchActivities() &#123;</div><div class="line">        this.stopWatchingActivities();</div><div class="line">        this.application.registerActivityLifecycleCallbacks(this.lifecycleCallbacks);</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>最后会为我们application注册acitivity的生命周期回调，我们来看看这个回调函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">private final ActivityLifecycleCallbacks lifecycleCallbacks = new ActivityLifecycleCallbacks() &#123;</div><div class="line">        public void onActivityCreated(Activity activity, Bundle savedInstanceState) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivityStarted(Activity activity) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivityResumed(Activity activity) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivityPaused(Activity activity) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivityStopped(Activity activity) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivitySaveInstanceState(Activity activity, Bundle outState) &#123;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onActivityDestroyed(Activity activity) &#123;</div><div class="line">            ActivityRefWatcher.this.onActivityDestroyed(activity);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure><br>虽然说是生命周期的回调，但是实际上仅仅关注了onDestroy方法的回调，当收到这个回调时，我们看看ActivityRefWatcher的处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void onActivityDestroyed(Activity activity) &#123;</div><div class="line">        this.refWatcher.watch(activity);</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>收到这个回调，就开始进行watch操作，也就是我们前面讲的watcher流程。这个一个完整的流程就完毕了。</p>
+<p>mark： 菜鸟程序员的发奋史。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/04/17/0417recyclerView源码解析/" rel="next" title="recyclerView源码解析">
+                <i class="fa fa-chevron-left"></i> recyclerView源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="xie" />
+          <p class="site-author-name" itemprop="name">xie</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeakCanary简介"><span class="nav-number">1.</span> <span class="nav-text">LeakCanary简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LeakCanary流程"><span class="nav-number">2.</span> <span class="nav-text">LeakCanary流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LeakCanary的使用"><span class="nav-number">2.1.</span> <span class="nav-text">LeakCanary的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LeakCanary的简单实现流程"><span class="nav-number">2.2.</span> <span class="nav-text">LeakCanary的简单实现流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LeakCanary的代码实现："><span class="nav-number">2.3.</span> <span class="nav-text">LeakCanary的代码实现：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RefWatcher的内部实现"><span class="nav-number">2.3.1.</span> <span class="nav-text">RefWatcher的内部实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#android页面监测"><span class="nav-number">2.3.2.</span> <span class="nav-text">android页面监测</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
