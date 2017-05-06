@@ -1,0 +1,720 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="EventBus简单使用下面是直接从eventbus官方文档摘取过来的。对于eventbus只需要下面三步：
+
+定义事件1public static class MessageEvent &amp;#123; /* Additional fields if needed */ &amp;#125;
+这个事件就是我们所要传递的，通过这个event可以携带订阅者想要的参数，并传递给订阅者。
+准备订阅者，也就是对我们所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EventBus源码解析">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/05/06/0506EventBus源码解析/index.html">
+<meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="EventBus简单使用下面是直接从eventbus官方文档摘取过来的。对于eventbus只需要下面三步：
+
+定义事件1public static class MessageEvent &amp;#123; /* Additional fields if needed */ &amp;#125;
+这个事件就是我们所要传递的，通过这个event可以携带订阅者想要的参数，并传递给订阅者。
+准备订阅者，也就是对我们所">
+<meta property="og:updated_time" content="2017-05-06T10:24:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EventBus源码解析">
+<meta name="twitter:description" content="EventBus简单使用下面是直接从eventbus官方文档摘取过来的。对于eventbus只需要下面三步：
+
+定义事件1public static class MessageEvent &amp;#123; /* Additional fields if needed */ &amp;#125;
+这个事件就是我们所要传递的，通过这个event可以携带订阅者想要的参数，并传递给订阅者。
+准备订阅者，也就是对我们所">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/05/06/0506EventBus源码解析/"/>
+
+
+
+
+
+  <title> EventBus源码解析 | 一个被裁的菜鸟程序员 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个被裁的菜鸟程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/06/0506EventBus源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                EventBus源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-06T13:14:00+08:00">
+                2017-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="EventBus简单使用"><a href="#EventBus简单使用" class="headerlink" title="EventBus简单使用"></a>EventBus简单使用</h1><p>下面是直接从eventbus官方文档摘取过来的。对于eventbus只需要下面三步：</p>
+<ul>
+<li>定义事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static class MessageEvent &#123; /* Additional fields if needed */ &#125;</div></pre></td></tr></table></figure>
+这个事件就是我们所要传递的，通过这个event可以携带订阅者想要的参数，并传递给订阅者。</li>
+<li><p>准备订阅者，也就是对我们所要分发的事件有兴趣的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//对于eventBus，我们应该有注册和取消注册的过程。也就是在onstart方法注册，onStop取消注册。</div><div class="line"> @Override</div><div class="line"> public void onStart() &#123;</div><div class="line">     super.onStart();</div><div class="line">     EventBus.getDefault().register(this);</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> @Override</div><div class="line"> public void onStop() &#123;</div><div class="line">     super.onStop();</div><div class="line">     EventBus.getDefault().unregister(this);</div><div class="line"> &#125;</div><div class="line"></div><div class="line">//这个threadMode后面我们再来讲述，这个event就是我们所订阅的event对象，当我们订阅了相关的事件以后，只要有相关的event post，这个方法就会调用。</div><div class="line">@Subscribe(threadMode = ThreadMode.MAIN)  </div><div class="line">public void onMessageEvent(MessageEvent event) &#123;/* Do something */&#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>分发事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().post(new MessageEvent());</div></pre></td></tr></table></figure>
+<h1 id="EventBus源码阅读"><a href="#EventBus源码阅读" class="headerlink" title="EventBus源码阅读"></a>EventBus源码阅读</h1><h2 id="Subscribe注解"><a href="#Subscribe注解" class="headerlink" title="Subscribe注解"></a>Subscribe注解</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Documented</div><div class="line">//运行时解析</div><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">//用在方法上</div><div class="line">@Target(&#123;ElementType.METHOD&#125;)</div><div class="line">public @interface Subscribe &#123;</div><div class="line">    ThreadMode threadMode() default ThreadMode.POSTING;</div><div class="line">    boolean sticky() default false;</div><div class="line">    int priority() default 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Threadmode模式"><a href="#Threadmode模式" class="headerlink" title="Threadmode模式"></a>Threadmode模式</h2><p>这个TreadMode就是可以指定调用的方法运行在哪一个线程上，默认是POSTING</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public enum ThreadMode &#123;</div><div class="line">    //这个是订阅者会调用在与发布者同一个线程之上，这个是默认的选项。这种选项就意味着最小的开销，因为它完全避免着线程的切换。因此这是一个被推荐的选项，handler事件通过这个模式来保证很快的返回，避免了阻塞主线程。</div><div class="line">    POSTING,</div><div class="line"></div><div class="line">    //指定订阅者处理事件的线程处于主线程，这个主要是在通过处理事件时有UI操作可以这么指定</div><div class="line">    MAIN,</div><div class="line"></div><div class="line">    //订阅者将会在后台线程中处理这个事件，如果发送事件的线程是在主线程，那么eventBus会利用一个单一后台线程去处理这个事件，如果发送事件的线程不是主线程，那么eventBus将会在同一个线程中去处理。在这种模式下的事件处理应该尽可能的快，避免阻塞后台线程</div><div class="line">    BACKGROUND,</div><div class="line"></div><div class="line">    //事件的处理将会在一个单独的线程，这个线程不会是主线程和发送事件的线程，发送线程不会等待这个event的处理，假如事件的处理需要一段时间，那么就需要指定这种方式。比如说网络操作，大规模的数据读取。eventbus将会有一个线程池去处理这个操作。</div><div class="line">    ASYNC</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="事件注册流程"><a href="#事件注册流程" class="headerlink" title="事件注册流程"></a>事件注册流程</h2><p>我们首先从调阅者订阅的地方开始阅读,register方法传入的订阅者对象，订阅者对象里面一般要定义上我们收到订阅事件的处理方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().register(this);</div><div class="line">=====&gt;getDefault()</div><div class="line">//eventbus在程序的运行时是一个单例，利用DCL创建单例</div><div class="line">public static EventBus getDefault() &#123;</div><div class="line">        if (defaultInstance == null) &#123;</div><div class="line">            synchronized (EventBus.class) &#123;</div><div class="line">                if (defaultInstance == null) &#123;</div><div class="line">                    defaultInstance = new EventBus();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return defaultInstance;</div><div class="line">    &#125;</div><div class="line">=====&gt;register</div><div class="line">public void register(Object subscriber) &#123;</div><div class="line">	//我们会将对象和订阅方法一起存储在map中</div><div class="line">        Class&lt;?&gt; subscriberClass = subscriber.getClass();</div><div class="line">	//在这里获取这个类对应所有订阅方法</div><div class="line">        List&lt;SubscriberMethod&gt; subscriberMethods = subscriberMethodFinder.findSubscriberMethods(subscriberClass);</div><div class="line">        synchronized (this) &#123;</div><div class="line">            for (SubscriberMethod subscriberMethod : subscriberMethods) &#123;</div><div class="line">                subscribe(subscriber, subscriberMethod);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在这个register函数中，是以Object为单位进行存储，在方法内利用反射获取到它的类，然后通过SubscriberMethodFinder去寻找对应的订阅者的执行方法。我们来看看这个很长的调用链。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">List&lt;SubscriberMethod&gt; findSubscriberMethods(Class&lt;?&gt; subscriberClass) &#123;</div><div class="line">        //首先从cache中获取这个类对应的订阅方法</div><div class="line">        List&lt;SubscriberMethod&gt; subscriberMethods = METHOD_CACHE.get(subscriberClass);</div><div class="line">        if (subscriberMethods != null) &#123;</div><div class="line">            //获取到就直接返回</div><div class="line">            return subscriberMethods;</div><div class="line">        &#125;</div><div class="line">        //如果没缓存，表示第一次订阅，</div><div class="line">        if (ignoreGeneratedIndex) &#123;</div><div class="line">            //从反射获取订阅方法</div><div class="line">            subscriberMethods = findUsingReflection(subscriberClass);</div><div class="line">        &#125; else &#123;</div><div class="line">            //从info获取订阅方法</div><div class="line">            subscriberMethods = findUsingInfo(subscriberClass);</div><div class="line">        &#125;</div><div class="line">        if (subscriberMethods.isEmpty()) &#123;</div><div class="line">            //调阅方法为空，出错，</div><div class="line">            throw new EventBusException(&quot;Subscriber &quot; + subscriberClass</div><div class="line">                    + &quot; and its super classes have no public methods with the @Subscribe annotation&quot;);</div><div class="line">        &#125; else &#123;</div><div class="line">            //缓存到cache中</div><div class="line">            METHOD_CACHE.put(subscriberClass, subscriberMethods);</div><div class="line">            return subscriberMethods;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">findUsingReflection======&gt;</div><div class="line">private List&lt;SubscriberMethod&gt; findUsingReflection(Class&lt;?&gt; subscriberClass) &#123;</div><div class="line">        //FindState？ 在prepare将第一个不为空state清空，并返回。</div><div class="line">        FindState findState = prepareFindState();</div><div class="line">        //初始化Subscriber相关信息</div><div class="line">        findState.initForSubscriber(subscriberClass);</div><div class="line">        while (findState.clazz != null) &#123;</div><div class="line">            //如果subscriberClass不为空，那么则将</div><div class="line">            findUsingReflectionInSingleClass(findState);</div><div class="line">            findState.moveToSuperclass();</div><div class="line">        &#125;</div><div class="line">        return getMethodsAndRelease(findState);</div><div class="line">    &#125;</div><div class="line"></div></pre></td></tr></table></figure>
+<p>下面看看findUsingReflectionInSingleClass这个函数的处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">private void findUsingReflectionInSingleClass(FindState findState) &#123;</div><div class="line">        Method[] methods;</div><div class="line">        try &#123;</div><div class="line">            //获取这个类的所有方法，这个方法比getMethod要快，特别是从一个比较臃肿的类去获取</div><div class="line">            methods = findState.clazz.getDeclaredMethods();</div><div class="line">        &#125; catch (Throwable th) &#123;</div><div class="line">            // Workaround for java.lang.NoClassDefFoundError, see https://github.com/greenrobot/EventBus/issues/149</div><div class="line">            methods = findState.clazz.getMethods();</div><div class="line">            findState.skipSuperClasses = true;</div><div class="line">        &#125;</div><div class="line">        //遍历所有方法</div><div class="line">        for (Method method : methods) &#123;</div><div class="line">            //返回java语言对应的方法修改器</div><div class="line">            int modifiers = method.getModifiers();</div><div class="line">            //表示这个方法是有效的,而且方法必须是公有的，因为是利用反射调用，所以必须保证public</div><div class="line">            if ((modifiers &amp; Modifier.PUBLIC) != 0 &amp;&amp; (modifiers &amp; MODIFIERS_IGNORE) == 0) &#123;</div><div class="line">                //获取这个方法的参数类型,订阅方法的参数类型就是它的订阅事件类型</div><div class="line">                Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();</div><div class="line">                if (parameterTypes.length == 1) &#123;</div><div class="line">                    //获取这个方法对应的Subscribe注解，里面可以指定处理线程</div><div class="line">                    Subscribe subscribeAnnotation = method.getAnnotation(Subscribe.class);</div><div class="line">                    //如果注解存在，subscribe注解存在，那么表示这个方法就是订阅方法</div><div class="line">                    if (subscribeAnnotation != null) &#123;</div><div class="line">                        //获取第一个参数类型，其实就一个参数，也就是事件类型</div><div class="line">                        Class&lt;?&gt; eventType = parameterTypes[0];</div><div class="line">                        //将方法和事件类型对应起来，放置到map中</div><div class="line">                        if (findState.checkAdd(method, eventType)) &#123;</div><div class="line">                            //获取注解的treadMod</div><div class="line">                            ThreadMode threadMode = subscribeAnnotation.threadMode();</div><div class="line">                            //创建出SubscriberMethod方法，并添加到findState集合里面。</div><div class="line">                            findState.subscriberMethods.add(new SubscriberMethod(method, eventType, threadMode,</div><div class="line">                                    subscribeAnnotation.priority(), subscribeAnnotation.sticky()));</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125; </div><div class="line">                ...</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>还有一个获取的最后的返回方法，在这个方法里面会将这个findState存入共享池中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">private List&lt;SubscriberMethod&gt; getMethodsAndRelease(FindState findState) &#123;</div><div class="line">        List&lt;SubscriberMethod&gt; subscriberMethods = new ArrayList&lt;&gt;(findState.subscriberMethods);</div><div class="line">        //清空findstate</div><div class="line">        findState.recycle();</div><div class="line">        //找到第一个为空的findState，赋值</div><div class="line">        synchronized (FIND_STATE_POOL) &#123;</div><div class="line">            for (int i = 0; i &lt; POOL_SIZE; i++) &#123;</div><div class="line">                if (FIND_STATE_POOL[i] == null) &#123;</div><div class="line">                    FIND_STATE_POOL[i] = findState;</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return subscriberMethods;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在获取到了所有订阅方法之后，需要将所有订阅方法存入subscriptionsByEventType的Map列表中，我们看看这个列表的定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">private final Map&lt;Object, List&lt;Class&lt;?&gt;&gt;&gt; typesBySubscriber;</div><div class="line">private final Map&lt;Class&lt;?&gt;, CopyOnWriteArrayList&lt;Subscription&gt;&gt; subscriptionsByEventType;</div></pre></td></tr></table></figure>
+<p>typeBySubscriberMap表示所有的一个对象在eventbus中订阅的所有事件。<br>subsriptionsByEventTYpeMap存放每个键值对分别代表了：key代表了订阅对象， value代表了所有的对于所关注事件的处理方法。<br>value中的list存放着Subscription对象，这个对象里面包含了3个主要成员：</p>
+</li>
+<li><p>final Object subscriber; ====&gt;订阅者对象</p>
+</li>
+<li>final SubscriberMethod subscriberMethod;=====&gt;订阅者的订阅方法</li>
+<li>volatile boolean active; =====&gt;这个订阅方法是否处于活动状态</li>
+</ul>
+<p>其中，这个对象就把订阅方法和订阅方法所属对象进行绑定,并且又一个active标志，一旦unrigister方法被调用，这个值就变为false，这个值主要是用来判断是否需要把这个方法假如invoke执行队列中。</p>
+<p>我们再看看Subscripition里面的主要成员变量：</p>
+<ul>
+<li>final Method method; ====&gt;订阅方法</li>
+<li>final ThreadMode threadMode; =====&gt;指定的线程模式</li>
+<li>final Class&lt;?&gt; eventType; ======&gt;订阅的事件类型</li>
+<li>final int priority;    ======&gt;方法执行优先级</li>
+<li>final boolean sticky;  ======&gt;是否属于sticky事件，如果是sticky的，那么一注册，就会马上收到最后一次的订阅事件。</li>
+</ul>
+<p>下面我们看看这个subscribe方法的处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">private void subscribe(Object subscriber, SubscriberMethod subscriberMethod) &#123;</div><div class="line">      //获取方法的订阅事件类型</div><div class="line">       Class&lt;?&gt; eventType = subscriberMethod.eventType;</div><div class="line">//创建出一个新的SUbscription对象，让这个订阅者和它的订阅方法建立联系</div><div class="line">       Subscription newSubscription = new Subscription(subscriber, subscriberMethod);</div><div class="line">//获取当前的事件类型的所有订阅过的Subscription</div><div class="line">       CopyOnWriteArrayList&lt;Subscription&gt; subscriptions = subscriptionsByEventType.get(eventType);</div><div class="line">       if (subscriptions == null) &#123;</div><div class="line">    //此时表示没有人订阅过，所以为空，则新建，并放入</div><div class="line">           subscriptions = new CopyOnWriteArrayList&lt;&gt;();</div><div class="line">           subscriptionsByEventType.put(eventType, subscriptions);</div><div class="line">       &#125; else &#123;</div><div class="line">    //如果已经这个订阅者已经订阅过这个事件了,那么抛异常。这里就表明了eventbus的同一个对象不能注册同一个事件两次</div><div class="line">           if (subscriptions.contains(newSubscription)) &#123;</div><div class="line">               throw new EventBusException(&quot;Subscriber &quot; + subscriber.getClass() + &quot; already registered to event &quot;</div><div class="line">                       + eventType);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       int size = subscriptions.size();</div><div class="line">       for (int i = 0; i &lt;= size; i++) &#123;</div><div class="line">    //按照订阅的优先级加入列表，优先级从高到低。</div><div class="line">           if (i == size || subscriberMethod.priority &gt; subscriptions.get(i).subscriberMethod.priority) &#123;</div><div class="line">               subscriptions.add(i, newSubscription);</div><div class="line">               break;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">//获取这个订阅者订阅的所有事件类型，</div><div class="line">       List&lt;Class&lt;?&gt;&gt; subscribedEvents = typesBySubscriber.get(subscriber);</div><div class="line">       if (subscribedEvents == null) &#123;</div><div class="line">           subscribedEvents = new ArrayList&lt;&gt;();</div><div class="line">           typesBySubscriber.put(subscriber, subscribedEvents);</div><div class="line">       &#125;</div><div class="line">       subscribedEvents.add(eventType);</div><div class="line"></div><div class="line">//如果这个订阅方法是sticky的，则需要做相应的处理操作,马上发送该订阅事件类型的最后一个事件给这个订阅者</div><div class="line">       if (subscriberMethod.sticky) &#123;</div><div class="line">           if (eventInheritance) &#123;</div><div class="line">               Set&lt;Map.Entry&lt;Class&lt;?&gt;, Object&gt;&gt; entries = stickyEvents.entrySet();</div><div class="line">               for (Map.Entry&lt;Class&lt;?&gt;, Object&gt; entry : entries) &#123;</div><div class="line">                   Class&lt;?&gt; candidateEventType = entry.getKey();</div><div class="line">                   if (eventType.isAssignableFrom(candidateEventType)) &#123;</div><div class="line">                       Object stickyEvent = entry.getValue();</div><div class="line">                       checkPostStickyEventToSubscription(newSubscription, stickyEvent);</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">           &#125; else &#123;</div><div class="line">               Object stickyEvent = stickyEvents.get(eventType);</div><div class="line">               checkPostStickyEventToSubscription(newSubscription, stickyEvent);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="事件发送流程"><a href="#事件发送流程" class="headerlink" title="事件发送流程"></a>事件发送流程</h2><p>我们先来看看一个threadLocal数组的定义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private final ThreadLocal&lt;PostingThreadState&gt; currentPostingThreadState = new ThreadLocal&lt;PostingThreadState&gt;() &#123;</div><div class="line">        @Override</div><div class="line">        protected PostingThreadState initialValue() &#123;</div><div class="line">            return new PostingThreadState();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure><br>我们先简单的了解一下ThreadLocal这个类，这个是用来处理线程间同步问题的。它可以保证ThreadLocal修饰的对象能够在多线程中处于同步的状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">public void post(Object event) &#123;</div><div class="line">        //currentPostingThread是一个ThreadLocal类型的数组</div><div class="line">	//获取当前线程的PostingThreadState对象</div><div class="line">        PostingThreadState postingState = currentPostingThreadState.get();</div><div class="line">        //获取当前发送线程的事件序列</div><div class="line">        List&lt;Object&gt; eventQueue = postingState.eventQueue;</div><div class="line">        //将此刻需要发送的事件添加到待发送的事件序列</div><div class="line">        eventQueue.add(event);</div><div class="line">    	//如果这个postingState处于发送状态，那么这个event添加到eventQueue中自然会被post</div><div class="line">        if (!postingState.isPosting) &#123;</div><div class="line">            //如果这个线程并没有处于发送状态，那么开始进行发送</div><div class="line">            //获取当前线程的是否处于主线程</div><div class="line">            postingState.isMainThread = Looper.getMainLooper() == Looper.myLooper();</div><div class="line">            postingState.isPosting = true;</div><div class="line">            if (postingState.canceled) &#123;</div><div class="line">                throw new EventBusException(&quot;Internal error. Abort state was not reset&quot;);</div><div class="line">            &#125;</div><div class="line">            try &#123;</div><div class="line">		//开始进行post</div><div class="line">                while (!eventQueue.isEmpty()) &#123;</div><div class="line">                    //按事件添加的顺序进行发送</div><div class="line">                    postSingleEvent(eventQueue.remove(0), postingState);</div><div class="line">                &#125;</div><div class="line">            &#125; finally &#123;</div><div class="line">                postingState.isPosting = false;</div><div class="line">                postingState.isMainThread = false;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>通过上面的方法我们可以知道，PostingThreadState内部有一个发送事件的序列，和3个标志位，这个是类是以线程来划分的，不同的线程是不同的，所以就需要通过ThreaLocal来定义。每次需要添加一个发送事件时，会将这个事件先添加到发送线程的PostingThreadState的事件队列中。然后进行发送。下面是单个事件发送的具体代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">private void postSingleEvent(Object event, PostingThreadState postingState) throws Error &#123;</div><div class="line">       //获取该事件对应的定义类</div><div class="line">       Class&lt;?&gt; eventClass = event.getClass();</div><div class="line">       boolean subscriptionFound = false;</div><div class="line">       if (eventInheritance) &#123;</div><div class="line">    //如果事件是可继承的，那么也需要获取其父类事件类型，并发送父类事件类型。在这里，我们可以知道eventBus是支持订阅事件的继承的。</div><div class="line">           //通过该类获取所有的事件类型，我们需要针对于每一个不同的事件类型去发送</div><div class="line">           List&lt;Class&lt;?&gt;&gt; eventTypes = lookupAllEventTypes(eventClass);</div><div class="line">           int countTypes = eventTypes.size();</div><div class="line">           for (int h = 0; h &lt; countTypes; h++) &#123;</div><div class="line">	//获取该事件对象</div><div class="line">               Class&lt;?&gt; clazz = eventTypes.get(h);</div><div class="line">               //寻找该事件是否存在订阅者，并且进行发送</div><div class="line">               subscriptionFound |= postSingleEventForEventType(event, postingState, clazz);</div><div class="line">           &#125;</div><div class="line">       &#125; else &#123;</div><div class="line">    //该订阅事件不存在继承关系，则直接发送</div><div class="line">           subscriptionFound = postSingleEventForEventType(event, postingState, eventClass);</div><div class="line">       &#125;</div><div class="line">       if (!subscriptionFound) &#123;</div><div class="line">           if (logNoSubscriberMessages) &#123;</div><div class="line">               Log.d(TAG, &quot;No subscribers registered for event &quot; + eventClass);</div><div class="line">           &#125;</div><div class="line">           if (sendNoSubscriberEvent &amp;&amp; eventClass != NoSubscriberEvent.class &amp;&amp;</div><div class="line">                   eventClass != SubscriberExceptionEvent.class) &#123;</div><div class="line">               post(new NoSubscriberEvent(this, event));</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>下面我们来看看postSingleEventForEventType这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">private boolean postSingleEventForEventType(Object event, PostingThreadState postingState, Class&lt;?&gt; eventClass) &#123;</div><div class="line">        CopyOnWriteArrayList&lt;Subscription&gt; subscriptions;</div><div class="line">        synchronized (this) &#123;</div><div class="line">            //通过事件类型获取所有Subscription</div><div class="line">            subscriptions = subscriptionsByEventType.get(eventClass);</div><div class="line">        &#125;</div><div class="line">        if (subscriptions != null &amp;&amp; !subscriptions.isEmpty()) &#123;</div><div class="line">            //存在订阅者，那么进行发送</div><div class="line">            for (Subscription subscription : subscriptions) &#123;</div><div class="line">                postingState.event = event;</div><div class="line">                postingState.subscription = subscription;</div><div class="line">                boolean aborted = false;</div><div class="line">                try &#123;</div><div class="line">                    postToSubscription(subscription, event, postingState.isMainThread);</div><div class="line">                    aborted = postingState.canceled;</div><div class="line">                &#125; finally &#123;</div><div class="line">                    postingState.event = null;</div><div class="line">                    postingState.subscription = null;</div><div class="line">                    postingState.canceled = false;</div><div class="line">                &#125;</div><div class="line">                if (aborted) &#123;</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在上面的方法里面，会获取事件类型对应的订阅列表，然后进行遍历。定义PostingState，然后调用postToSubscription。<br>我们先看看这个PostingThreadState主要成员：</p>
+<ul>
+<li>final List<object> eventQueue = new ArrayList<object>(); 执行队列</object></object></li>
+<li>boolean isPosting; —&gt;是否正在发送</li>
+<li>boolean isMainThread;  —–&gt;是否处于主线程</li>
+<li>Subscription subscription;  ——&gt;Subscription对象</li>
+<li>Object event;        ——&gt;对应事件类型</li>
+<li>boolean canceled;    ——&gt;是否取消Post</li>
+</ul>
+<p>下面我们来看看postToSubscription方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">private void postToSubscription(Subscription subscription, Object event, boolean isMainThread) &#123;</div><div class="line">     	   //在这里会针对于不同的线程模式做相应的处理</div><div class="line">	   switch (subscription.subscriberMethod.threadMode) &#123;</div><div class="line">            case POSTING:</div><div class="line">                invokeSubscriber(subscription, event);</div><div class="line">                break;</div><div class="line">            case MAIN:</div><div class="line">                if (isMainThread) &#123;</div><div class="line">                    invokeSubscriber(subscription, event);</div><div class="line">                &#125; else &#123;</div><div class="line">		    //利用handler切换到主线程去执行invokeSubscriber</div><div class="line">                    mainThreadPoster.enqueue(subscription, event);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case BACKGROUND:</div><div class="line">                if (isMainThread) &#123;</div><div class="line">		    //利用后台服务去执行invokeSubscriber</div><div class="line">                    backgroundPoster.enqueue(subscription, event);</div><div class="line">                &#125; else &#123;</div><div class="line">                    invokeSubscriber(subscription, event);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case ASYNC:</div><div class="line">                asyncPoster.enqueue(subscription, event);</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                throw new IllegalStateException(&quot;Unknown thread mode: &quot; + subscription.subscriberMethod.threadMode);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>其实，所有事件的发送最后都会调用同一个方法，也就是invokeSubscriber(subscription, event)，这个就是eventBus发送事件的源头了。我们看看这个方法的处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void invokeSubscriber(Subscription subscription, Object event) &#123;</div><div class="line">        try &#123;</div><div class="line">	    //利用反射去执行当前订阅事件的方法。</div><div class="line">            subscription.subscriberMethod.method.invoke(subscription.subscriber, event);</div><div class="line">        &#125; catch (InvocationTargetException e) &#123;</div><div class="line">            handleSubscriberException(subscription, event, e.getCause());</div><div class="line">        &#125; catch (IllegalAccessException e) &#123;</div><div class="line">            throw new IllegalStateException(&quot;Unexpected exception&quot;, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>阅读到这里，我们就已经阅读完了eventBus的大致流程的，最主要的处理就是通过反射去发送事件。实际上，它并没发送这个事件过去，只是调用了反射去执行这个订阅方法而已。想到当时找工作面试官问道eventBus发送事件的机制，我基本都猜的广播，觉得非常可笑。不过这就是进步吧。至少现在我知道了。而且，还了解得透彻。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/05/01/0501LeakCanary源码解析/" rel="next" title="LeakCanary源码解析">
+                <i class="fa fa-chevron-left"></i> LeakCanary源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="xie" />
+          <p class="site-author-name" itemprop="name">xie</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#EventBus简单使用"><span class="nav-number">1.</span> <span class="nav-text">EventBus简单使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EventBus源码阅读"><span class="nav-number">2.</span> <span class="nav-text">EventBus源码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Subscribe注解"><span class="nav-number">2.1.</span> <span class="nav-text">Subscribe注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Threadmode模式"><span class="nav-number">2.2.</span> <span class="nav-text">Threadmode模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件注册流程"><span class="nav-number">2.3.</span> <span class="nav-text">事件注册流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件发送流程"><span class="nav-number">2.4.</span> <span class="nav-text">事件发送流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
