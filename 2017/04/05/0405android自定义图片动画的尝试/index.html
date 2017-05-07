@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="一个被裁的菜鸟程序员">
 <meta property="og:description" content="图片旋转所遇到的问题最近项目中接触到一个动画的实现，遇到的最主要的难点就是在执行view动画rotate的时候，让里面的drawable只显示上半部分，虽然到现在都还没有实现，但还是把解决问题时遇到的一些东西给记录下来，以便以后再进行解决或者回顾。首先想到的第一种解决方法：利用clipDrawable去进行drawbale的截断。关于clipDrawble的实现：1234567891011//in">
 <meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/animator_caculate.jpeg">
-<meta property="og:updated_time" content="2017-04-23T09:38:44.000Z">
+<meta property="og:updated_time" content="2017-05-07T04:16:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android中ImageView动画的一些相关问题">
 <meta name="twitter:description" content="图片旋转所遇到的问题最近项目中接触到一个动画的实现，遇到的最主要的难点就是在执行view动画rotate的时候，让里面的drawable只显示上半部分，虽然到现在都还没有实现，但还是把解决问题时遇到的一些东西给记录下来，以便以后再进行解决或者回顾。首先想到的第一种解决方法：利用clipDrawable去进行drawbale的截断。关于clipDrawble的实现：1234567891011//in">
@@ -356,7 +356,8 @@
 <li>添加ValueAnimator监听</li>
 <li>valueAnimator的每次更新，利用pathMeasure获取出当前移动位置的position，并set到imageView的translation上。</li>
 </ul>
-<p>这样，imageView就会像我们所绘制的曲线一样移动。<br>  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><br>            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span></p>
+<p>这样，imageView就会像我们所绘制的曲线一样移动。</p>
+<p><span id="busuanzi_container_page_pv"><br>  本文总阅读量<span id="busuanzi_value_page_pv"></span>次<br></span></p>
 
       
     </div>
@@ -557,6 +558,9 @@
     NexT.Pisces
   </a>
 </div>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
 
 
         
