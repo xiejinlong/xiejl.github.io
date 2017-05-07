@@ -247,6 +247,137 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/07/0507ThreadLocal的实现机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/xiejl.github.io/2017/05/07/0507ThreadLocal的实现机制/" itemprop="url">
+                  Java多线程管理1- ThreadLocal实现机制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T13:14:00+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ThreadLocal用法"><a href="#ThreadLocal用法" class="headerlink" title="ThreadLocal用法"></a>ThreadLocal用法</h1><p>对于ThreadLocal这个用法我们平时接触的并不多,对于我来说,第一次了解到ThreadLocal这个类是在用handler的时候，当时并不是自己去研究的，而是看到书上有稍微的提到了一下，handler中looper做到线程同步是通过ThreadLocal来实现的，并没有多在意。在上一篇分析EventBus的源码里面，里面的PostingState也是通过ThreadLocal来实现的，同样的也是为了处理多线程同步问题。</p>
+<p>我们先来看看简单ThreadLocal用法，下面分别是handler和eventBus中ThreadLocal的使用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//handler,获取该线程所对应的looper</div><div class="line">mLooper = Looper.myLooper();</div><div class="line">===&gt;myLooper的实现</div><div class="line">public static @Nullable Looper myLooper() &#123;</div><div class="line">        return sThreadLocal.get();</div><div class="line">    &#125;</div><div class="line">=====&gt;sThreadLocal的定义如下：</div><div class="line">static final ThreadLocal&lt;Looper&gt; sThreadLocal = new ThreadLocal&lt;Looper&gt;();</div></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//eventBus的ThreadLocal的变量定义</div><div class="line"> private final ThreadLocal&lt;PostingThreadState&gt; currentPostingThreadState = new ThreadLocal&lt;PostingThreadState&gt;() &#123;</div><div class="line">        @Override</div><div class="line">        protected PostingThreadState initialValue() &#123;</div><div class="line">            return new PostingThreadState();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">=====&gt;threadLocal变量获取</div><div class="line">PostingThreadState postingState = currentPostingThreadState.get();</div></pre></td></tr></table></figure></p>
+<p>通过上面的两个例子，我们可以很清楚的知道ThreadLocal的使用方式，只要把我们想要实现线程同步的对象作为ThreadLocal的范型参数，创建出关于这个对象的ThreadLocal，就可以实现线程同步了。对于EventBus比handler多实现了一个方法，initialValue，这个方法是在获取到的对象为空是会调用的。也就是当Looper调用了myLooper方法时，如果该线程不存在looper，那么直接返回空。而eventBus在获取到PostingThreadState为空时，会调用initialValue方法，初始化一个对象并返回，保证获取出来的PostingThreadState不为空。</p>
+<h1 id="ThreadLocal相关类"><a href="#ThreadLocal相关类" class="headerlink" title="ThreadLocal相关类"></a>ThreadLocal相关类</h1><p>这个ThreadLocal是java给我们封装出来的，我们要想充分的了解其原理的充分实现，必须想了解一个涉及的相关的类。分别是Thread、ThreadLocal和ThreadLocalMap类</p>
+<h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>对于Thread在这个ThreadLocal的实现中充当了一个调用者的角色,都是在不同的线程中调用get方法获取出该线程对应的对象。我们来看看Thread中相关的成员变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ThreadLocal.ThreadLocalMap threadLocals = null;</div><div class="line">ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;</div></pre></td></tr></table></figure><br>也就是说，在每一个线程里面，都存储了这个线程所对应的ThreadLocalMap。并没有存储关于ThreadLocal相关的信息。</p>
+<h2 id="Entry"><a href="#Entry" class="headerlink" title="Entry"></a>Entry</h2><p>entry是ThreadMap中的存储单元，里面存放了这个entry对应的treadLocal和存储对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">static class Entry extends WeakReference&lt;ThreadLocal&gt; &#123;</div><div class="line">          Object value;</div><div class="line"></div><div class="line">          Entry(ThreadLocal k, Object v) &#123;</div><div class="line">              super(k);</div><div class="line">              value = v;</div><div class="line">          &#125;</div><div class="line">      &#125;</div></pre></td></tr></table></figure><br>这些entry实例实现了弱引用，也就是说，一旦执行系统有gc操作之后，就会将这个entry实例回收掉。<br>一旦这个key值为空时，这个entry也要被回收。<br>之所以entry中需要持有threadlocal的引用，因为需要threadLocal的hash进行计算位置。</p>
+<h2 id="ThreadLocalMap"><a href="#ThreadLocalMap" class="headerlink" title="ThreadLocalMap"></a>ThreadLocalMap</h2><p>对于ThreadLocalMap这个类，它是ThreadLocal里面的一个静态内部类，主要是用来存储Entry的，内部用一个entry数组来存储entry。并且实现了关于entry的一些操作，包括了增删改查，这些操作都会涉及到threadLocal的hashcode值去查找位置。</p>
+<h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><p>ThreadLocal相当于在这里面处于一个管理者，在threadLocal中统一管理所有线程，并为每一个线程获取其对应的map，也就是threadLocal并不直接持有ThreadLocalMap。</p>
+<h1 id="ThreadLocal实现原理"><a href="#ThreadLocal实现原理" class="headerlink" title="ThreadLocal实现原理"></a>ThreadLocal实现原理</h1><p>下面我们通过源码来了解ThreadLocal的原理，在我们创建了一个Threadlocal对象后，并调用这个对象的get方法，就进来ThreadLocal内部了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public T get() &#123;</div><div class="line">        //获取当前的线程</div><div class="line">	Thread t = Thread.currentThread();</div><div class="line">        //获取当前线程对应的ThreadMap</div><div class="line">	ThreadLocalMap map = getMap(t);</div><div class="line">        if (map != null) &#123;</div><div class="line">	    //用这个threadLocal的值做为entry的key的，获取相应的entry</div><div class="line">            ThreadLocalMap.Entry e = map.getEntry(this);</div><div class="line">            if (e != null)</div><div class="line">                return (T)e.value;</div><div class="line">        &#125;</div><div class="line">        return setInitialValue();</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>这个map就是存储在当前调用线程里面的，如果存在不为null，则去获取entry值，否则就需要进行初始化，我们先来看看setInitialValue这个初始化方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">private T setInitialValue() &#123;</div><div class="line">        T value = initialValue();</div><div class="line">        Thread t = Thread.currentThread();</div><div class="line">        ThreadLocalMap map = getMap(t);</div><div class="line">        if (map != null)</div><div class="line">            map.set(this, value);</div><div class="line">        else</div><div class="line">            createMap(t, value);</div><div class="line">        return value;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>initialValue这个方法在文章前面已经提到过了，这个方法的默认实现是返回null，如果我们要想在第一次get时保证不为空，那么就需要重写这个方法，直接在这个方法里面初始化我们想要返回的对象。在这个方法里会再次判断是否存在map，如果存在，则将这个value值和threadlocalset进去，否则会创建出一个新的map。我们看看createMap的处理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">void createMap(Thread t, T firstValue) &#123;</div><div class="line">        t.threadLocals = new ThreadLocalMap(this, firstValue);</div><div class="line">    &#125;</div><div class="line">====&gt;</div><div class="line"> ThreadLocalMap(ThreadLocal firstKey, Object firstValue) &#123;</div><div class="line">            table = new Entry[INITIAL_CAPACITY];</div><div class="line">            int i = firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - 1);</div><div class="line">            table[i] = new Entry(firstKey, firstValue);</div><div class="line">            size = 1;</div><div class="line">            setThreshold(INITIAL_CAPACITY);</div><div class="line">        &#125;</div></pre></td></tr></table></figure><br>也就是说，在创建map的同时，也会给线程的threadLocals变量赋值。<br>在Map的构造函数里面，会创建出来entry列表，这上面有个i值，这个i值就是通过threadLocal的hashCode和总量大小去进行计算的，后面我们会分析这个计算的过程。然后将threadlocal和值存储到tatle的i位置。</p>
+<p>在前面的get方法里面，如果map不为空，会直接通过这个直接这个map的getEntry方法去获取，我们来看看这个getEntry方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">private Entry getEntry(ThreadLocal key) &#123;</div><div class="line">    //通过threadLocal和总长度计算此次需要获取entry所在的位置</div><div class="line">           int i = key.threadLocalHashCode &amp; (table.length - 1);</div><div class="line">           Entry e = table[i];</div><div class="line">           if (e != null &amp;&amp; e.get() == key)</div><div class="line">               return e;</div><div class="line">           else</div><div class="line">               return getEntryAfterMiss(key, i, e);</div><div class="line">       &#125;</div></pre></td></tr></table></figure><br>这个get方法也非常好理解，计算entry位置，然后获取，不为空且key值匹配，那么表示获取到了，直接返回，如果通过hashcode没有找到，那么就需要从这个hashcode计算出来的位置开始进行遍历查找，因为可能出现hashcode计算出来的位置一样，那么存储的位置就需要顺延到数组后面的空位置了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">private Entry getEntryAfterMiss(ThreadLocal key, int i, Entry e) &#123;</div><div class="line">          Entry[] tab = table;</div><div class="line">          int len = tab.length;</div><div class="line"></div><div class="line">          while (e != null) &#123;</div><div class="line">              ThreadLocal k = e.get();</div><div class="line">              if (k == key)</div><div class="line">                  return e;</div><div class="line">              if (k == null)</div><div class="line">                  expungeStaleEntry(i);</div><div class="line">              else</div><div class="line">                  i = nextIndex(i, len);</div><div class="line">              e = tab[i];</div><div class="line">          &#125;</div><div class="line">          return null;</div><div class="line">      &#125;</div></pre></td></tr></table></figure><br>在这个方法里面，我们需要再关注一个方法，就是当获取出来的key值为空时，就要调用epungeStaleEntry方法，移除相对应的value值，因为只有key有效时，这个value值才是有效的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">private int expungeStaleEntry(int staleSlot) &#123;</div><div class="line">            Entry[] tab = table;</div><div class="line">            int len = tab.length;</div><div class="line"></div><div class="line">            // 从先清空当前位置的value</div><div class="line">            tab[staleSlot].value = null;</div><div class="line">            tab[staleSlot] = null;</div><div class="line">            size--;</div><div class="line"></div><div class="line">            // 移除了这个元素之后，需要重新计算hash值，直到我们找到下一个空值</div><div class="line">            Entry e;</div><div class="line">            int i;</div><div class="line">            for (i = nextIndex(staleSlot, len);</div><div class="line">                 (e = tab[i]) != null;</div><div class="line">                 i = nextIndex(i, len)) &#123;</div><div class="line">                ThreadLocal k = e.get();</div><div class="line">                if (k == null) &#123;</div><div class="line">                    e.value = null;</div><div class="line">                    tab[i] = null;</div><div class="line">                    size--;</div><div class="line">                &#125; else &#123;</div><div class="line">                    int h = k.threadLocalHashCode &amp; (len - 1);</div><div class="line">                    if (h != i) &#123;</div><div class="line">                        tab[i] = null;</div><div class="line">                        while (tab[h] != null)</div><div class="line">                            h = nextIndex(h, len);</div><div class="line">                        tab[h] = e;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            return i;</div><div class="line">        &#125;</div></pre></td></tr></table></figure><br>我们在移除之后，需要对key存在的entry重新计算hash值，如果找到空的key，直接返回，因为在上一个方法里面，在找到key为空之后，会再次进来这个移除方法。</p>
+<h2 id="ThreadLocal的hash值计算"><a href="#ThreadLocal的hash值计算" class="headerlink" title="ThreadLocal的hash值计算"></a>ThreadLocal的hash值计算</h2><p>我们先看看一些关于threadLocal内关于hashcode的计算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> private final int threadLocalHashCode = nextHashCode();</div><div class="line"> private static int nextHashCode() &#123;</div><div class="line">        return nextHashCode.getAndAdd(HASH_INCREMENT);</div><div class="line">    &#125;</div><div class="line">private static AtomicInteger nextHashCode =</div><div class="line">        new AtomicInteger();</div><div class="line">private static final int HASH_INCREMENT = 0x61c88647;</div></pre></td></tr></table></figure><br>在创建出来这个threadlocal时，就会设置这个threadLocal的hashcode值，通过静态的原子Integer保证了每一个词创建出来的hashcode值都是不一样的。然后map中entry的table位置会通过这个hashcode值和数组总长度进行逻辑与，散列到这个数组的各个位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int i = key.threadLocalHashCode &amp; (len-1);</div></pre></td></tr></table></figure><br>在这种情况下，就有可能出现冲突，也就是计算出来的i的位置一样，那么此时就需要进行冲突解决。在ThreadLocal里面的冲突解决非常简单，就是会从这个i的位置开始遍历，如果找到同样的key值的value，那么进行替换，否则找到第一个没被占用的位置放入这个entry。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">private void set(ThreadLocal key, Object value) &#123;</div><div class="line"></div><div class="line">           Entry[] tab = table;</div><div class="line">           int len = tab.length;</div><div class="line">           int i = key.threadLocalHashCode &amp; (len-1);</div><div class="line">    //通过这个循环，找到从i开始的下一个没被占用的位置</div><div class="line">           for (Entry e = tab[i];</div><div class="line">                e != null;</div><div class="line">                e = tab[i = nextIndex(i, len)]) &#123;</div><div class="line">               ThreadLocal k = e.get();</div><div class="line"></div><div class="line">               if (k == key) &#123;</div><div class="line">                   e.value = value;</div><div class="line">                   return;</div><div class="line">               &#125;</div><div class="line"></div><div class="line">               if (k == null) &#123;</div><div class="line">                   replaceStaleEntry(key, value, i);</div><div class="line">                   return;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           tab[i] = new Entry(key, value);</div><div class="line">           int sz = ++size;</div><div class="line">           if (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)</div><div class="line">               rehash();</div><div class="line">       &#125;</div></pre></td></tr></table></figure><br>在ThreadLocal里面有一个扩容因子，一个数组大小到达某一个阀值之后，就开扩充大小：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">private void setThreshold(int len) &#123;</div><div class="line">           threshold = len * 2 / 3;</div><div class="line">       &#125;</div></pre></td></tr></table></figure><br>可见扩容因子时2/3，一旦数组已用空间到达当前的总大小的2/3，那么这个数组扩容，每次扩大两倍，并进行重新计算hash值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">private void resize() &#123;</div><div class="line">            Entry[] oldTab = table;</div><div class="line">            int oldLen = oldTab.length;</div><div class="line">            int newLen = oldLen * 2;</div><div class="line">            Entry[] newTab = new Entry[newLen];</div><div class="line">            int count = 0;</div><div class="line"></div><div class="line">            for (int j = 0; j &lt; oldLen; ++j) &#123;</div><div class="line">                Entry e = oldTab[j];</div><div class="line">                if (e != null) &#123;</div><div class="line">                    ThreadLocal k = e.get();</div><div class="line">                    if (k == null) &#123;</div><div class="line">                        e.value = null; // Help the GC</div><div class="line">                    &#125; else &#123;</div><div class="line">                        int h = k.threadLocalHashCode &amp; (newLen - 1);</div><div class="line">                        while (newTab[h] != null)</div><div class="line">                            h = nextIndex(h, newLen);</div><div class="line">                        newTab[h] = e;</div><div class="line">                        count++;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            setThreshold(newLen);</div><div class="line">            size = count;</div><div class="line">            table = newTab;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/06/0506EventBus源码解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1232,7 +1363,7 @@ recyclerView的onLayout仅仅只是做了部分计算，对于其子item的计�
           
             <div class="site-state-item site-state-posts">
               <a href="/xiejl.github.io/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
