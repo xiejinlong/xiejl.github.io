@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="jenkins简介jenkins是一个可持续集成的开发工具，在自动化构建过程中可以给我们省下非常多的时间。所以，目前在我们的项目中需先对android项目和ios项目构建自动打包，后续可能服务端也会集成到jenkins上。jenkins相当于是一个构建服务器，它是依托在tomcat服务器上的。所以，我们只需要在本地访问jenkins服务器，并点击我们需要的打包操作，那么jenkins会自动执行配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0开始搭建jenkins打包服务器">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/index.html">
+<meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="jenkins简介jenkins是一个可持续集成的开发工具，在自动化构建过程中可以给我们省下非常多的时间。所以，目前在我们的项目中需先对android项目和ios项目构建自动打包，后续可能服务端也会集成到jenkins上。jenkins相当于是一个构建服务器，它是依托在tomcat服务器上的。所以，我们只需要在本地访问jenkins服务器，并点击我们需要的打包操作，那么jenkins会自动执行配置">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/69BCBA62-8FFE-4453-8E13-5901B605C60E.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/CAE63A6E-0FC4-45D9-9DAD-4B8AEC8332E3.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/0624AC97-59EB-4C46-95EB-594FA12AD79D%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/063BA389-B17C-4DDD-88FB-E27B2A806319.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/90E5C744-9593-436B-8F77-119BCF9EEDB2.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/395DBF79-60B3-426D-ACB0-C0BC91BC0AA9.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/686FD120-10D9-4D8A-BC22-9D8FF30123C1.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/6B8DCA34-D8DC-401C-8E96-77D1F43089B0%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/FA509A3C-5F3B-4534-993F-70C5165C107A.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/618E4323-2D48-46B6-AD23-D7654ECBAC22.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/DF403DDB-6BC7-4E2B-95E3-E31AFDADF72C.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/534912A4-D0C6-4ED6-B60D-CBB5E01D6BD4%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/71BFC769-B88C-43EE-91E5-EC09E8111F1D%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/ACC5A1D7-92A6-4D16-8C05-92C4BE1C490F.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/B33E2609-A9B4-4D4C-A4AF-AD00095E9F22.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/9DBF703D-6C7C-4754-9893-D40D113106FB.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/233BB5C6-A7B6-4302-9F31-B16BC99AA265.jpeg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/CEF0BA38-0D3C-4C8C-A982-2EED35B77EDB.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/AD5F2541-0297-43CB-B66F-610A97D47910.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/5294315F-9F4B-4451-BFDE-31983419C25F%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/EFAEE51C-15F9-4E26-B74A-C7CBFE4ACCD3.png">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/D85F02D8-408C-467A-BE98-AF30D84FF827%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/095E7793-9626-42DB-B5AA-0FA0E3731667%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/9B39AA26-C5BF-4F94-94F7-AE60F0911BBB%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/BF6DD38A-7083-41B4-B51E-F0C951A3AAC9%E5%89%AF%E6%9C%AC.jpg">
+<meta property="og:updated_time" content="2017-05-14T09:53:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从0开始搭建jenkins打包服务器">
+<meta name="twitter:description" content="jenkins简介jenkins是一个可持续集成的开发工具，在自动化构建过程中可以给我们省下非常多的时间。所以，目前在我们的项目中需先对android项目和ios项目构建自动打包，后续可能服务端也会集成到jenkins上。jenkins相当于是一个构建服务器，它是依托在tomcat服务器上的。所以，我们只需要在本地访问jenkins服务器，并点击我们需要的打包操作，那么jenkins会自动执行配置">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/69BCBA62-8FFE-4453-8E13-5901B605C60E.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/"/>
+
+
+
+
+
+  <title> 从0开始搭建jenkins打包服务器 | 一个被裁的菜鸟程序员 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个被裁的菜鸟程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                从0开始搭建jenkins打包服务器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T13:14:00+08:00">
+                2017-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="jenkins简介"><a href="#jenkins简介" class="headerlink" title="jenkins简介"></a>jenkins简介</h1><p>jenkins是一个可持续集成的开发工具，在自动化构建过程中可以给我们省下非常多的时间。所以，目前在我们的项目中需先对android项目和ios项目构建自动打包，后续可能服务端也会集成到jenkins上。jenkins相当于是一个构建服务器，它是依托在tomcat服务器上的。所以，我们只需要在本地访问jenkins服务器，并点击我们需要的打包操作，那么jenkins会自动执行配置和构建脚本进行打包。</p>
+<h1 id="jenkins相关工具开发"><a href="#jenkins相关工具开发" class="headerlink" title="jenkins相关工具开发"></a>jenkins相关工具开发</h1><h2 id="安装tomcat服务器"><a href="#安装tomcat服务器" class="headerlink" title="安装tomcat服务器"></a>安装tomcat服务器</h2><p>官网：<a href="http://tomcat.apache.org/download-90.cgi" target="_blank" rel="external">http://tomcat.apache.org/download-90.cgi</a>,  tomcat是一个开源的web应用服务器，我们可以把它当成一个网站来对待，因为jenkins是放在tomcat服务器上的，所以我们必须在打包机器上安装tomcat，只需要在tomcat官网下载mac版本的最新版，并进行解压就行了，这里我们选择最新版的tomcat9，并下载安装包，mac下，我们可以选择zip压缩包或者tar.gz包下载，zip压缩包可以直接通过双击进行解压，tar.gz包需要通过终端命令tar -xzvf XXXX.tar.gz 进行解压<br><img src="http://onu21exz8.bkt.clouddn.com/69BCBA62-8FFE-4453-8E13-5901B605C60E.png" alt=""></p>
+<h2 id="jenkins安装"><a href="#jenkins安装" class="headerlink" title="jenkins安装"></a>jenkins安装</h2><p>官网：<a href="https://jenkins.io/download/" target="_blank" rel="external">https://jenkins.io/download/</a> ,只需要安装jenkins.war文件，这个文件适配了所有底层系统平台。<br><img src="http://onu21exz8.bkt.clouddn.com/CAE63A6E-0FC4-45D9-9DAD-4B8AEC8332E3.png" alt=""><br>.war文件封装了web应用模块，里面就包含了我们jenkins的页面信息。<br>此时我们需要将这个jenkins.war文件改名为ROOT.war，然后替换掉解压之后的tomcat服务器的webApp目录下的ROOT.war，这样下次我们访问tomcat就是读取了jenkins的页面文件了。<br><img src="http://onu21exz8.bkt.clouddn.com/0624AC97-59EB-4C46-95EB-594FA12AD79D%E5%89%AF%E6%9C%AC.jpg" alt=""><br>此时，我们需要开启tomcat服务器，当然需要通过命令来启动，关闭也一样,在tomcat解压文件的bin目录下，就是tomcat给我们提供的命令，在mac终端启动需要启动的是.sh后缀的命令，但我们第一次执行 sh startup.sh时，会报下面的错误：<br><img src="http://onu21exz8.bkt.clouddn.com/063BA389-B17C-4DDD-88FB-E27B2A806319.png" alt=""></p>
+<p>这个是由于我们初始解压的状态下，我们并没有执行的权限，我们需要执行chmod 777 *.sh,就会将所有.sh结尾的文件权限都改成可执行的状态。<br>再次运行sh startup.sh，开启成功如下图所示：<br><img src="http://onu21exz8.bkt.clouddn.com/90E5C744-9593-436B-8F77-119BCF9EEDB2.png" alt=""></p>
+<h2 id="jenkins服务器搭建"><a href="#jenkins服务器搭建" class="headerlink" title="jenkins服务器搭建"></a>jenkins服务器搭建</h2><p>在打包机器上访问本机的8080端口，即localhost:8080，就会开始初始化jenkins服务器，当初始化完毕之后，jenkins服务器需要验证我们的账户信息：<br><img src="http://onu21exz8.bkt.clouddn.com/395DBF79-60B3-426D-ACB0-C0BC91BC0AA9.png" alt=""><br>我们只需要将提示路径下对应的initialAdminPassword内容复制到输入框就可以了。<br>然后继续进行一系列插件的初始化，初始化完毕之后就会进来jenkins主页。<br><img src="http://onu21exz8.bkt.clouddn.com/686FD120-10D9-4D8A-BC22-9D8FF30123C1.png" alt=""></p>
+<h2 id="jenkins打包项目创建"><a href="#jenkins打包项目创建" class="headerlink" title="jenkins打包项目创建"></a>jenkins打包项目创建</h2><p>当我们进来jenkins主页的时候，当然我们还没任何可以打包的项目，我们需要点击左上角的新建按钮创建代码自动打包工程。<br><img src="http://onu21exz8.bkt.clouddn.com/6B8DCA34-D8DC-401C-8E96-77D1F43089B0%E5%89%AF%E6%9C%AC.jpg" alt=""><br>我们只需要输入工程名称，选择自由风格的打包风格即可。这样，主页面就会出现我们这个构建的打包工程。<br>在开始构建打包的前，我们必须首先在本地安装好git，因为jenkins在每一次构建打包时，通过git命令从gerrit仓库fetch拉取最新的入库代码进行打包，所以需要安装git。mac下的git好像不是自带的，需要我们自己进行安装。在这里我们先安装一个mac下非常好用的工具 Homebrew，它是mac下的一个命令行的辅助下载工具，亲测很好用。官网：<a href="https://brew.sh/，我们在终端执行下面的命令会自动给我们安装homebrew，并且进行配置" target="_blank" rel="external">https://brew.sh/，我们在终端执行下面的命令会自动给我们安装homebrew，并且进行配置</a><br>/usr/bin/ruby -e “$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install" target="_blank" rel="external">https://raw.githubusercontent.com/Homebrew/install/master/install</a>)”<br>brew的使用非常方便，对于下载一个工具，我们只需要类似这样的命令： brew intsall XXXX ，我们安装git只需要通过下面这一行命令：<br>brew install git，就可以开始下载了。</p>
+<h1 id="android打包"><a href="#android打包" class="headerlink" title="android打包"></a>android打包</h1><p> 对于android项目的打包，我们需要在打包机器的本地安装编译所需的sdk，并且在jenkins上指明sdk的路径，在系统管理-&gt;系统设置-&gt;全局属性，添加上我们的sdk路径。<br><img src="http://onu21exz8.bkt.clouddn.com/FA509A3C-5F3B-4534-993F-70C5165C107A.png" alt=""><br>当我们构建了kkmh-android打包项目后，点击这个项目中的配置，就可以开始进行我们项目的配置了。</p>
+<h2 id="参数化构建"><a href="#参数化构建" class="headerlink" title="参数化构建"></a>参数化构建</h2><p>这个参数构建就是在我们选择打包时，可以提供给我们的一些选项，对于android，我们目前设置了打包分支和打包类型的选项：<br><img src="http://onu21exz8.bkt.clouddn.com/618E4323-2D48-46B6-AD23-D7654ECBAC22.png" alt=""><br>所对应的打包时选择页面如下：<br><img src="http://onu21exz8.bkt.clouddn.com/DF403DDB-6BC7-4E2B-95E3-E31AFDADF72C.png" alt=""></p>
+<h2 id="源码管理"><a href="#源码管理" class="headerlink" title="源码管理"></a>源码管理</h2><p>配置该项目对应的gerrit仓库，当然也可以是svn或者git仓库<br><img src="http://onu21exz8.bkt.clouddn.com/534912A4-D0C6-4ED6-B60D-CBB5E01D6BD4%E5%89%AF%E6%9C%AC.jpg" alt=""><br>这个我们需要看看branches to build这个选项，这个是配置我们需要构建打包的分支，在我们打包时，会通过这个指定的分支拉取最新的代码并进行打包。我们在上一部设置了全局变量的choice，让我们在进行打包时选择了BUILDBRANCH的值，全局变量的值我们可以通过${XXXXX}进行读取。在这里我们先看jenkins自带的几个我们后面会用到的全局变量：</p>
+<ul>
+<li>BUILD_NUMBER 这次打包的number</li>
+<li>WORKSPACE  jenkins创建项目的工作空间，一般来说是在jenkins目录的WorkSpace下</li>
+<li>BUILD_URL 对于每一次打包生成的路径 <h2 id="显示打包名称插件"><a href="#显示打包名称插件" class="headerlink" title="显示打包名称插件"></a>显示打包名称插件</h2>enkins默认打包的显示的名称为#${BUILD_NUMBER},如果我们想要自定义这个名称的话，我们需要安装setBuildName插件，在系统管理-&gt;管理插件-&gt;可选插件中搜索set Build Name并进行安装，在配置中的构建环境中就会多出来一个setBuildName的选项：<br><img src="http://onu21exz8.bkt.clouddn.com/71BFC769-B88C-43EE-91E5-EC09E8111F1D%E5%89%AF%E6%9C%AC.jpg" alt=""><h2 id="gradle配置"><a href="#gradle配置" class="headerlink" title="gradle配置"></a>gradle配置</h2>它可以提供一些选项，通过对这些选项的配置，生成相应的打包操作脚本。在配置的构建中选择 invoke gradle script：<br><img src="http://onu21exz8.bkt.clouddn.com/ACC5A1D7-92A6-4D16-8C05-92C4BE1C490F.png" alt=""><br>但是我们项目中没有通过这种方式，我们直接通过打包脚本去执行操作。其实打包android项目最主要的就下面的一句话而已：<br>./gradlew clean assembleDebug<br>但是我们想要对这个打包操作做更多的处理，所以我们需要将其封装成.sh的shell脚本，然后在构建选项选择excutor script：<br><img src="http://onu21exz8.bkt.clouddn.com/B33E2609-A9B4-4D4C-A4AF-AD00095E9F22.png" alt=""><br>去执行我们指定的脚本文件。</li>
+</ul>
+<h1 id="ios打包"><a href="#ios打包" class="headerlink" title="ios打包"></a>ios打包</h1><p>关于ios打包，因为之前没接触过关于ios的任何构建，所以在构建遇到了各种各样的坑。</p>
+<ul>
+<li>ios的构建环境和android一致，设置可选择的打包分支和打包类型。</li>
+<li>与android一致，设置buildName</li>
+<li>ios仓库设置也与android设置基本一致，只是代码仓库有进行修改而已。</li>
+<li><p>ios打包处理：ios打包也有相应的插件，安装了xcode插件之后，就构建选项中就会出现一个xcode选项<br><img src="http://onu21exz8.bkt.clouddn.com/9DBF703D-6C7C-4754-9893-D40D113106FB.png" alt=""><br>我们项目中也没用上这个插件，也是直接通过脚本设置。<br>对于ios命令打包，我们必须确认我们完成以下几点：</p>
+</li>
+<li><p>在打包机器上安装了xcode环境</p>
+</li>
+<li>拥有对应ipa的生产证书和发布证书和provision，我们在打包命令中引用的这个provisioning file并不是这个文件的名称，而是这个文件中的uuid所对应值<br>对于ios打包，它分成了下面两个步骤<br>从源码生成app文件或者.archive文件<br>从app文件或者.archive文件导出.ipa文件<br>所以我们需要执行两个照着步骤执行两个命令：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#.app生成，目前不用</div><div class="line">xcodebuild -target $target_name -configuration $package_type -sdk $sdk_version CODE_SIGN_IDENTITY=$code_sign_identity PROVISIONING_PROFILE=$proversion_file</div><div class="line">#xcrun打包，目前已废弃，若要使用，需要手动拷贝PackageVersion到新版本xcode，正因为这样，不采用.app的中间件生成方式打包</div><div class="line">xcrun -sdk iphoneos PackageApplication -v $app_path -o $ipa_path</div><div class="line">#生成.archive中间件</div><div class="line">xcodebuild archive -archivePath $archive_path  -scheme $scheme_name -configuration $package_type -sdk $sdk_version CODE_SIGN_IDENTITY=&quot;$code_sign_identity&quot;  PROVISIONING_PROFILE=&quot;$provesion_file&quot;</div><div class="line">#xcodebuild打包，其中这个-exportOptionPlist选项是我们选择打包渠道和对应这个渠道对应TeamId选项，需要指定这个文件的路径</div><div class="line">xcodebuild -exportArchive CODE_SIGN_IDENTITY=&quot;$code_sign_identity&quot;  -archivePath $archive_path_dest -exportPath $ipa_path -exportOptionsPlist $plist_path</div></pre></td></tr></table></figure>
+在导出ipa文件时，我们需要一个plist文件，指定打包类型，和对应的teamId<br><img src="http://onu21exz8.bkt.clouddn.com/233BB5C6-A7B6-4302-9F31-B16BC99AA265.jpeg" alt=""><br>我们选择打app-store的包，并且指定对应的teamId，这个TeamId是我们的发布证书的id值<br>在ios打包需要额外做打包命令之外的一个操作，需要在打包前将preject.pbxproj文件中的Automatic设置为Matual属性，因为如果利用工具的话，它可以自动为我们指定，但是jenkins目前没发现指定的这个属性的地方，为了ios的本地编译的方便，只是打包脚本中做这个处理：<br>sed -i ‘’ ‘s/Automatic/Manual/g’ $project_file    //利用sed替换字符串<h1 id="蒲公英上传处理"><a href="#蒲公英上传处理" class="headerlink" title="蒲公英上传处理"></a>蒲公英上传处理</h1>当我们打完包，我们需要上传到某个地方以便测试进行下载或者渠道发布，这里，我们首先集成了蒲公英的上传处理。我们先看看蒲公英的app上传文档：<br><img src="http://onu21exz8.bkt.clouddn.com/CEF0BA38-0D3C-4C8C-A982-2EED35B77EDB.png" alt=""><br>我们只需要在脚本中按照文档中所指定的上传命令就可以进行上传了，我们需要指定上传apk或者ipa文件，也需要指定在蒲公英上注册的userkey和apikey，不过我们想要显示二维码在每次上传完成之后都能够显示该次的build所生成的二维码，那么我们就需要去解析蒲公英平台的返回值。因为我们是用shell写的脚本而不是python，python自带json解析器，而shell没有，我们必须要在打包机器上下载一个开源的json解析器—–jq，官网：<a href="https://github.com/stedolan/jq" target="_blank" rel="external">https://github.com/stedolan/jq</a> ，<br>我们通过命令brew install jq进行下载，然后将jq命令复制到全局命令中：<br><img src="http://onu21exz8.bkt.clouddn.com/AD5F2541-0297-43CB-B66F-610A97D47910.png" alt=""><br>我们先看看这个蒲公英的返回值：<br><img src="http://onu21exz8.bkt.clouddn.com/5294315F-9F4B-4451-BFDE-31983419C25F%E5%89%AF%E6%9C%AC.jpg" alt=""><br>在这一系列的返回值中，我们需要用到appKey和appQRcodeUrl，分别app的下载地址和二维码地址，在这里我们需要明确一点，每次返回的二维码是具有唯一性的，也就是每次上传之后返回的二维码是不一样的,appKey也是唯一性的，每次都指向该次生成的app,然而appShortcutUrl只是一个确定的短链接，每次都指向最新的一个apk文件,。所以我们需要在脚本中收集返回值appKey和appQRcodeUrl，以便我们用来显示在构建历史中。我们看看shell中关于这部分代码的处理：<br><img src="http://onu21exz8.bkt.clouddn.com/EFAEE51C-15F9-4E26-B74A-C7CBFE4ACCD3.png" alt=""><h1 id="构建后操作"><a href="#构建后操作" class="headerlink" title="构建后操作"></a>构建后操作</h1>当我们的apk和ipa文件打包完成之后，我们应该将每一次的生成文件和apk或.ipa文件收集起来。首先通过配置中的构建后操作选择archive the artifacts选项，添加我们要收集的文件<br><img src="http://onu21exz8.bkt.clouddn.com/D85F02D8-408C-467A-BE98-AF30D84FF827%E5%89%AF%E6%9C%AC.jpg" alt=""><br>对应的显示页面如下：<br><img src="http://onu21exz8.bkt.clouddn.com/095E7793-9626-42DB-B5AA-0FA0E3731667%E5%89%AF%E6%9C%AC.jpg" alt=""><br>这个构建产生的apk和二维码png都是存储在本地的。<br>现在需要做相应的二维码显示和下载地址链接，首先通过系统管理-&gt;插件管理-&gt;可选插件中搜索set build description插件，并进行安装。安装完成后，在构建后操作会多出这个选项，因为我们需要显示二维码和下载的超链接，所以我们需要利用html标签来进行显示，如下：<br><img src="http://onu21exz8.bkt.clouddn.com/9B39AA26-C5BF-4F94-94F7-AE60F0911BBB%E5%89%AF%E6%9C%AC.jpg" alt=""><br>img图片显示引用我们存在本地的QRcord.png图片，href超链接指向蒲公英上该次build的下载地址。下面是jenkins打包生成的显示页面：<br><img src="http://onu21exz8.bkt.clouddn.com/BF6DD38A-7083-41B4-B51E-F0C951A3AAC9%E5%89%AF%E6%9C%AC.jpg" alt=""><h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1></li>
+</ul>
+<p>脚本后续再上传。可能每一个步骤的详细过程不是很详细。不过大概步骤就是这样。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/05/07/0507ThreadLocal的实现机制/" rel="next" title="Java多线程管理1- ThreadLocal实现机制">
+                <i class="fa fa-chevron-left"></i> Java多线程管理1- ThreadLocal实现机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="xie" />
+          <p class="site-author-name" itemprop="name">xie</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#jenkins简介"><span class="nav-number">1.</span> <span class="nav-text">jenkins简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jenkins相关工具开发"><span class="nav-number">2.</span> <span class="nav-text">jenkins相关工具开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装tomcat服务器"><span class="nav-number">2.1.</span> <span class="nav-text">安装tomcat服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jenkins安装"><span class="nav-number">2.2.</span> <span class="nav-text">jenkins安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jenkins服务器搭建"><span class="nav-number">2.3.</span> <span class="nav-text">jenkins服务器搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jenkins打包项目创建"><span class="nav-number">2.4.</span> <span class="nav-text">jenkins打包项目创建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#android打包"><span class="nav-number">3.</span> <span class="nav-text">android打包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参数化构建"><span class="nav-number">3.1.</span> <span class="nav-text">参数化构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码管理"><span class="nav-number">3.2.</span> <span class="nav-text">源码管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示打包名称插件"><span class="nav-number">3.3.</span> <span class="nav-text">显示打包名称插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradle配置"><span class="nav-number">3.4.</span> <span class="nav-text">gradle配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ios打包"><span class="nav-number">4.</span> <span class="nav-text">ios打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#蒲公英上传处理"><span class="nav-number">5.</span> <span class="nav-text">蒲公英上传处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构建后操作"><span class="nav-number">6.</span> <span class="nav-text">构建后操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脚本"><span class="nav-number">7.</span> <span class="nav-text">脚本</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
