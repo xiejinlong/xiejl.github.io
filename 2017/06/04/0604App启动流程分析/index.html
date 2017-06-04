@@ -1,0 +1,696 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="app启动简介启动相关的几个类关于android里面app启动，这个一个相当复杂的过程，在阅读这一系列的启动流程之前，我们必须先认识几个相关的类的定义。
+
+Zygote: 在android系统启动之后，会利用init进程创建出zygote进程，这个进程将会负责android里面所有的进程创建
+
+ActivityManagerService：用来管理所有activity的生命周期，统一进行管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android中app的启动流程分析">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/index.html">
+<meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="app启动简介启动相关的几个类关于android里面app启动，这个一个相当复杂的过程，在阅读这一系列的启动流程之前，我们必须先认识几个相关的类的定义。
+
+Zygote: 在android系统启动之后，会利用init进程创建出zygote进程，这个进程将会负责android里面所有的进程创建
+
+ActivityManagerService：用来管理所有activity的生命周期，统一进行管理。">
+<meta property="og:updated_time" content="2017-06-04T07:12:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android中app的启动流程分析">
+<meta name="twitter:description" content="app启动简介启动相关的几个类关于android里面app启动，这个一个相当复杂的过程，在阅读这一系列的启动流程之前，我们必须先认识几个相关的类的定义。
+
+Zygote: 在android系统启动之后，会利用init进程创建出zygote进程，这个进程将会负责android里面所有的进程创建
+
+ActivityManagerService：用来管理所有activity的生命周期，统一进行管理。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/"/>
+
+
+
+
+
+  <title> android中app的启动流程分析 | 一个被裁的菜鸟程序员 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个被裁的菜鸟程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                android中app的启动流程分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T13:14:00+08:00">
+                2017-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="app启动简介"><a href="#app启动简介" class="headerlink" title="app启动简介"></a>app启动简介</h1><h1 id="启动相关的几个类"><a href="#启动相关的几个类" class="headerlink" title="启动相关的几个类"></a>启动相关的几个类</h1><p>关于android里面app启动，这个一个相当复杂的过程，在阅读这一系列的启动流程之前，我们必须先认识几个相关的类的定义。</p>
+<ul>
+<li><p>Zygote: 在android系统启动之后，会利用init进程创建出zygote进程，这个进程将会负责android里面所有的进程创建</p>
+</li>
+<li><p>ActivityManagerService：用来管理所有activity的生命周期，统一进行管理。</p>
+</li>
+<li><p>TaskRecord： 真正意义上的activity栈，内部存储了了每一个Activity对应的ActivityRecord记录。即ArrayList<activityrecord></activityrecord></p>
+</li>
+<li><p>ActivityStack：并不是activity栈，真正意义上的activity栈是TaskRecord，这个类是负责管理各个activity栈,也就是TaskRecord，内部维护了ArrayList<taskrecord></taskrecord></p>
+</li>
+<li><p>ActivityStackSupervisor：内部持有一个ActivityStack，用于辅助ActivityStack对任务栈的管理</p>
+</li>
+</ul>
+<h1 id="简单的启动流程"><a href="#简单的启动流程" class="headerlink" title="简单的启动流程"></a>简单的启动流程</h1><h2 id="Laucher进程"><a href="#Laucher进程" class="headerlink" title="Laucher进程"></a>Laucher进程</h2><p>对于启动一个app，当然，我们应该是从桌面点击图标开启的。其实，这个桌面显示的也是一个app进程，只不过它负责了对于其他app的启动跳转，被我们称之为桌面进程。我们下面来看看它的点击事件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">protected void onClickAppShortcut(final View v) &#123;</div><div class="line">        //从对于每一个view，launcher在绑定的时候，都会设置对其图标View设置一个tag，这个tag的类型是LauncherAppWidgetInfo或者ShortCutInfo，第一个是在launcher3添加的，第二个是在launcher2就存在的了。它包含了大部分的简单信息。</div><div class="line">        //转化为ShortcutInfo类型，并判断是否能打开</div><div class="line">        final ShortcutInfo shortcut = (ShortcutInfo) tag;</div><div class="line">        if (shortcut.isDisabled != 0) &#123;</div><div class="line">            int error = R.string.activity_not_available;</div><div class="line">            if ((shortcut.isDisabled &amp; ShortcutInfo.FLAG_DISABLED_SAFEMODE) != 0) &#123;</div><div class="line">                error = R.string.safemode_shortcut_error;</div><div class="line">            &#125;</div><div class="line">            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        //获取出这个shortcut的intent跳转信息</div><div class="line">        final Intent intent = shortcut.intent;</div><div class="line">	...</div><div class="line">        // 在这里开启application的activity</div><div class="line">        startAppShortcutOrInfoActivity(v);</div><div class="line">    &#125;</div><div class="line">=======&gt; </div><div class="line">void startAppShortcutOrInfoActivity(View v) &#123;</div><div class="line">        Object tag = v.getTag();</div><div class="line">        final ShortcutInfo shortcut;</div><div class="line">        final Intent intent;</div><div class="line">        if (tag instanceof ShortcutInfo) &#123;</div><div class="line">            shortcut = (ShortcutInfo) tag;</div><div class="line">            intent = shortcut.intent;</div><div class="line">            int[] pos = new int[2];</div><div class="line">            v.getLocationOnScreen(pos);</div><div class="line">	&#125;</div><div class="line">	...       </div><div class="line">        //开启activity</div><div class="line">        boolean success = startActivitySafely(v, intent, tag);</div><div class="line">    &#125;</div><div class="line">======&gt;</div><div class="line">public boolean startActivitySafely(View v, Intent intent, Object tag) &#123;</div><div class="line">        boolean success = false;</div><div class="line">        //会判断是否是系统的app</div><div class="line">        ...</div><div class="line">	success = startActivity(v, intent, tag);</div><div class="line">        ...</div><div class="line">	return success;</div><div class="line">    &#125;</div><div class="line">======&gt;</div><div class="line">private boolean startActivity(View v, Intent intent, Object tag) &#123;</div><div class="line">        //每一个app都有一个属于自己的任务栈，所以默认的启动模式就是NEW_TASK，</div><div class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</div><div class="line">	...</div><div class="line">        if (user == null || user.equals(UserHandleCompat.myUserHandle())) &#123;	</div><div class="line">         //在这里会开启某些记录的activity，在这里表示这个app已经加载过了。		                  startActivity(intent, optsBundle);</div><div class="line">         &#125; else &#123;</div><div class="line">           // 否则，需要从文件中加载apk，并开启activity</div><div class="line">           launcherApps.startActivityForProfile(intent.getComponent(), user,</div><div class="line">                   intent.getSourceBounds(), optsBundle);</div><div class="line">           &#125;</div><div class="line">            return true;</div><div class="line">        &#125; </div><div class="line">        ...</div><div class="line">        return false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在launcher的startActivity方法中，如果这个app已经启动过了，那么我们将会直接去开启一个acitivity，在这里我们关注的是整个app的启动流程，所以我们需要了解的launcherApps.startActivityForProfile这个方法，这个launcherApps是一个抽象类，它有两个实现类LauncherAppsCompatVL和LauncherAppsCompatV16，V16是针对于api16做特殊处理的，因为api16对于从文件中加载apk有些限制。我们看通用的类的处理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public void startActivityForProfile(ComponentName component, UserHandleCompat user,</div><div class="line">            Rect sourceBounds, Bundle opts) &#123;</div><div class="line">        mLauncherApps.startMainActivity(component, user.getUser(), sourceBounds, opts);</div><div class="line">    &#125;</div><div class="line">======&gt;</div><div class="line">public void startMainActivity(ComponentName component, UserHandle user, Rect sourceBounds,</div><div class="line">            Bundle opts) &#123;</div><div class="line">	...    </div><div class="line">        mService.startActivityAsUser(component, sourceBounds, opts, user);</div><div class="line">	...   </div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，就会调用到LauncherAppsService的方法了，在android里面通过AIDL设计，LauncherApps作为客户端，调用服务的接口实现。 我们先看看这个aidl中的接口方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">interface ILauncherApps &#123;</div><div class="line">    void addOnAppsChangedListener(in IOnAppsChangedListener listener);</div><div class="line">    void removeOnAppsChangedListener(in IOnAppsChangedListener listener);</div><div class="line">    List&lt;ResolveInfo&gt; getLauncherActivities(String packageName, in UserHandle user);</div><div class="line">    ResolveInfo resolveActivity(in Intent intent, in UserHandle user);</div><div class="line">    void startActivityAsUser(in ComponentName component, in Rect sourceBounds,</div><div class="line">            in Bundle opts, in UserHandle user);</div><div class="line">    void showAppDetailsAsUser(in ComponentName component, in Rect sourceBounds,</div><div class="line">            in Bundle opts, in UserHandle user);</div><div class="line">    boolean isPackageEnabled(String packageName, in UserHandle user);</div><div class="line">    boolean isActivityEnabled(in ComponentName component, in UserHandle user);</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>上面的几个方法就是LauncherApp所能调用到的AIDL方法，下面我们来看看startActivityAsUser的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public void startActivityAsUser(ComponentName component, Rect sourceBounds,</div><div class="line">                Bundle opts, UserHandle user) throws RemoteException &#123;     </div><div class="line">            //step1:重新填充intent信息</div><div class="line">  	    Intent launchIntent = new Intent(Intent.ACTION_MAIN);</div><div class="line">            launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);</div><div class="line">            launchIntent.setSourceBounds(sourceBounds);</div><div class="line">            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK</div><div class="line">                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);</div><div class="line">            launchIntent.setPackage(component.getPackageName());</div><div class="line">            //从ServiceManager中获取packageManager，可见这个PackageManager是全局的</div><div class="line">            IPackageManager pm = AppGlobals.getPackageManager();</div><div class="line">            //获取出这个ActivityInfo</div><div class="line">            ActivityInfo info = pm.getActivityInfo(component, 0, user.getIdentifier())                    //检查当前app的包是否已经加载过了</div><div class="line">            List&lt;ResolveInfo&gt; apps = mPm.queryIntentActivitiesAsUser(launchIntent,</div><div class="line">                    0 /* flags */, user.getIdentifier());</div><div class="line">            final int size = apps.size();</div><div class="line">            for (int i = 0; i &lt; size; ++i) &#123;</div><div class="line">                ActivityInfo activityInfo = apps.get(i).activityInfo;</div><div class="line">                 if (activityInfo.packageName.equals(component.getPackageName()) &amp;&amp;                            activityInfo.name.equals(component.getClassName())) &#123;</div><div class="line">                        //找到合适这个包了，那么可以启动了</div><div class="line">                        launchIntent.setComponent(component);</div><div class="line">                        mContext.startActivityAsUser(launchIntent, opts, user);</div><div class="line">                        return;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure><br>在上面这个方法中，也就是LauncherAppService会对启动app的这个事件需要做的处理，包括了填充intent信息、获取这个app所对应的安装包信息，然后调用自身的上下文环境context去开启这个app的activity。我们看看这个实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public void startActivityAsUser(Intent intent, Bundle options, UserHandle user) &#123;</div><div class="line">            ActivityManagerNative.getDefault().startActivityAsUser(</div><div class="line">                mMainThread.getApplicationThread(), getBasePackageName(), intent,</div><div class="line">                intent.resolveTypeIfNeeded(getContentResolver()),</div><div class="line">                null, null, 0, Intent.FLAG_ACTIVITY_NEW_TASK, null, options,</div><div class="line">                user.getIdentifier());</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在这里会将这个开启任务转交给AMS，这个startActivityAsUser调用的是IActivityManager接口里的方法，这个就存在了动态代理的过程。分别是ActivityManagerService和ActivityManagerProxy, ActivityManagerNative.getDefault()获取的就是AMS，然后接下来就进入了AMS内部了。</p>
+<h2 id="AMS启动app的流程梳理"><a href="#AMS启动app的流程梳理" class="headerlink" title="AMS启动app的流程梳理"></a>AMS启动app的流程梳理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public final int startActivityAsUser(IApplicationThread caller, String callingPackage,</div><div class="line">            Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode, int startFlags, ProfilerInfo profilerInfo, Bundle options, int userId) &#123;</div><div class="line">        //判断是否能够启动这个activity</div><div class="line">        enforceNotIsolatedCaller(&quot;startActivity&quot;);</div><div class="line">        //getCallingPid获取当前需要切换的进程id，getCallingUid返回的linux的Uid</div><div class="line">        userId = handleIncomingUser(Binder.getCallingPid(), Binder.getCallingUid(), userId,</div><div class="line">                false, ALLOW_FULL_ONLY, &quot;startActivity&quot;, null);</div><div class="line">        // 开启app前需要在这里进行切换app的任务栈。</div><div class="line">        return mStackSupervisor.startActivityMayWait(caller, -1, callingPackage, intent,</div><div class="line">                resolvedType, null, null, resultTo, resultWho, requestCode, startFlags,</div><div class="line">                profilerInfo, null, null, options, false, userId, null, null);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="ActivityStackSupervisor"><a href="#ActivityStackSupervisor" class="headerlink" title="ActivityStackSupervisor"></a>ActivityStackSupervisor</h3><p>从这个方法中，我们可以知道AMS会先利用ActivityStackSupervisor来进行一些关于任务栈的处理。我们来看看这个方法主要做了些什么：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">final int startActivityMayWait(IApplicationThread caller, int callingUid,</div><div class="line">            String callingPackage, Intent intent, String resolvedType,</div><div class="line">            IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor,</div><div class="line">            IBinder resultTo, String resultWho, int requestCode, int startFlags,</div><div class="line">            ProfilerInfo profilerInfo, WaitResult outResult, Configuration config,</div><div class="line">            Bundle options, boolean ignoreTargetSecurity, int userId,</div><div class="line">            IActivityContainer iContainer, TaskRecord inTask) &#123;</div><div class="line"></div><div class="line">	...</div><div class="line"> 	int res = startActivityLocked(caller, intent, resolvedType, aInfo,</div><div class="line">                    voiceSession, voiceInteractor, resultTo, resultWho,</div><div class="line">                    requestCode, callingPid, callingUid, callingPackage,</div><div class="line">                    realCallingPid, realCallingUid, startFlags, options, ignoreTargetSecurity,</div><div class="line">                    componentSpecified, null, container, inTask);</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure><br>在在处理完intent信息和info后，将会调用startActivityLocked方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">final int startActivityLocked(IApplicationThread caller,</div><div class="line">            Intent intent, String resolvedType, ActivityInfo aInfo,</div><div class="line">            IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor,</div><div class="line">            IBinder resultTo, String resultWho, int requestCode,</div><div class="line">            int callingPid, int callingUid, String callingPackage,</div><div class="line">            int realCallingPid, int realCallingUid, int startFlags, Bundle options,</div><div class="line">            boolean ignoreTargetSecurity, boolean componentSpecified, ActivityRecord[] outActivity,</div><div class="line">            ActivityContainer container, TaskRecord inTask) &#123;</div><div class="line">            //默认成功</div><div class="line">        int err = ActivityManager.START_SUCCESS;</div><div class="line">	//在一系列的判断成功之后，会创建出相应的ActivityRecord，并添加到TaskRecord中</div><div class="line">  ActivityRecord r = new ActivityRecord(mService, callerApp, callingUid, callingPackage,</div><div class="line">                intent, resolvedType, aInfo, mService.mConfiguration, resultRecord, resultWho,</div><div class="line">                requestCode, componentSpecified, voiceSession != null, this, container, options);</div><div class="line">        if (outActivity != null) &#123;</div><div class="line">            outActivity[0] = r;</div><div class="line">        &#125;</div><div class="line">	</div><div class="line">	  //在这里对先前的activity做处理，设置为false，只做一些flag判断</div><div class="line">        doPendingActivityLaunchesLocked(false);</div><div class="line">        </div><div class="line">        //在这里开启activity调用到resumeTopActivitiesLocked开启</div><div class="line">        err = startActivityUncheckedLocked(r, sourceRecord, voiceSession, voiceInteractor,</div><div class="line">                startFlags, true, options, inTask);</div></pre></td></tr></table></figure><br>在这个方法的最后，会调用 doPendingActivityLaunchesLocked和startActivityUncheckedLocked方法，这两个方法最终都会调用到startActivityUncheckedLocked方法,在这里会针对于不同的启动模式做不同的标识位赋值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">final int startActivityUncheckedLocked(final ActivityRecord r, ActivityRecord sourceRecord,</div><div class="line">            IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor, int startFlags，boolean doResume, Bundle options, TaskRecord inTask) &#123;</div><div class="line">	...</div><div class="line">	//创建出TaskRecord，用于管理这个app中的activity</div><div class="line">        if (reuseTask == null) &#123;</div><div class="line">            r.setTask(targetStack.createTaskRecord(getNextTaskId(),</div><div class="line">                        newTaskInfo != null ? newTaskInfo : r.info,</div><div class="line">                        newTaskIntent != null ? newTaskIntent : intent,</div><div class="line">                        voiceSession, voiceInteractor, !launchTaskBehind /* toTop */),</div><div class="line">                        taskToAffiliate);</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">  	if (doResume) &#123;</div><div class="line">                targetStack.resumeTopActivityLocked(null);</div><div class="line">               &#125;</div><div class="line">	... </div><div class="line">	//将该app与WindowManager建立联系</div><div class="line">	targetStack.startActivityLocked(r, newTask, doResume, keepCurTransition, options);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure><br>在最后，会调用ActivityStack的resumeTopActivityLocked方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> final boolean resumeTopActivityLocked(ActivityRecord prev) &#123;</div><div class="line">        return resumeTopActivityLocked(prev, null);</div><div class="line">    &#125;</div><div class="line">======&gt;</div><div class="line">final boolean resumeTopActivityLocked(ActivityRecord prev, Bundle options) &#123;</div><div class="line">        ...</div><div class="line">	result = resumeTopActivityInnerLocked(prev, options);</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line">======&gt;</div><div class="line">private boolean resumeTopActivityInnerLocked(ActivityRecord prev, Bundle options) &#123;</div><div class="line">	    ...</div><div class="line">	    mStackSupervisor.startSpecificActivityLocked(next, true, true);</div><div class="line">	    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>最后又来到了ActivityStackSupervisor中，调用startSpecificActivityLocked，开启一个特殊的activity，也就是app进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">void startSpecificActivityLocked(ActivityRecord r,</div><div class="line">          boolean andResume, boolean checkConfig) &#123;</div><div class="line">      // 获取这个activity所在的app进程是否已经存在</div><div class="line">      ProcessRecord app = mService.getProcessRecordLocked(r.processName,</div><div class="line">              r.info.applicationInfo.uid, true);</div><div class="line"></div><div class="line">      r.task.stack.setLaunchTime(r);</div><div class="line"></div><div class="line">      if (app != null &amp;&amp; app.thread != null) &#123;</div><div class="line">              if ((r.info.flags&amp;ActivityInfo.FLAG_MULTIPROCESS) == 0</div><div class="line">                      || !&quot;android&quot;.equals(r.info.packageName)) &#123;</div><div class="line">                  app.addPackage(r.info.packageName, r.info.applicationInfo.versionCode,</div><div class="line">                          mService.mProcessStats);</div><div class="line">              &#125;</div><div class="line">              //已经存在，则直接启动activity</div><div class="line">              realStartActivityLocked(r, app, andResume, checkConfig);</div><div class="line">              return;</div><div class="line">          &#125;</div><div class="line">      //开启进程</div><div class="line">      mService.startProcessLocked(r.processName, r.info.applicationInfo, true, 0,</div><div class="line">              &quot;activity&quot;, r.intent.getComponent(), false, false, true);</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>当然，我们第一次启动一个app时，肯定是执行的startProcessLocked方法，开启Process，这个时候就又回到了AMS，因为创建进程只能通过zygote来fork，而zygote又直接与AMS进行socket连接，那么这就需要AMS来发送创建进程的消息了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">final ProcessRecord startProcessLocked(String processName, ApplicationInfo info,</div><div class="line">            boolean knownToBeDead, int intentFlags, String hostingType, ComponentName hostingName,boolean allowWhileBooting, boolean isolated, int isolatedUid, boolean keepIfLarge,</div><div class="line">            String abiOverride, String entryPoint, String[] entryPointArgs, Runnable crashHandler) &#123;</div><div class="line">	...</div><div class="line">	//创建进程记录ProcessRecord</div><div class="line">	 app = newProcessRecordLocked(info, processName, isolated, isolatedUid);</div><div class="line">	...</div><div class="line">	//发送开启进程消息</div><div class="line"> 	startProcessLocked(</div><div class="line">                app, hostingType, hostingNameStr, abiOverride, entryPoint, entryPointArgs);	</div><div class="line">	...</div><div class="line">&#125;</div><div class="line">===========&gt;</div><div class="line"></div><div class="line"> private final void startProcessLocked(ProcessRecord app, String hostingType,</div><div class="line">            String hostingNameStr, String abiOverride, String entryPoint, String[] entryPointArgs) &#123;</div><div class="line">	...</div><div class="line">  Process.ProcessStartResult startResult = Process.start(entryPoint,</div><div class="line">                    app.processName, uid, uid, gids, debugFlags, mountExternal,</div><div class="line">                    app.info.targetSdkVersion, app.info.seinfo, requiredAbi, instructionSet,app.info.dataDir, entryPointArgs);</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>此时，调用Process的start方法，给zygote发送开启线程消息</p>
+<h3 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h3><p>接下来在Process代码中看看与zygote的交互过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"> public static final ProcessStartResult start(final String processClass,</div><div class="line">                                  final String niceName,</div><div class="line">                                  int uid, int gid, int[] gids,</div><div class="line">                                  int debugFlags, int mountExternal,</div><div class="line">                                  int targetSdkVersion,</div><div class="line">                                  String seInfo,</div><div class="line">                                  String abi,</div><div class="line">                                  String instructionSet,</div><div class="line">                                  String appDataDir,</div><div class="line">                                  String[] zygoteArgs) &#123;</div><div class="line">            return startViaZygote(processClass, niceName, uid, gid, gids,</div><div class="line">                    debugFlags, mountExternal, targetSdkVersion, seInfo,</div><div class="line">                    abi, instructionSet, appDataDir, zygoteArgs);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">==========&gt;</div><div class="line"> private static ProcessStartResult startViaZygote(final String processClass,</div><div class="line">                                  final String niceName,</div><div class="line">                                  final int uid, final int gid,</div><div class="line">                                  final int[] gids,</div><div class="line">                                  int debugFlags, int mountExternal,</div><div class="line">                                  int targetSdkVersion,</div><div class="line">                                  String seInfo,</div><div class="line">                                  String abi,</div><div class="line">                                  String instructionSet,</div><div class="line">                                  String appDataDir,</div><div class="line">                                  String[] extraArgs)</div><div class="line">                                  throws ZygoteStartFailedEx &#123;</div><div class="line">	...</div><div class="line">	//封装args</div><div class="line">	 return zygoteSendArgsAndGetResult(openZygoteSocketIfNeeded(abi), argsForZygote);</div><div class="line">&#125;</div><div class="line">=======&gt;</div><div class="line"></div><div class="line"> private static ProcessStartResult zygoteSendArgsAndGetResult(</div><div class="line">            ZygoteState zygoteState, ArrayList&lt;String&gt; args)</div><div class="line">            throws ZygoteStartFailedEx &#123;</div><div class="line">            ...</div><div class="line">	    //获取写通道和读通道</div><div class="line">	    final BufferedWriter writer = zygoteState.writer;</div><div class="line">            final DataInputStream inputStream = zygoteState.inputStream;</div><div class="line">	    </div><div class="line">	    //写入数据</div><div class="line">            writer.write(Integer.toString(args.size()));</div><div class="line">            writer.newLine();</div><div class="line"></div><div class="line">            int sz = args.size();</div><div class="line">            for (int i = 0; i &lt; sz; i++) &#123;</div><div class="line">                String arg = args.get(i);</div><div class="line">                if (arg.indexOf(&apos;\n&apos;) &gt;= 0) &#123;</div><div class="line">                    throw new ZygoteStartFailedEx(</div><div class="line">                            &quot;embedded newlines not allowed&quot;);</div><div class="line">                &#125;</div><div class="line">                writer.write(arg);</div><div class="line">                writer.newLine();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            writer.flush();</div><div class="line"></div><div class="line">            ProcessStartResult result = new ProcessStartResult();</div><div class="line">            result.pid = inputStream.readInt();</div><div class="line">            if (result.pid &lt; 0) &#123;</div><div class="line">                throw new ZygoteStartFailedEx(&quot;fork() failed&quot;);</div><div class="line">            &#125;</div><div class="line">            result.usingWrapper = inputStream.readBoolean();</div><div class="line">            return result;</div></pre></td></tr></table></figure><br>这里主要是对流的操作，因为socket通信相当于是建立了一条流通道，传递数据只需要写入数据即可，接收数据只需要read即可。ZygoteState存储了Zygote的socket连接状态信息。可以直接通过这个类获取出zygote的读通道和写通道。</p>
+<h3 id="Zygote"><a href="#Zygote" class="headerlink" title="Zygote"></a>Zygote</h3><p>我们可以很简单的相对Zygote对于进程的创建的实现，在收到了消息之后，只需要执行一个fork便可创建出子进程。我们看看zygote的轮询方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">private static void runSelectLoop(String abiList) throws MethodAndArgsCaller &#123;</div><div class="line">        ArrayList&lt;FileDescriptor&gt; fds = new ArrayList&lt;FileDescriptor&gt;();</div><div class="line">        ArrayList&lt;ZygoteConnection&gt; peers = new ArrayList&lt;ZygoteConnection&gt;();</div><div class="line"></div><div class="line">        fds.add(sServerSocket.getFileDescriptor());</div><div class="line">        peers.add(null);</div><div class="line"></div><div class="line">        while (true) &#123;</div><div class="line">            StructPollfd[] pollFds = new StructPollfd[fds.size()];</div><div class="line">            for (int i = 0; i &lt; pollFds.length; ++i) &#123;</div><div class="line">                pollFds[i] = new StructPollfd();</div><div class="line">                pollFds[i].fd = fds.get(i);</div><div class="line">                pollFds[i].events = (short) POLLIN;</div><div class="line">            &#125;</div><div class="line">            try &#123;</div><div class="line">                Os.poll(pollFds, -1);</div><div class="line">            &#125; catch (ErrnoException ex) &#123;</div><div class="line">                throw new RuntimeException(&quot;poll failed&quot;, ex);</div><div class="line">            &#125;</div><div class="line">            for (int i = pollFds.length - 1; i &gt;= 0; --i) &#123;</div><div class="line">                if ((pollFds[i].revents &amp; POLLIN) == 0) &#123;</div><div class="line">                    continue;</div><div class="line">                &#125;</div><div class="line">                if (i == 0) &#123;</div><div class="line">                    ZygoteConnection newPeer = acceptCommandPeer(abiList);</div><div class="line">                    peers.add(newPeer);</div><div class="line">                    fds.add(newPeer.getFileDesciptor());</div><div class="line">                &#125; else &#123;</div><div class="line">                    boolean done = peers.get(i).runOnce();</div><div class="line">                    if (done) &#123;</div><div class="line">                        peers.remove(i);</div><div class="line">                        fds.remove(i);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>采用了多路复用的socket，利用poll监听感兴趣的socket事件，一旦事件过来，那么将会调用runOnce方法，执行一次创建进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"> boolean runOnce() throws ZygoteInit.MethodAndArgsCaller &#123;</div><div class="line"></div><div class="line">        String args[];</div><div class="line">        Arguments parsedArgs = null;</div><div class="line">        FileDescriptor[] descriptors;</div><div class="line"></div><div class="line">        args = readArgumentList();</div><div class="line">        descriptors = mSocket.getAncillaryFileDescriptors();</div><div class="line">	...</div><div class="line">	//fork子进程</div><div class="line">	pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid, parsedArgs.gids,</div><div class="line">                    parsedArgs.debugFlags, rlimits, parsedArgs.mountExternal, parsedArgs.seInfo,</div><div class="line">                    parsedArgs.niceName, fdsToClose, parsedArgs.instructionSet,</div><div class="line">                    parsedArgs.appDataDir);</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"></div><div class="line">===========&gt;</div><div class="line"> public static int forkAndSpecialize(int uid, int gid, int[] gids, int debugFlags,</div><div class="line">          int[][] rlimits, int mountExternal, String seInfo, String niceName, int[] fdsToClose,</div><div class="line">          String instructionSet, String appDataDir) &#123;</div><div class="line">        VM_HOOKS.preFork();</div><div class="line">	//native代码fork操作，应该是用c直接调用fork()创建出来。</div><div class="line">        int pid = nativeForkAndSpecialize(</div><div class="line">                  uid, gid, gids, debugFlags, rlimits, mountExternal, seInfo, niceName, fdsToClose,</div><div class="line">                  instructionSet, appDataDir);</div><div class="line">        VM_HOOKS.postForkCommon();</div><div class="line">        return pid;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>到这里，一个进程就已经创建成功了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/05/14/0514Jekins搭建过程/" rel="next" title="从0开始搭建jenkins打包服务器">
+                <i class="fa fa-chevron-left"></i> 从0开始搭建jenkins打包服务器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="xie" />
+          <p class="site-author-name" itemprop="name">xie</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#app启动简介"><span class="nav-number">1.</span> <span class="nav-text">app启动简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动相关的几个类"><span class="nav-number">2.</span> <span class="nav-text">启动相关的几个类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的启动流程"><span class="nav-number">3.</span> <span class="nav-text">简单的启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Laucher进程"><span class="nav-number">3.1.</span> <span class="nav-text">Laucher进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMS启动app的流程梳理"><span class="nav-number">3.2.</span> <span class="nav-text">AMS启动app的流程梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ActivityStackSupervisor"><span class="nav-number">3.2.1.</span> <span class="nav-text">ActivityStackSupervisor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Process"><span class="nav-number">3.2.2.</span> <span class="nav-text">Process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zygote"><span class="nav-number">3.2.3.</span> <span class="nav-text">Zygote</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
