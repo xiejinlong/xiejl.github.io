@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="java锁介绍java中锁主要是在util.concurrent.locks包下，最常用的就是ReentrantLock类，这个锁被成为可重入锁。既然有可重入锁，也就会有不可重入锁，这种锁的区别主要是针对于同一个线程来说的，下面简单聊聊这两种锁的区别：
+
+可重入锁： 线程可以进入它已经加上锁的同步代码块。即假如这个线程在某个位置加上可重入锁，在后面这个线程仍然可以再次加锁。进入同样的同步代码块，也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java中的锁实现">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/07/09/0702Java中的锁实现/index.html">
+<meta property="og:site_name" content="一个被裁的菜鸟程序员">
+<meta property="og:description" content="java锁介绍java中锁主要是在util.concurrent.locks包下，最常用的就是ReentrantLock类，这个锁被成为可重入锁。既然有可重入锁，也就会有不可重入锁，这种锁的区别主要是针对于同一个线程来说的，下面简单聊聊这两种锁的区别：
+
+可重入锁： 线程可以进入它已经加上锁的同步代码块。即假如这个线程在某个位置加上可重入锁，在后面这个线程仍然可以再次加锁。进入同样的同步代码块，也">
+<meta property="og:updated_time" content="2017-07-09T02:56:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java中的锁实现">
+<meta name="twitter:description" content="java锁介绍java中锁主要是在util.concurrent.locks包下，最常用的就是ReentrantLock类，这个锁被成为可重入锁。既然有可重入锁，也就会有不可重入锁，这种锁的区别主要是针对于同一个线程来说的，下面简单聊聊这两种锁的区别：
+
+可重入锁： 线程可以进入它已经加上锁的同步代码块。即假如这个线程在某个位置加上可重入锁，在后面这个线程仍然可以再次加锁。进入同样的同步代码块，也">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/07/09/0702Java中的锁实现/"/>
+
+
+
+
+
+  <title> java中的锁实现 | 一个被裁的菜鸟程序员 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个被裁的菜鸟程序员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/07/09/0702Java中的锁实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个被裁的菜鸟程序员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java中的锁实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T13:14:00+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="java锁介绍"><a href="#java锁介绍" class="headerlink" title="java锁介绍"></a>java锁介绍</h1><p>java中锁主要是在util.concurrent.locks包下，最常用的就是ReentrantLock类，这个锁被成为可重入锁。既然有可重入锁，也就会有不可重入锁，这种锁的区别主要是针对于同一个线程来说的，下面简单聊聊这两种锁的区别：</p>
+<ul>
+<li>可重入锁： 线程可以进入它已经加上锁的同步代码块。即假如这个线程在某个位置加上可重入锁，在后面这个线程仍然可以再次加锁。进入同样的同步代码块，也就是临界区。</li>
+<li>不可重入锁： 一旦线程在某个地方加上锁了，在没解锁前，这个锁就是该线程唯一一次进入该临界区的通道。而且，在这个临界区中，有且仅能有一个这样的锁。</li>
+</ul>
+<p>在java中，ReentrantLock和synchronized所加上的锁都是可以重入.</p>
+<p>在介绍ReentrantLock之前，我们必须先了解其内部实现的两种锁，公平锁和非公平锁。</p>
+<ul>
+<li>公平锁： 所有的尝试加锁的对象，都会添加到一个队列中，先来的排在队列前头，到时候可以加锁时，从队首取第一个加锁对象。</li>
+<li>非公平锁： 所有尝试加锁的对象能够加上锁的顺序不能保证，随机。<br>我们先来看看ReentrantLock对象的创建：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Lock fairLock = new ReentrantLock(true); //创建公平锁</div><div class="line">Lock noFairLock = new Reentrantlock();  //创建非公平锁</div><div class="line"></div><div class="line">=====&gt;两种构造函数的实现</div><div class="line"> public ReentrantLock() &#123;</div><div class="line">        sync = new NonfairSync();</div><div class="line">    &#125;</div><div class="line"> public ReentrantLock(boolean fair) &#123;</div><div class="line">        sync = fair ? new FairSync() : new NonfairSync();</div><div class="line">    &#125;    </div></pre></td></tr></table></figure>
+我们先只针对于非公平锁来分析，我们平时调用这个锁并不会特意的指定锁类型。对于加锁，我们只需要调用lock方法即可。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">final void lock() &#123;</div><div class="line">            if (compareAndSetState(0, 1))</div><div class="line">                setExclusiveOwnerThread(Thread.currentThread());</div><div class="line">            else</div><div class="line">                acquire(1);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+compareAndSetState中，0时我们期待的值，1是我们现在想要更新的值，这个值表示的是当前临界区的互斥量。加入返回true的话，表示当前没有线程给这个临界区上锁，则直接上锁,设置持有线程，否则，现在已经有锁了，调用acquire(1).<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">public final void acquire(int arg) &#123;</div><div class="line">        if (!tryAcquire(arg) &amp;&amp;</div><div class="line">            acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</div><div class="line">            selfInterrupt();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">========&gt;添加队列节点</div><div class="line">private Node addWaiter(Node mode) &#123;</div><div class="line">        //新建队列节点，节点是需要记录线程的</div><div class="line">        Node node = new Node(Thread.currentThread(), mode);</div><div class="line">        //获取尾部元素</div><div class="line">        Node pred = tail;</div><div class="line">        if (pred != null) &#123;</div><div class="line">            //插入在尾部后面</div><div class="line">            node.prev = pred;</div><div class="line">            if (compareAndSetTail(pred, node)) &#123;</div><div class="line">                pred.next = node;</div><div class="line">                return node;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        //加入没有尾部元素，执行enq操作，</div><div class="line">        enq(node);</div><div class="line">        return node;</div><div class="line">    &#125;</div><div class="line">==========&gt;</div><div class="line">  private Node enq(final Node node) &#123;</div><div class="line">        for (;;) &#123;</div><div class="line">            Node t = tail;</div><div class="line">            if (t == null) &#123; </div><div class="line">                //没有元素，插入头部</div><div class="line">                if (compareAndSetHead(new Node()))</div><div class="line">                    tail = head;</div><div class="line">            &#125; else &#123;</div><div class="line">                //有元素，插入尾部</div><div class="line">                node.prev = t;</div><div class="line">                if (compareAndSetTail(t, node)) &#123;</div><div class="line">                    t.next = node;</div><div class="line">                    return t;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">=========&gt; 利用断言，判断是否能够加锁</div><div class="line"> public boolean tryAcquire(long acquires) &#123;</div><div class="line">            assertEquals(LOCKED, acquires);</div><div class="line">            return compareAndSetState(UNLOCKED, LOCKED);</div><div class="line">        &#125;</div><div class="line">=======&gt; 在尝试获取锁失败之后，会添加到等待队列中</div><div class="line"> final boolean acquireQueued(final Node node, int arg) &#123;</div><div class="line">        boolean failed = true;</div><div class="line">        try &#123;</div><div class="line">            boolean interrupted = false;</div><div class="line">            for (;;) &#123;</div><div class="line">                //找到前一个节点</div><div class="line">                final Node p = node.predecessor();</div><div class="line">                //如果这个节点是头节点的话，那么在再次尝试进入临界区</div><div class="line">                if (p == head &amp;&amp; tryAcquire(arg)) &#123;</div><div class="line">                    setHead(node);</div><div class="line">                    p.next = null; // help GC</div><div class="line">                    failed = false;</div><div class="line">                    return interrupted;</div><div class="line">                &#125;</div><div class="line">                //shouldParkAfterFailedAcquire返回这个线程是否需要阻塞等待,</div><div class="line">                //parkAndCheckInterrupt()用于阻塞这个线程</div><div class="line">                if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</div><div class="line">                    parkAndCheckInterrupt())</div><div class="line">                    interrupted = true;</div><div class="line">            &#125;</div><div class="line">        &#125; finally &#123;</div><div class="line">            if (failed)</div><div class="line">                cancelAcquire(node);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+通过上面这个加锁操作，我们可以了解当一个线程尝试加锁失败时，会判断是否需要阻塞，如果需要阻塞，则直接阻塞该线程.<br>上面操作，是直接执行lock方法，我们可以先尝试执行tryLock方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public boolean tryLock() &#123;</div><div class="line">       return sync.nonfairTryAcquire(1);</div><div class="line">   &#125;</div><div class="line">   =======&gt;尝试获取非公平锁，尝试加锁，加锁是以线程的基础</div><div class="line"> final boolean nonfairTryAcquire(int acquires) &#123;</div><div class="line">           //获取当前线程</div><div class="line">           final Thread current = Thread.currentThread();</div><div class="line">           //state表示获取的当前状态的互斥量值</div><div class="line">           int c = getState();</div><div class="line">           if (c == 0) &#123;</div><div class="line">               //为0表示没上锁，重新尝试进入临界区</div><div class="line">               if (compareAndSetState(0, acquires)) &#123;</div><div class="line">                   setExclusiveOwnerThread(current);</div><div class="line">                   return true;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">           else if (current == getExclusiveOwnerThread()) &#123;</div><div class="line">               //当前的线程与以上锁的线程是同一个，可重入，计算同一个计算上锁个数</div><div class="line">               int nextc = c + acquires;</div><div class="line">               if (nextc &lt; 0) // overflow</div><div class="line">                   throw new Error(&quot;Maximum lock count exceeded&quot;);</div><div class="line">               setState(nextc);</div><div class="line">               return true;</div><div class="line">           &#125;</div><div class="line">           return false;</div><div class="line">       &#125;    </div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>下面我们来看看解锁操作:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">public void unlock() &#123;</div><div class="line">        sync.release(1);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">=======&gt;</div><div class="line"> public final boolean release(long arg) &#123;</div><div class="line">        if (tryRelease(arg)) &#123;</div><div class="line">            Node h = head;</div><div class="line">            if (h != null &amp;&amp; h.waitStatus != 0)</div><div class="line">                unparkSuccessor(h);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">======&gt;在tryRelease中利用断言解锁，假如现在没有锁，那么则会抛异常</div><div class="line"> public boolean tryRelease(long releases) &#123;</div><div class="line">            if (getState() != LOCKED) throw new IllegalMonitorStateException();</div><div class="line">            setState(UNLOCKED);</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">======&gt;unparkSuccessor(h)让队列头进入临界区</div><div class="line"></div><div class="line"> private void unparkSuccessor(Node node) &#123;</div><div class="line">    </div><div class="line">        int ws = node.waitStatus;</div><div class="line">        if (ws &lt; 0)</div><div class="line">            compareAndSetWaitStatus(node, ws, 0);</div><div class="line"></div><div class="line">        Node s = node.next;</div><div class="line">        //寻找第一个合法的等待节点</div><div class="line">        if (s == null || s.waitStatus &gt; 0) &#123;</div><div class="line">            s = null;</div><div class="line">            for (Node p = tail; p != null &amp;&amp; p != node; p = p.prev)</div><div class="line">                if (p.waitStatus &lt;= 0)</div><div class="line">                    s = p;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        if (s != null)</div><div class="line">            //打断阻塞，进入临界区</div><div class="line">            LockSupport.unpark(s.thread);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<h1 id="Synchronized关键字"><a href="#Synchronized关键字" class="headerlink" title="Synchronized关键字"></a>Synchronized关键字</h1><p>synchronized作为java中用得最广泛的同步关键字。实际上内部实现的依靠着两个关键的命令，monitorenter和monitorexit。synchronized同样是通过互斥量和临界区来实现。monitorenter指令表示进入临界区，互斥量+1，monitorexit表示退出临界区，互斥量减一。在jdk1.5之前，synchroize操作都是重操作，所加的锁都是自旋锁。即，线程在执行了monitorenter时，发现互斥量已经为0了，则必须在外面循环等待，而不会进行阻塞，加入等待队列。而在jdk1.6之后，对synchronized做了很多优化操作，锁粗化，锁消除，轻量级锁，偏向锁，适应性自旋锁等来减少操作的开销。下面我们分别来介绍几个优化操作。</p>
+<ul>
+<li>锁膨胀（Lock Coarsening）：如果系统检测到有对同一个对象反复加锁或者解锁，那么系统在保证加锁的正确性之后，会将锁扩张，保证不必要的加锁操作和解锁操作。</li>
+<li>锁削除（Lock Elimination）：在虚拟机运行时，通过JIT编译器的逃逸分析检测出部分上锁的代码不可能出现数据多线程数据共享的状态，那么自然会将这个锁给去除。</li>
+<li>轻量级锁（Lightweight Locking）：轻量级锁是相对于重量级锁来说的，它的本意是在没有多线程竞争的情况下，减少重量级锁使用的互斥量产生的性能消耗，轻量级锁不用使用操作系统的互斥量，仅仅只是在hotspot对象头记录，在这里，我们必须先介绍一下Hotspot的对象头，其中又个markWork，用来记录当前的锁状态：<br>  01: 表示未锁定<br>  00: 表示轻量级锁定<br>  10: 表示重量级锁定</li>
+<li>偏向锁：偏向第一个持有锁的对象，一旦持有，则不会再进行同步。直到有下一个线程尝试获取这个锁。</li>
+<li>适应性自旋锁：在线程首次尝试轻量级锁失败时，会进入忙等待一段时间，然后再次重试，在重试了一定次数失败之后，就会进入阻塞态。</li>
+</ul>
+<h1 id="两种加锁机制的对比"><a href="#两种加锁机制的对比" class="headerlink" title="两种加锁机制的对比"></a>两种加锁机制的对比</h1><p>synchronized和lock方式两种加锁的方式的最底层实现是一致的，都是通过临界区的互斥量来判断的。只是synchronized加锁及解锁操作都是由jvm为我们实现好了。而lock加锁方式是基于我们代码的实现，我们必须要手动的解锁。这就让lock方式能够有一些相对于synchronized有一些优点了。</p>
+<ul>
+<li><p>提供了tryLock方法，可以让我们提前预知能否加锁而不会让该线程进入阻塞状态。synchronized加锁之后，一旦不能加锁便会进入阻塞状态。</p>
+</li>
+<li><p>lockInterruptibly方法：提供了立即响应线程中断的方法，通常来说，线程并不会是在任何状态下都会被立即中断的，只有在线程处于阻塞状态才会被立即中断。线程在获取锁的时候，会处于一种不可中断的状态，比如synchonized或者单纯的lock操作就是这样的。</p>
+</li>
+<li><p>提供了获取锁超时的返回选项，对于竞争激烈的临界区，这种机制显得格外重要。这个机制也是通过tryLock来实现，多加了一个超时参数判断。</p>
+</li>
+</ul>
+<p>在我们代码的实现要求中，假如没有明确的要求，我们可以利用synchronized关键字，sunchronized关键字在竞争不是很激烈的情况下，性能要优于lock操作，但是在竞争激烈的情况下，性能将会下降特别多。 </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/06/22/0622Handler底层原理实现/" rel="next" title="handler底层原理详解">
+                <i class="fa fa-chevron-left"></i> handler底层原理详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="xie" />
+          <p class="site-author-name" itemprop="name">xie</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java锁介绍"><span class="nav-number">1.</span> <span class="nav-text">java锁介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Synchronized关键字"><span class="nav-number">2.</span> <span class="nav-text">Synchronized关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#两种加锁机制的对比"><span class="nav-number">3.</span> <span class="nav-text">两种加锁机制的对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
