@@ -1,0 +1,694 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="#背景最近产品提出一个需求，需要给recyclerView做一个定位的功能。 本来觉得这个应该是一个非常简单的需求，结果花费了整个项目周期的近一半时间，所以记录下来，警醒自己。
+#RecyclerView 滑动方法
+scrollToscrollTo方法是recyclerView中不支持的一个方法，但是又有这个方法，感觉非常奇怪。。。
+scrollByscrollBy需要传入x和y值，通过判断当前r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerView滑动定位的尝试">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="#背景最近产品提出一个需求，需要给recyclerView做一个定位的功能。 本来觉得这个应该是一个非常简单的需求，结果花费了整个项目周期的近一半时间，所以记录下来，警醒自己。
+#RecyclerView 滑动方法
+scrollToscrollTo方法是recyclerView中不支持的一个方法，但是又有这个方法，感觉非常奇怪。。。
+scrollByscrollBy需要传入x和y值，通过判断当前r">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/scroll_dest_1.jpeg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/scroll_dest_2.jpeg">
+<meta property="og:updated_time" content="2017-07-31T12:32:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerView滑动定位的尝试">
+<meta name="twitter:description" content="#背景最近产品提出一个需求，需要给recyclerView做一个定位的功能。 本来觉得这个应该是一个非常简单的需求，结果花费了整个项目周期的近一半时间，所以记录下来，警醒自己。
+#RecyclerView 滑动方法
+scrollToscrollTo方法是recyclerView中不支持的一个方法，但是又有这个方法，感觉非常奇怪。。。
+scrollByscrollBy需要传入x和y值，通过判断当前r">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/scroll_dest_1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/"/>
+
+
+
+
+
+  <title> RecyclerView滑动定位的尝试 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RecyclerView滑动定位的尝试
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T00:00:00+08:00">
+                2017-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#背景<br>最近产品提出一个需求，需要给recyclerView做一个定位的功能。 本来觉得这个应该是一个非常简单的需求，结果花费了整个项目周期的近一半时间，所以记录下来，警醒自己。</p>
+<p>#RecyclerView 滑动方法</p>
+<h3 id="scrollTo"><a href="#scrollTo" class="headerlink" title="scrollTo"></a>scrollTo</h3><p>scrollTo方法是recyclerView中不支持的一个方法，但是又有这个方法，感觉非常奇怪。。。</p>
+<h3 id="scrollBy"><a href="#scrollBy" class="headerlink" title="scrollBy"></a>scrollBy</h3><p>scrollBy需要传入x和y值，通过判断当前recyclerView的放置position方向和传入的dy或dx值是否符合滚动判断,假如符合，则最终会调用scrollByInternal进行滑动。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public void scrollBy(int x, int y) &#123;</div><div class="line">        if (mLayout == null) &#123;</div><div class="line">            Log.e(TAG, &quot;Cannot scroll without a LayoutManager set. &quot; +</div><div class="line">                    &quot;Call setLayoutManager with a non-null argument.&quot;);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        if (mLayoutFrozen) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        final boolean canScrollHorizontal = mLayout.canScrollHorizontally();</div><div class="line">        final boolean canScrollVertical = mLayout.canScrollVertically();</div><div class="line">        if (canScrollHorizontal || canScrollVertical) &#123;</div><div class="line">            scrollByInternal(canScrollHorizontal ? x : 0, canScrollVertical ? y : 0, null);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>这个方法的滑动是一次性完成的,我们无法看到其滑动的整个过程。在OnScrollListener中将会一次性的获取到滑动的总距离，也就是我们指定的dy或者dx。而如果在RecyclerView中添加ViewTreeObserver的scrollchangeListener，同样的，也会一次性回调滑动的总距离。</p>
+<h3 id="scrollToPosition"><a href="#scrollToPosition" class="headerlink" title="scrollToPosition"></a>scrollToPosition</h3><p>滑动到指定的位置,通过提供一个具体的position位置，recyclerView会将这个position滑动至可见的状态。但也是仅仅滑动到可见的状态，假如当前的position已经是可见状态了，那么将不会有移动操作。假如这个position的可见position的后面，那么recyclerView将会将这个view移动到当前屏幕的最后一个位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void scrollToPosition(int position) &#123;</div><div class="line">       mPendingScrollPosition = position;</div><div class="line">       mPendingScrollPositionOffset = INVALID_OFFSET;</div><div class="line">       if (mPendingSavedState != null) &#123;</div><div class="line">           mPendingSavedState.invalidateAnchor();</div><div class="line">       &#125;</div><div class="line">       requestLayout();</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>对于scrollToPosition方法，这个方法是不会回调的recyclerView的onScrollChangeListener方法的,也就是说,这个方法的移动是瞬间完成的，你无法看到其移动的过程,也无法直接通过其计算srollToPosition滑动的总距离。虽然没有回调recyclerView的onScrollChangeListener方法，但是却会一次性回调ViewTreeObserver的scrollChangeListener，传回移动的指定position的总距离。</p>
+<h3 id="smoothScrollBy"><a href="#smoothScrollBy" class="headerlink" title="smoothScrollBy"></a>smoothScrollBy</h3><p>加上了smooth之后，就具有了滚动效果,我们可以看到其位移动画。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public void smoothScrollBy(int dx, int dy, Interpolator interpolator) &#123;</div><div class="line">       if (mLayout == null) &#123;</div><div class="line">           Log.e(TAG, &quot;Cannot smooth scroll without a LayoutManager set. &quot; +</div><div class="line">                   &quot;Call setLayoutManager with a non-null argument.&quot;);</div><div class="line">           return;</div><div class="line">       &#125;</div><div class="line">       if (mLayoutFrozen) &#123;</div><div class="line">           return;</div><div class="line">       &#125;</div><div class="line">       if (!mLayout.canScrollHorizontally()) &#123;</div><div class="line">           dx = 0;</div><div class="line">       &#125;</div><div class="line">       if (!mLayout.canScrollVertically()) &#123;</div><div class="line">           dy = 0;</div><div class="line">       &#125;</div><div class="line">       if (dx != 0 || dy != 0) &#123;</div><div class="line">           mViewFlinger.smoothScrollBy(dx, dy, interpolator);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>在这个方法中，它最终是调用了辅助类的smoothScrollBy方法，这个方法将会回调到recyclerView和viewTreeObserver的listener中。</p>
+<h3 id="smoothScrollToPosition"><a href="#smoothScrollToPosition" class="headerlink" title="smoothScrollToPosition"></a>smoothScrollToPosition</h3><p>以可见滚动动画移动到指定位置,和smoothScrollBy回调是一致的，也会回调两个监听。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state,</div><div class="line">           int position) &#123;</div><div class="line">       LinearSmoothScroller linearSmoothScroller =</div><div class="line">               new LinearSmoothScroller(recyclerView.getContext());</div><div class="line">       linearSmoothScroller.setTargetPosition(position);</div><div class="line">       startSmoothScroll(linearSmoothScroller);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="scrollToPositionWithOffset-position-offset"><a href="#scrollToPositionWithOffset-position-offset" class="headerlink" title="scrollToPositionWithOffset(position, offset)"></a>scrollToPositionWithOffset(position, offset)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void scrollToPositionWithOffset(int position, int offset) &#123;</div><div class="line">       mPendingScrollPosition = position;</div><div class="line">       mPendingScrollPositionOffset = offset;</div><div class="line">       if (mPendingSavedState != null) &#123;</div><div class="line">           mPendingSavedState.invalidateAnchor();</div><div class="line">       &#125;</div><div class="line">       requestLayout();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这个方法是layoutManager里面提供的,上面的几个方法是recyclerView提供的,其中position指定了需要定位到的位置，通常可以结合setStackFromBottom方法，使每一次定位的position都在第一个。而offset是我们指定这个定位的position定位完成后需要距离recyclerView顶部多少像素。<br>这个方法会一次性回调ViewTreeObserver的listener，而不会回调recyclerView的listener。</p>
+<p>#RecyclerView滑动距离的计算</p>
+<h3 id="recyclerView的listener中计算滚动总距离"><a href="#recyclerView的listener中计算滚动总距离" class="headerlink" title="recyclerView的listener中计算滚动总距离"></a>recyclerView的listener中计算滚动总距离</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() &#123;</div><div class="line">	 @Override</div><div class="line">            public void onScrolled(RecyclerView recyclerView, int dx, int dy) &#123;</div><div class="line">                super.onScrolled(recyclerView, dx, dy);</div><div class="line">		totalDy += dy;</div><div class="line">		&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过每次监听回调，来计算当前的移动距离，在这种情况下，仅有scrollBy，smoothScrollBy和smoothScrollToPosition方法能够获取当前移动总距离。</p>
+<h3 id="通过recyclerView开放的api计算滑动距离"><a href="#通过recyclerView开放的api计算滑动距离" class="headerlink" title="通过recyclerView开放的api计算滑动距离"></a>通过recyclerView开放的api计算滑动距离</h3><p>recyclerView中提供了一个方法让我们计算当前移动的总距离，即computeVerticalScrollOffset方法。</p>
+<h3 id="通过linearLayout主动计算"><a href="#通过linearLayout主动计算" class="headerlink" title="通过linearLayout主动计算"></a>通过linearLayout主动计算</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public int getScollYDistance() &#123;  </div><div class="line">    LinearLayoutManager layoutManager = (LinearLayoutManager) this.getLayoutManager();  </div><div class="line">    int position = layoutManager.findFirstVisibleItemPosition();  </div><div class="line">    View firstVisiableChildView = layoutManager.findViewByPosition(position);  </div><div class="line">    int itemHeight = firstVisiableChildView.getHeight();  </div><div class="line">    return (position) * itemHeight - firstVisiableChildView.getTop();  </div><div class="line">&#125;  </div></pre></td></tr></table></figure>
+<p>#RecyclerView滚动速度的改变<br>假如我们使用smoothScrollToPosition方法，假如item过多的话，那么将会导致滑动到指定的position等待时间过长。其实linearLayoutmanager是开放了我们改变其移动速度的方法的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) &#123;</div><div class="line">    @Override</div><div class="line">    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) &#123;</div><div class="line">        LinearSmoothScroller linearSmoothScroller =</div><div class="line">                new LinearSmoothScroller(recyclerView.getContext()) &#123;</div><div class="line">                    //每滑动固定距离需要的时间。</div><div class="line">		    @Override</div><div class="line">                    protected int calculateTimeForScrolling(int dx) &#123;</div><div class="line">                        return super.calculateTimeForScrolling(dx);</div><div class="line">                    &#125;</div><div class="line">		    //</div><div class="line">                    @Override</div><div class="line">                    public PointF computeScrollVectorForPosition(int targetPosition) &#123;</div><div class="line">                        return mLayoutManager.computeScrollVectorForPosition(targetPosition);</div><div class="line">                    &#125;</div><div class="line">		    //滑动一个像素需要多少毫秒</div><div class="line">                    protected float calculateSpeedPerPixel</div><div class="line">                    (DisplayMetrics displayMetrics) &#123;</div><div class="line">				</div><div class="line">		    &#125;</div><div class="line">                &#125;;</div><div class="line">        linearSmoothScroller.setTargetPosition(position);</div><div class="line">        startSmoothScroll(linearSmoothScroller);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure><br>我们只需要在上面几个方法设置我们想要的速度就行了。</p>
+<p>#遇到的问题<br>首先是这样的格式,<br><img src="http://onu21exz8.bkt.clouddn.com/scroll_dest_1.jpeg" alt=""><br>在定位完成之后，会变成下面这样：<br><img src="http://onu21exz8.bkt.clouddn.com/scroll_dest_2.jpeg" alt=""><br>在滑动定位到指定位置时,刚开始是通过smoothScrollToPosition方法进行定位，发现滚动速度不符合预期，然后通过上面方法修改滚动定位的速度,发现滚动总距离的计算会出现问题，后面修改了滚动方法，结果每一个滚动的方法都出现同样的问题，都有滚动距离异常的问题。因为项目中的header封面并不是recyclerView的一部分，而是监听了recyclerView的滚动距离做的位移计算，一旦滚动距离出现异常,封面的位移动画也会出现错误。</p>
+<p>最后发现是因为recyclerView位移计算的时候，是以平均item的高度进行计算的，一旦有一个比较高的item，就会出现计算错误的情况。所以，解决方式比较简单，需要将内置的占位ViewHolder切换成几个比较小的占位item，这样，计算就没问题了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/07/16/0716OkHttp源码详解/" rel="next" title="OkHttp源码解析">
+                <i class="fa fa-chevron-left"></i> OkHttp源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollTo"><span class="nav-number">1.</span> <span class="nav-text">scrollTo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollBy"><span class="nav-number">2.</span> <span class="nav-text">scrollBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollToPosition"><span class="nav-number">3.</span> <span class="nav-text">scrollToPosition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smoothScrollBy"><span class="nav-number">4.</span> <span class="nav-text">smoothScrollBy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smoothScrollToPosition"><span class="nav-number">5.</span> <span class="nav-text">smoothScrollToPosition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollToPositionWithOffset-position-offset"><span class="nav-number">6.</span> <span class="nav-text">scrollToPositionWithOffset(position, offset)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#recyclerView的listener中计算滚动总距离"><span class="nav-number">7.</span> <span class="nav-text">recyclerView的listener中计算滚动总距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过recyclerView开放的api计算滑动距离"><span class="nav-number">8.</span> <span class="nav-text">通过recyclerView开放的api计算滑动距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过linearLayout主动计算"><span class="nav-number">9.</span> <span class="nav-text">通过linearLayout主动计算</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
