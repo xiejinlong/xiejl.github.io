@@ -1,0 +1,667 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="#IntentService用法其实IntentService被我们熟知的就是它有一个自己的工作线程，当需要执行的任务完成之后，工作线程会自动关闭，不需要我们做额外的处理。对于我们使用，只需要继承IntentService，实现相应的方法。123456789101112131415161718192021222324public class InitOperationService extends">
+<meta property="og:type" content="article">
+<meta property="og:title" content="intentService实现原理">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2017/09/13/0914IntentService使用/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="#IntentService用法其实IntentService被我们熟知的就是它有一个自己的工作线程，当需要执行的任务完成之后，工作线程会自动关闭，不需要我们做额外的处理。对于我们使用，只需要继承IntentService，实现相应的方法。123456789101112131415161718192021222324public class InitOperationService extends">
+<meta property="og:updated_time" content="2017-09-14T09:55:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="intentService实现原理">
+<meta name="twitter:description" content="#IntentService用法其实IntentService被我们熟知的就是它有一个自己的工作线程，当需要执行的任务完成之后，工作线程会自动关闭，不需要我们做额外的处理。对于我们使用，只需要继承IntentService，实现相应的方法。123456789101112131415161718192021222324public class InitOperationService extends">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/09/13/0914IntentService使用/"/>
+
+
+
+
+
+  <title> intentService实现原理 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/09/13/0914IntentService使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                intentService实现原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T13:14:00+08:00">
+                2017-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#IntentService用法<br>其实IntentService被我们熟知的就是它有一个自己的工作线程，当需要执行的任务完成之后，工作线程会自动关闭，不需要我们做额外的处理。对于我们使用，只需要继承IntentService，实现相应的方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class InitOperationService extends IntentService &#123;</div><div class="line"></div><div class="line">    //必须有一个空的构造函数，并且在内部调用super的时候指定handleThrad的Name</div><div class="line">    public InitOperationService() &#123;</div><div class="line">        super(&quot;initService&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    //在onHandleIntent执行相应的处理操作</div><div class="line">    @Override</div><div class="line">    protected void onHandleIntent(@Nullable Intent intent) &#123;</div><div class="line">        LogUtil.i(&quot;InitOperationService&quot;, &quot;open InitOperationService, start init operation......&quot;);</div><div class="line">        initThirdService(KKMHApp.getInstance());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        super.onDestroy();</div><div class="line">        LogUtil.i(&quot;InitOperationService&quot;, &quot;init operation complete, destroy InitOperationService......&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initThirdService(Context context) &#123;</div><div class="line"></div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>然后在Manifest里面添加指定Service。调用时直接利用Intent携带该Service参数，使用startService方法开启。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent intent = new Intent(this, InitOperationService.class);</div><div class="line">        startService(intent);</div></pre></td></tr></table></figure></p>
+<p>#IntentService实现原理<br>简单的来说，IntentService是一个<br>在我们构造IntentService时，需要为IntentService传入一个name作为参数，这个参数是作为内部的HandleThread的名称来使用的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public IntentService(String name) &#123;</div><div class="line">       super();</div><div class="line">       mName = name;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>在我们调用startService时，开始进入service生命周期函数。Service有两种初始化的生命周期。对于IntentService的使用方式，生命周期如下：onCreate-&gt;onStartCommand-&gt;onStopService-&gt;onDestory<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">   public void onCreate() &#123;</div><div class="line"></div><div class="line">       super.onCreate();</div><div class="line">//创建出handler线程，线程名称为构造函数指定的名称</div><div class="line">       HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">       //开启线程</div><div class="line">thread.start();</div><div class="line"></div><div class="line">       //获取handler线程的looper，将这个looper设置给ServiceHandler，这样这个handler就能读取这个looper的消息。</div><div class="line">       mServiceLooper = thread.getLooper();</div><div class="line">       mServiceHandler = new ServiceHandler(mServiceLooper);</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>这个工作线程是intentService独有的，主要是用这个线程处理我们要执行操作，在线程开启时，将会在开启looper，也就是looper.loop方法执行循环读取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">   public void run() &#123;</div><div class="line">       mTid = Process.myTid();</div><div class="line">       Looper.prepare();</div><div class="line">       synchronized (this) &#123;</div><div class="line">           mLooper = Looper.myLooper();</div><div class="line">           notifyAll();</div><div class="line">       &#125;</div><div class="line">       Process.setThreadPriority(mPriority);</div><div class="line">       onLooperPrepared();</div><div class="line">       Looper.loop();</div><div class="line">       mTid = -1;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>ServiceHandler处理将会处理从handlerThread收到的消息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">private final class ServiceHandler extends Handler &#123;</div><div class="line">      public ServiceHandler(Looper looper) &#123;</div><div class="line">          super(looper);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      @Override</div><div class="line">      public void handleMessage(Message msg) &#123;</div><div class="line">   //当收到消息时，会调用OnHandleIntent方法执行。</div><div class="line">          onHandleIntent((Intent)msg.obj);</div><div class="line">   	    //处理完毕之后，关闭自身线程</div><div class="line">          stopSelf(msg.arg1);</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>接下来进入生命周期的onStartCommand方法，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">  public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">      onStart(intent, startId);</div><div class="line">      return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>在这个方法中，intentService会将参数传递onStart方法，在onStart方法去执行相关操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">   public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">       Message msg = mServiceHandler.obtainMessage();</div><div class="line">       msg.arg1 = startId;</div><div class="line">       msg.obj = intent;</div><div class="line">       mServiceHandler.sendMessage(msg);</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>在onStart方法中，封装好message消息，然后利用handler将待处理的消息post到工作线程中。最后在serviceHandler的handleMessage方法执行onHandleIntent去执行。</p>
+<h1 id="intentService流程"><a href="#intentService流程" class="headerlink" title="intentService流程"></a>intentService流程</h1><p>startService -&gt; onCreate(创建工作线程和handler) -&gt; onStartCommand -&gt; onStart(将intent和消息post到工作线程的handler中) -&gt; onHandleIntent(执行service中相应的操作) -&gt; stopSelf(关闭线程) -&gt; onDestory</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2017/09/03/0903微信Tinker尝试/" rel="next" title="微信tinker接入尝试详解">
+                <i class="fa fa-chevron-left"></i> 微信tinker接入尝试详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#intentService流程"><span class="nav-number">1.</span> <span class="nav-text">intentService流程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
