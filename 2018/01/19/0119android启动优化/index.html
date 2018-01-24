@@ -1,0 +1,713 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="android 简单启动流程对于android的启动流程，有三种启动方式，分别冷启动，温启动和热启动。如果我们想要优化启动速度，我们需要先了解下这三种启动方式的不同区别。
+冷启动冷启动通常是app启动耗时最长的一种启动方式，因为它涉及了application的初始化。它是app从无到有的过程。一旦系统杀掉了app进程，那么下次点开桌面icon启动app的启动方式就是冷启动了。
+涉及到的启动过程首先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android启动优化">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/01/19/0119android启动优化/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="android 简单启动流程对于android的启动流程，有三种启动方式，分别冷启动，温启动和热启动。如果我们想要优化启动速度，我们需要先了解下这三种启动方式的不同区别。
+冷启动冷启动通常是app启动耗时最长的一种启动方式，因为它涉及了application的初始化。它是app从无到有的过程。一旦系统杀掉了app进程，那么下次点开桌面icon启动app的启动方式就是冷启动了。
+涉及到的启动过程首先">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/app_launch_time.jpeg">
+<meta property="og:updated_time" content="2018-01-24T13:45:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android启动优化">
+<meta name="twitter:description" content="android 简单启动流程对于android的启动流程，有三种启动方式，分别冷启动，温启动和热启动。如果我们想要优化启动速度，我们需要先了解下这三种启动方式的不同区别。
+冷启动冷启动通常是app启动耗时最长的一种启动方式，因为它涉及了application的初始化。它是app从无到有的过程。一旦系统杀掉了app进程，那么下次点开桌面icon启动app的启动方式就是冷启动了。
+涉及到的启动过程首先">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/app_launch_time.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/19/0119android启动优化/"/>
+
+
+
+
+
+  <title> android启动优化 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/01/19/0119android启动优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                android启动优化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-19T13:14:00+08:00">
+                2018-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="android-简单启动流程"><a href="#android-简单启动流程" class="headerlink" title="android 简单启动流程"></a>android 简单启动流程</h1><p>对于android的启动流程，有三种启动方式，分别冷启动，温启动和热启动。如果我们想要优化启动速度，我们需要先了解下这三种启动方式的不同区别。</p>
+<h2 id="冷启动"><a href="#冷启动" class="headerlink" title="冷启动"></a>冷启动</h2><p>冷启动通常是app启动耗时最长的一种启动方式，因为它涉及了application的初始化。它是app从无到有的过程。一旦系统杀掉了app进程，那么下次点开桌面icon启动app的启动方式就是冷启动了。</p>
+<h3 id="涉及到的启动过程"><a href="#涉及到的启动过程" class="headerlink" title="涉及到的启动过程"></a>涉及到的启动过程</h3><p>首先是app进程的创建过程</p>
+<ul>
+<li>加载并启动app文件</li>
+<li>在app的启动过程中展示空白的加载页面</li>
+<li>创建app进程</li>
+</ul>
+<p>然后是app的Activity的初始化过程</p>
+<ul>
+<li>创建app对象</li>
+<li>启动app的主线程</li>
+<li>创建第一个acitivty</li>
+<li>inflate View</li>
+<li>计算view的位置</li>
+<li>在页面中绘制</li>
+</ul>
+<p>这些过程都是在android开发者文档有提到的，地址为- <a href="https://developer.android.com/topic/performance/launch-time.html，其中有一张启动的过程图。" target="_blank" rel="external">https://developer.android.com/topic/performance/launch-time.html，其中有一张启动的过程图。</a><br><img src="http://onu21exz8.bkt.clouddn.com/app_launch_time.jpeg" alt=""></p>
+<h4 id="application的启动"><a href="#application的启动" class="headerlink" title="application的启动"></a>application的启动</h4><p>当我们的application启动时，在系统进程第一次启动这个app时，也就是从无到有的创建过程时，将会出现一个空白的页面。在这个过程中，将会调用到application的oncreate方法，然后创建主线程，也就是我们所熟知的ui线程，通过它来创建我们的页面。</p>
+<h4 id="activity的启动"><a href="#activity的启动" class="headerlink" title="activity的启动"></a>activity的启动</h4><p>acitivty的创建包括了下面几个过程：</p>
+<ul>
+<li>初始化参数</li>
+<li>调用构造函数</li>
+<li>回调生命周期方法，比如说oncreate方法，正常来说，oncreate方法是需要比较长的加载时间，因为它需要加载和inflate View，初始化对象。</li>
+</ul>
+<h2 id="温启动"><a href="#温启动" class="headerlink" title="温启动"></a>温启动</h2><p>在温启动中，系统将我们的页面置于后台，但是我们的应用仍然存在于内存中，在重新唤醒app时，我们不需要重复的进行对象初始化，layout映射。不过一旦我们内存不足，比如说回调了onTrimMemory，一些缓存的对象将会被回收，在下一次重启时将需要重新创建。温启动有一些表现与冷启动相似，系统进程将会有一个空白页面的时期，直到app恢复了被回收的页面。</p>
+<h2 id="暖启动"><a href="#暖启动" class="headerlink" title="暖启动"></a>暖启动</h2><p>暖启动是一个时间比较短的时期，有下面几种场景将被认为是暖启动：</p>
+<ul>
+<li>用户将app置于后台，不过马上启动它，这个app将会继续运行，不过这个app将会重建退回后台时的acitivity栈顶的页面，并回调onCreate方法</li>
+<li>系统将我们的app从内存中移除，然后用户重新启动app，这个app进程和activity需要重新创建，不过这个时候会存储一些被移除的信息，从onSaveInstance中恢复。</li>
+</ul>
+<h1 id="启动优化"><a href="#启动优化" class="headerlink" title="启动优化"></a>启动优化</h1><p>通过上述的3个启动方式，我们最优化的点就是app的冷启动过程，大部分app会接入众多的第三方库，并且这些第三方库都会要求放在app启动时做初始化，一旦application的onCreate的方法聚集了大量的初始化操作之后，整个app的启动将会变得缓慢，导致在整个启动页面的过程中先卡在了application的onCreate方法，这个时候，页面的显示如果不做任何的处理，将会是白屏状态，这种用户体验非常的不友好。所以首先要解决的就是application的onCreate方法启动慢的情况。然后对于我们第一activity页面的启动，也会做一些相关的初始化操作，对于activity来说，初始化不仅仅只是回调了onCreate方法里面的操作，而且还需要绘制View，这也是一个比较耗时的操作，所以我们也需要对这个过程做一个优化。</p>
+<h2 id="消灭白屏"><a href="#消灭白屏" class="headerlink" title="消灭白屏"></a>消灭白屏</h2><p>在google开发者文旦中，它也推荐我们将app启动时的等待白屏替换为我们的开屏页面。所以这个优化点是我们必须要先实现。</p>
+<h3 id="利用layer-list创建我们的启动页面"><a href="#利用layer-list创建我们的启动页面" class="headerlink" title="利用layer-list创建我们的启动页面"></a>利用layer-list创建我们的启动页面</h3><p>因为我们的启动页通常不只是一张图片，而是一个xml文件，而在指定等待页面的时候，只能指定一个drawable文件，而不能指定一个xml。所以，我们需要将xml的启动页转化成已drawable引用的文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    android:opacity=&quot;opaque&quot;&gt;</div><div class="line">    &lt;item&gt;</div><div class="line">	//设置整个页面的背景，为纯白</div><div class="line">        &lt;shape android:shape=&quot;rectangle&quot;&gt;</div><div class="line">            &lt;size</div><div class="line">                android:width=&quot;@dimen/screen_width&quot;</div><div class="line">                android:height=&quot;@dimen/screen_height&quot; /&gt;</div><div class="line">            &lt;solid android:color=&quot;@color/color_FFFFFF&quot; /&gt;</div><div class="line">        &lt;/shape&gt;</div><div class="line"></div><div class="line">    &lt;/item&gt;</div><div class="line">    &lt;item android:top=&quot;@dimen/dimens_200dp&quot;&gt;</div><div class="line">        &lt;!-- 中间的图片 --&gt;</div><div class="line">	//设置距离顶部200dp的logo</div><div class="line">        &lt;bitmap</div><div class="line">            android:gravity=&quot;top|center_horizontal&quot;</div><div class="line">            android:scaleType=&quot;center&quot;</div><div class="line">            android:src=&quot;@drawable/ic_launch_logo&quot; /&gt;</div><div class="line">    &lt;/item&gt;</div><div class="line">    &lt;item android:bottom=&quot;@dimen/dimens_15dp&quot;&gt;</div><div class="line">        //设置距离底部15dp的图片</div><div class="line">        &lt;bitmap</div><div class="line">            android:gravity=&quot;bottom|center_horizontal&quot;</div><div class="line">            android:scaleType=&quot;center&quot;</div><div class="line">            android:src=&quot;@drawable/ic_copy_right&quot; /&gt;</div><div class="line">    &lt;/item&gt;</div><div class="line"></div><div class="line">&lt;/layer-list&gt;</div></pre></td></tr></table></figure><br>这样，我们的启动页的layer-list就成功了。对于layer-list来说，每一个item都不干扰，后面的item将会置于上面item顶部，和FrameLayout类似。。</p>
+<h3 id="建立启动页相关的style"><a href="#建立启动页相关的style" class="headerlink" title="建立启动页相关的style"></a>建立启动页相关的style</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;style name=&quot;Appwelcome&quot; parent=&quot;Theme.Base&quot;&gt;</div><div class="line">        &lt;item name=&quot;android:windowIsTranslucent&quot;&gt;false&lt;/item&gt; //等待页面非透明</div><div class="line">        &lt;item name=&quot;android:windowBackground&quot;&gt;@drawable/bg_launcher&lt;/item&gt;//等待页背景，也就是上面写的启动页的layer-list</div><div class="line">        &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;//等待页全屏</div><div class="line">    &lt;/style&gt;</div></pre></td></tr></table></figure>
+<h3 id="Manifest文件中指定style，Activity恢复style"><a href="#Manifest文件中指定style，Activity恢复style" class="headerlink" title="Manifest文件中指定style，Activity恢复style"></a>Manifest文件中指定style，Activity恢复style</h3><p>在manifest中，我们需要对第一个启动的activity指定我们设置的style，这个等待时的白屏，将会被我们这个style替换掉。当然，我们不能对application的节点设置，因为一旦我们对application节点设置这个style，影响的将会是内部的所有activity，我们只会在启动时用到，所以设置给第一个activity即可，通常都会是launchActivity。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;activity ...</div><div class="line">android:theme=&quot;@style/Appwelcome&quot; /&gt;</div></pre></td></tr></table></figure>
+<p>然后在第一个activity的onCreate方法，调用的setContentView之前，调用下setTheme，设置为默认的style。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class LaunchActivity extends AppCompatActivity &#123;</div><div class="line">  @Override</div><div class="line">  protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">    // Make sure this is before calling super.onCreate</div><div class="line">    setTheme(R.style.Theme_MyApp);</div><div class="line">    super.onCreate(savedInstanceState);</div><div class="line">    // ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样，我们就会发现我们app启动时的白屏已经不存在了。</p>
+<h2 id="application的初始化流程优化"><a href="#application的初始化流程优化" class="headerlink" title="application的初始化流程优化"></a>application的初始化流程优化</h2><p>对于application的初始化，无非就是延迟初始化和异步初始化，但是这些都需要针对于具体的业务来做处理，因为有些操作在application做初始化，而一进activity就需要使用了，这种时候需要保证application初始化完毕时这些操作也已经完成。在这里有个思路，对在application中异步初始化的类，都提供一个统一管理的类。来保证类的成功初始化。<br>如果是一启动就必须使用，比如说常用的imageLoad、网络类的初始化，那么只能尽可能的在这个类的初始化中只完成一些必要的事情，然后这些类的初始化还是在onCreate方法中执行。<br>如果是非必须的，但是优先级较高的，那么可以通过异步初始化，比如asyncTask使用。<br>如果是非必须的，而且优先级比较低的，那么可以通过延迟初始化，在需要使用的时候才进行初始化。</p>
+<h2 id="Activity延迟初始化"><a href="#Activity延迟初始化" class="headerlink" title="Activity延迟初始化"></a>Activity延迟初始化</h2><p>如果在Activity的onCreate方法中做初始化，那么activity的UI绘制和初始化将会同时执行，这样，我们的初始化操作将会阻塞UI初始化。所以，这种时候我们应该将我们的操作放在UI绘制完毕之后做初始化。这里有个通用延迟初始化方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">getWindow().getDecorView().post(new Runnable() &#123; </div><div class="line">...</div><div class="line">...</div><div class="line">...</div><div class="line">&#125;);</div></pre></td></tr></table></figure><br>通过getDecorView的post方法，将会将这个runnable post到这个Ui的消息队列最后面，直到UI的消息绘制完毕，才会获取包含这个runable的消息执行。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/01/11/0111rxJava简单了解/" rel="next" title="rxjava简单了解">
+                <i class="fa fa-chevron-left"></i> rxjava简单了解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#android-简单启动流程"><span class="nav-number">1.</span> <span class="nav-text">android 简单启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#冷启动"><span class="nav-number">1.1.</span> <span class="nav-text">冷启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#涉及到的启动过程"><span class="nav-number">1.1.1.</span> <span class="nav-text">涉及到的启动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#application的启动"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">application的启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#activity的启动"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">activity的启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#温启动"><span class="nav-number">1.2.</span> <span class="nav-text">温启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暖启动"><span class="nav-number">1.3.</span> <span class="nav-text">暖启动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动优化"><span class="nav-number">2.</span> <span class="nav-text">启动优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消灭白屏"><span class="nav-number">2.1.</span> <span class="nav-text">消灭白屏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用layer-list创建我们的启动页面"><span class="nav-number">2.1.1.</span> <span class="nav-text">利用layer-list创建我们的启动页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立启动页相关的style"><span class="nav-number">2.1.2.</span> <span class="nav-text">建立启动页相关的style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manifest文件中指定style，Activity恢复style"><span class="nav-number">2.1.3.</span> <span class="nav-text">Manifest文件中指定style，Activity恢复style</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#application的初始化流程优化"><span class="nav-number">2.2.</span> <span class="nav-text">application的初始化流程优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity延迟初始化"><span class="nav-number">2.3.</span> <span class="nav-text">Activity延迟初始化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
