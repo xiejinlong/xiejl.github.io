@@ -1,0 +1,685 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="android中的各种框架在主流的开发框架中，目前比较流行的框架有MVC，MVP，MVVM框架。
+MVCMVC框架算是比较常见的一种开发框架了，即模型-视图-控制器，model用来存储数据，view来做界面的显示与绘制，控制器用来处理逻辑，处理Model和View之间的交互，当然view和model之间还有交互，view可以直接从model类存取数据，model也能够直接改变view的显示。
+##">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个简单的mvp框架">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/01/24/0124一个简单的MVP框架/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="android中的各种框架在主流的开发框架中，目前比较流行的框架有MVC，MVP，MVVM框架。
+MVCMVC框架算是比较常见的一种开发框架了，即模型-视图-控制器，model用来存储数据，view来做界面的显示与绘制，控制器用来处理逻辑，处理Model和View之间的交互，当然view和model之间还有交互，view可以直接从model类存取数据，model也能够直接改变view的显示。
+##">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/mvc.jpeg">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/mvp.jpeg">
+<meta property="og:updated_time" content="2018-01-26T10:05:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个简单的mvp框架">
+<meta name="twitter:description" content="android中的各种框架在主流的开发框架中，目前比较流行的框架有MVC，MVP，MVVM框架。
+MVCMVC框架算是比较常见的一种开发框架了，即模型-视图-控制器，model用来存储数据，view来做界面的显示与绘制，控制器用来处理逻辑，处理Model和View之间的交互，当然view和model之间还有交互，view可以直接从model类存取数据，model也能够直接改变view的显示。
+##">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/mvc.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/24/0124一个简单的MVP框架/"/>
+
+
+
+
+
+  <title> 一个简单的mvp框架 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/01/24/0124一个简单的MVP框架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一个简单的mvp框架
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T13:14:00+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="android中的各种框架"><a href="#android中的各种框架" class="headerlink" title="android中的各种框架"></a>android中的各种框架</h1><p>在主流的开发框架中，目前比较流行的框架有MVC，MVP，MVVM框架。</p>
+<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><p>MVC框架算是比较常见的一种开发框架了，即模型-视图-控制器，model用来存储数据，view来做界面的显示与绘制，控制器用来处理逻辑，处理Model和View之间的交互，当然view和model之间还有交互，view可以直接从model类存取数据，model也能够直接改变view的显示。<br><img src="http://onu21exz8.bkt.clouddn.com/mvc.jpeg" alt=""></p>
+<p>###优点-缺点：<br>相较于没有框架来说，有了部分解耦，把业务逻辑和展示逻辑区分开，但是仍然耦合严重，在android中，一个activity几乎担任了view和control的职责，和model耦合很重。</p>
+<h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><p>在android中，mvp框架应该是目前用的较为广泛的，即模型-视图-Present，对于android来说，视图就是activity或者fragment及view，而present完全负责了view和model的逻辑交互。view只负责UI显示，present通过接口的形式，将处理完的逻辑调用接口改变UI。而model和view之间完全解耦，没有任何交互。<br><img src="http://onu21exz8.bkt.clouddn.com/mvp.jpeg" alt=""></p>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><p>mvp相较于mvc来说，对于view和model是完全解耦了，model只负责自身的数据处理，所有的逻辑处理的放在了present，大大减少了android中view的逻辑处理。因为解耦，所以整个项目结构会比较清晰，也比较易于维护。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>这个是解耦的设计的通病，一旦解耦了，代码量就上去了，而且文件数添加特别多，对于每一次改动，我们都需要改动inteface和inteface所对应的实现，但是为了项目的维护，这个应该是值得的。</p>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><p>这个是最近几年刚提出的框架，通过xml和java代码的自动生成，来实现数据源与view的绑定与监听。一旦数据发生改变，view也会相应的作出改变。这个要了解的话可以看看我之前的一篇文章。</p>
+<h1 id="light-mvp框架的使用"><a href="#light-mvp框架的使用" class="headerlink" title="light-mvp框架的使用"></a>light-mvp框架的使用</h1><p>下面来看看这个mvp框架的简单使用。</p>
+<h2 id="present"><a href="#present" class="headerlink" title="present"></a>present</h2><p>首先创建相应业务的present,内部定义了相应View需要实现的接口，prensent通过这个接口来改变UI<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class ExamPresent extends BasePresent &#123;</div><div class="line">     public interface InterA &#123;</div><div class="line">       void change();</div><div class="line">     &#125;</div><div class="line">     </div><div class="line">     @BindV</div><div class="line">     InterA interA;</div><div class="line">     .....</div><div class="line"> &#125;</div></pre></td></tr></table></figure><br>present需要添加@BindV注解,而且需要实现BasePresent</p>
+<h2 id="activity-or-fragment"><a href="#activity-or-fragment" class="headerlink" title="activity or fragment"></a>activity or fragment</h2><p>对于activity和fragment来说，实现绑定present的逻辑是一样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//activity</div><div class="line">public class ExamActivity extends BaseActivity implement ExamPresent.InterA &#123;</div><div class="line">  </div><div class="line">  ....</div><div class="line">  @BindP</div><div class="line">  ExamPresent present</div><div class="line">  </div><div class="line">  &#125;</div><div class="line"></div><div class="line">//fragment</div><div class="line">public class ExamFragment extends BaseFragment implement ExamPresent.InterA &#123;</div><div class="line">  </div><div class="line">  ....</div><div class="line">  @BindP</div><div class="line">  ExamPresent present</div><div class="line">  </div><div class="line">  &#125;</div></pre></td></tr></table></figure><br>对于activity来说，需要实现BaseActivity，而fragment需要实现BaseFragment，然后需要实现对应的present指定的接口，最后通过@BindP注解相应的present，一旦完成了这两步，view和present就绑定了</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p>present生命周期随着fragment的oncreateView方法和activity的onCreate方法创建。 随着fragment的onDestoryView方法和activity的onDestory方法销毁。<br> 一个fragment和acitivty支持绑定多个present， 一个present实例只支持绑定一个view</p>
+<h1 id="light-mvp实现原理"><a href="#light-mvp实现原理" class="headerlink" title="light-mvp实现原理"></a>light-mvp实现原理</h1><h2 id="注解绑定V和P"><a href="#注解绑定V和P" class="headerlink" title="注解绑定V和P"></a>注解绑定V和P</h2><p>先来看看两个注解的实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//BindP</div><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">@Target(ElementType.FIELD)</div><div class="line">public @interface BindP &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">//BindV</div><div class="line">@Retention(RetentionPolicy.RUNTIME)</div><div class="line">@Target(ElementType.FIELD)</div><div class="line">public @interface BindV &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure><br>这两个注解并没有参数，仅仅只是标识了变量的类型，以便于我们在反射中取值与赋值。<br>下面来看看activity绑定p的过程，fragment绑定p的过程基本类似。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@SuppressWarnings(&quot;unchecked&quot;)</div><div class="line">   public static void parasBindPresent(BaseMvpActivity activity) &#123;</div><div class="line">       Class clazz = activity.getClass();</div><div class="line">//遍历当前类以及其父类，看是否存在BindP注解</div><div class="line">       while (!(clazz.equals(Object.class) )) &#123;</div><div class="line">           parasBindPresent(activity, clazz);</div><div class="line">           clazz = clazz.getSuperclass();</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">  //绑定入口</div><div class="line">   private static void parasBindPresent(BaseMvpActivity&lt;BasePresent&gt; activity, Class clazz) &#123;</div><div class="line">       //获取当前baseMvpActivity的成员变量，</div><div class="line"> Field[] fields = clazz.getDeclaredFields();</div><div class="line">       for (Field f : fields) &#123;</div><div class="line">           //遍历所有的成员变量，找到添加了BindP注解的成员</div><div class="line">           if (f.isAnnotationPresent(BindP.class)) &#123;</div><div class="line">               try &#123;</div><div class="line">	    //获取Present的类型</div><div class="line">                   Class&lt;?&gt; c = f.getType();</div><div class="line"> 	    //创建Present对象</div><div class="line">                   Object t = c.newInstance();</div><div class="line">                  </div><div class="line">	    f.setAccessible(true);</div><div class="line">	    //给activity中的present变量赋值为t，也就是我们刚创建出来的present对象</div><div class="line">                   f.set(activity, t);</div><div class="line">	    </div><div class="line">	    //为了生命周期处理，需要对BasePresent和BaseMvpActivity互相引用</div><div class="line">	    //所有的BasePresent定义了attachView方法，</div><div class="line">                   ((BasePresent) t).attachView(activity);</div><div class="line">	    //activity添加present</div><div class="line">                   activity.addPresent((BasePresent) t);</div><div class="line">	     //因为绑定是双向绑定，既然v已经绑定了p，那么接下来需要做的就是p绑定v</div><div class="line">                   ParasBindVAnnotation.parasBindView(t, activity);</div><div class="line">               &#125; catch (InstantiationException e) &#123;</div><div class="line">                   e.printStackTrace();</div><div class="line">               &#125; catch (IllegalAccessException e) &#123;</div><div class="line">                   e.printStackTrace();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>上面的代码无非就是通过反射，进行v绑定p，下面看看p绑定v<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public static void parasBindView(Object t, BaseMvpActivity activity) &#123;</div><div class="line">	//这个t就是上面创建出来present对象</div><div class="line">        Field[] fields = t.getClass().getDeclaredFields();</div><div class="line">        for (Field f : fields) &#123;</div><div class="line">	    //遍历所有方法，寻找添加了BindV注解的变量</div><div class="line">            if (f.isAnnotationPresent(BindV.class)) &#123;</div><div class="line">                try &#123;</div><div class="line">		    //对present对象中添加了BindV注解的变量赋值</div><div class="line">                    f.setAccessible(true);</div><div class="line">                    f.set(t, activity);</div><div class="line">                &#125; catch (Exception e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>这样，一个p和v的绑定就完成了，当然这个只是两个对象的绑定。我们还需要看看两个Base类的实现，以及这个注解绑定何时调用，何时解绑。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public abstract class BaseMvpActivity&lt;T extends BasePresent&gt; extends GestureBaseActivity implements BaseView &#123;</div><div class="line"></div><div class="line">    private List&lt;T&gt; presentList = new CopyOnWriteArrayList&lt;&gt;();</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        ParasBindPAnnotation.parasBindPresent(this);</div><div class="line"></div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onCreate(savedInstanceState);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStart() &#123;</div><div class="line">        super.onStart();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onStart();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onResume() &#123;</div><div class="line">        super.onResume();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onResume();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onNewIntent(Intent intent) &#123;</div><div class="line">        super.onNewIntent(intent);</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onNewIntent(intent);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onSaveInstanceState(Bundle outState) &#123;</div><div class="line">        super.onSaveInstanceState(outState);</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onSaveInstance(outState);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onRestart() &#123;</div><div class="line">        super.onRestart();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onRestart();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onPause() &#123;</div><div class="line">        super.onPause();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onPause();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStop() &#123;</div><div class="line">        super.onStop();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onStop();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        super.onDestroy();</div><div class="line">        for (T present : presentList) &#123;</div><div class="line">            if (present != null) &#123;</div><div class="line">                present.onDestroy();</div><div class="line">                presentList.remove(present);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void addPresent(T t) &#123;</div><div class="line">        if (t != null) &#123;</div><div class="line">            presentList.add(t);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Context getCtx() &#123;</div><div class="line">        return this;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public &lt;T&gt; LifecycleTransformer&lt;T&gt; bindUntilEve() &#123;</div><div class="line">        return bindUntilEvent(ActivityEvent.DESTROY);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure><br>从这个BaseMvpActivity类中，我们能够知道，它内部维持了一个present列表，这就是为什么它能够同时绑定多个的原因。ParasBindPAnnotation.parasBindPresent调用是在activity的oncreate方法中调用，也就是activity在onCreate方法中进行的p和v的绑定，绑定的同时会将这个present添加到presentList中，然后在activity的生命周期中，都会回调present的相应的生命周期。然后在这个activity的onDestory中，也就是即将销毁时会进行解绑，调用present的onDestory方法，并从列表中移除。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">public class BasePresent &#123;</div><div class="line"></div><div class="line">    protected BaseView mvpView;</div><div class="line"></div><div class="line">    public BasePresent() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void attachView(BaseView mvpView) &#123;</div><div class="line">        this.mvpView = mvpView;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void detach() &#123;</div><div class="line">        this.mvpView = null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onCreate(Bundle saveInstanceState) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onResume() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onNewIntent(Intent intent) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onPause() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onStart() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onStop() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onDestroy() &#123;</div><div class="line">        detach();</div><div class="line">        ParasBindVAnnotation.detachView(this);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public void onRestart() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onSaveInstance(Bundle state) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void onRestoreSavedInstance(Bundle saveInstance) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure><br>在这个BasePresent中，我们可以先看到attachView这个方法，这个方法是在paraseBindPAnatation中调用的，这个BaseMvp是一些通用的mvp需要的方法，也就是在BaseMvp已经实现好了的。然后在ondestory方法中，首先会执行detach方法，将这个mvpView置为null，然后通过注解移除自身对activity或者fragment的引用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public static void detachView(Object t) &#123;</div><div class="line">        Field[] fields = t.getClass().getDeclaredFields();</div><div class="line">        for (Field f : fields) &#123;</div><div class="line">	    //对这个BindV的注解，做清空操作，即赋值为null</div><div class="line">            if (f.isAnnotationPresent(BindV.class)) &#123;</div><div class="line">                try &#123;</div><div class="line">                    f.setAccessible(true);</div><div class="line">                    f.set(t, null);</div><div class="line">                &#125; catch (Exception e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>这样，整个mvp的绑定与解绑的流程就走完了。目前只支持fragment和activity的present绑定，后续还会添加上view的绑定</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/01/19/0119android启动优化/" rel="next" title="android启动优化">
+                <i class="fa fa-chevron-left"></i> android启动优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#android中的各种框架"><span class="nav-number">1.</span> <span class="nav-text">android中的各种框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC"><span class="nav-number">1.1.</span> <span class="nav-text">MVC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVP"><span class="nav-number">1.2.</span> <span class="nav-text">MVP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点："><span class="nav-number">1.2.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVVM"><span class="nav-number">1.3.</span> <span class="nav-text">MVVM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#light-mvp框架的使用"><span class="nav-number">2.</span> <span class="nav-text">light-mvp框架的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#present"><span class="nav-number">2.1.</span> <span class="nav-text">present</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#activity-or-fragment"><span class="nav-number">2.2.</span> <span class="nav-text">activity or fragment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期"><span class="nav-number">2.3.</span> <span class="nav-text">生命周期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#light-mvp实现原理"><span class="nav-number">3.</span> <span class="nav-text">light-mvp实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注解绑定V和P"><span class="nav-number">3.1.</span> <span class="nav-text">注解绑定V和P</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
