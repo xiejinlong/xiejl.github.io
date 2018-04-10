@@ -97,7 +97,7 @@
 ##我的kotlin学习我用了很少的时间看了kotlin的基本语法，存粹的做语法笔记似乎对我来说并没有什么用途，所以我打算通过我日常写的项目中的java文件，将其一">
 <meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/%E9%85%8D%E7%BD%AEkotlin.jpeg">
 <meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/kotlin%E7%9A%84gradle%E4%BF%AE%E6%94%B9.jpeg">
-<meta property="og:updated_time" content="2018-04-10T01:27:28.000Z">
+<meta property="og:updated_time" content="2018-04-10T01:45:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kotlin入门学习记录(1)">
 <meta name="twitter:description" content="kotlin随着google将kotlin捧为官方语言，众多的app从java开始迁移到kotlin的大军中，我也想用kotlin开发android，虽然团队中的其他人并没有这个想法，我还是想试试，所以从今天起，开始学习kotlin。
@@ -360,10 +360,8 @@
 <h4 id="接口使用"><a href="#接口使用" class="headerlink" title="接口使用"></a>接口使用</h4><p>kotlin接口和java接口的使用区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class TestAc : BaseMvpActivity&lt;MemberCenterPresent&gt;(), MemberCenterPresent.MemberInfoChange,</div><div class="line">        KKAccountManager.KKAccountChangeListener, View.OnClickListener &#123;</div></pre></td></tr></table></figure></p>
 <p>其中BaseMvpActivity继承，而其他三个都是接口继承。</p>
 <ul>
-<li>java接口需要用implements关键字实现，而kotlin实现的方式和继承一样，都是通过:</li>
-<li><p>java接口能够直接通过匿名内部类创建出来，而kotlin不能，需要以其他形式创建，下面介绍一种：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">val obj = object : VipRechargeSucceedView.OnRechargeViewListener&#123;</div><div class="line">           override fun onDialogTitle(): String &#123;</div><div class="line">               return event.title</div><div class="line">           &#125;</div></pre></td></tr></table></figure>
-<p>需要先将接口实例化。</p>
+<li>java接口需要用implements关键字实现，而kotlin实现的方式和继承一样</li>
+<li><p>java接口能够直接通过匿名内部类创建出来，而kotlin也需要先将接口对象创建出来</p>
 <h4 id="when表达式"><a href="#when表达式" class="headerlink" title="when表达式"></a>when表达式</h4><p>在kotlin中，用when表达式将将java中的switch替换掉了。<br>最简单的形式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">override fun onClick(v: View?) &#123;</div><div class="line">      when (v?.id) &#123;</div><div class="line">          R.id.icBack -&gt; finish()</div><div class="line">          R.id.btnOpenLayout -&gt; btnOpenLayoutClick()</div><div class="line">          else -&gt; &#123;</div><div class="line">          </div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <p>而且，when里面的条件判断可以加入比较复杂的判断，如下：</p>
