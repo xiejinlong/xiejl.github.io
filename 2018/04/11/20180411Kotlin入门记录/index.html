@@ -1,0 +1,690 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="继承kotlin中当含有非空的构造函数得继承，有以下这几种方式：1class MemberCenterAdapter(context: Context?, mixFindInfoList: ArrayList&amp;lt;MixFindInfo&amp;gt;?) : TopicTabListAdapter(context, mixFindInfoList)
+相当于子类的构造器声明就放在了class的定义上，然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin入门学习记录(2)">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/04/11/20180411Kotlin入门记录/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="继承kotlin中当含有非空的构造函数得继承，有以下这几种方式：1class MemberCenterAdapter(context: Context?, mixFindInfoList: ArrayList&amp;lt;MixFindInfo&amp;gt;?) : TopicTabListAdapter(context, mixFindInfoList)
+相当于子类的构造器声明就放在了class的定义上，然">
+<meta property="og:updated_time" content="2018-04-11T14:35:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kotlin入门学习记录(2)">
+<meta name="twitter:description" content="继承kotlin中当含有非空的构造函数得继承，有以下这几种方式：1class MemberCenterAdapter(context: Context?, mixFindInfoList: ArrayList&amp;lt;MixFindInfo&amp;gt;?) : TopicTabListAdapter(context, mixFindInfoList)
+相当于子类的构造器声明就放在了class的定义上，然">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/04/11/20180411Kotlin入门记录/"/>
+
+
+
+
+
+  <title> kotlin入门学习记录(2) | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/04/11/20180411Kotlin入门记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                kotlin入门学习记录(2)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T13:14:00+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>kotlin中当含有非空的构造函数得继承，有以下这几种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">class MemberCenterAdapter(context: Context?, mixFindInfoList: ArrayList&lt;MixFindInfo&gt;?) : TopicTabListAdapter(context, mixFindInfoList)</div></pre></td></tr></table></figure></p>
+<p>相当于子类的构造器声明就放在了class的定义上，然后会对应父类相应的构造器。还有另外一种实现方式，主要用于多个构造器的声明。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">constructor(context: Context?, mixFindInfoList: ArrayList&lt;MixFindInfo&gt;?): super(context, mixFindInfoList)</div></pre></td></tr></table></figure></p>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h3 id="列表元素访问"><a href="#列表元素访问" class="headerlink" title="列表元素访问"></a>列表元素访问</h3><p>在kotlin中，推荐我们使用下标的方式来访问元素，就像在访问数组一样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">private var itemTypeList: ArrayList&lt;Int&gt; = ArrayList()</div><div class="line">itemTypeList[2] = ITEM_TYPE_ACTIVITY</div></pre></td></tr></table></figure></p>
+<h3 id="列表元素遍历"><a href="#列表元素遍历" class="headerlink" title="列表元素遍历"></a>列表元素遍历</h3><p>对于kotlin中的列表遍历，增加了许多遍历方式。最简单的如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//kotlin </div><div class="line">for (i in startIndex..mixFindInfoList!!.size )</div><div class="line">//java</div><div class="line">for(int i = startIndex; i &lt; mixFindInfoList.size(); i++)</div></pre></td></tr></table></figure></p>
+<p>在kotlin中，推荐我们使用until的方式进行遍历，这样，我们处理起来也就像是在处理流一样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// a until b表示从a到b进行遍历，并且将遍历的值传递给下游，</div><div class="line">// map将上游传递过来的值进行转化，并传递给下游</div><div class="line">// forEach对转化后的值进行处理</div><div class="line">(startIndex until mixFindInfoList!!.size)</div><div class="line">                .map &#123; mixFindInfoList[it] &#125;</div><div class="line">                .forEach &#123;</div><div class="line">                    itemTypeList.add(it.item_type)</div><div class="line">                &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="三目运算符"><a href="#三目运算符" class="headerlink" title="三目运算符"></a>三目运算符</h2><p>之前在java中用惯了三目运算符，看着kotlin的三目运算符挺不习惯的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//java, 如果a为true，则取b，否则取c </div><div class="line">a ? b : c</div><div class="line">//kotlin, 利用if else组成三目运算符，但是不需要括号</div><div class="line">if(a) b else c</div></pre></td></tr></table></figure></p>
+<h2 id="函数中流程语句的返回值"><a href="#函数中流程语句的返回值" class="headerlink" title="函数中流程语句的返回值"></a>函数中流程语句的返回值</h2><p>在kotlin中，如果多个分支语句都返回值，那么我们可以将返回值放在分支语句的外侧。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//最原始的版本</div><div class="line">when (position) &#123;</div><div class="line">    0, 2 -&gt; return null</div><div class="line">    1 -&gt; return Utility.getSafely(mixFindInfoList, 0)</div><div class="line">    else -&gt; &#123;</div><div class="line">        return Utility.getSafely&lt;MixFindInfo&gt;(mixFindInfoList, position - 2)</div><div class="line">            &#125;</div><div class="line">                &#125;</div></pre></td></tr></table></figure></p>
+<p>优化后的版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">return when (position) &#123;</div><div class="line">    0, 2 -&gt; null</div><div class="line">    1 -&gt; Utility.getSafely(mixFindInfoList, 0)</div><div class="line">    else -&gt; &#123;</div><div class="line">    Utility.getSafely&lt;MixFindInfo&gt;(mixFindInfoList, position - 2)                &#125;</div><div class="line">                &#125;</div></pre></td></tr></table></figure></p>
+<p>这种时候，就能够返回每一个when分支对应的值<br>对于if else语句也能这么使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">return if (activityListExist()) &#123;</div><div class="line">           if (vipBannerExist()) &#123;</div><div class="line">               when (position) &#123;</div><div class="line">                   0, 2 -&gt; null</div><div class="line">                   1 -&gt; Utility.getSafely(mixFindInfoList, 0)</div><div class="line">                   else -&gt; &#123;</div><div class="line">                       Utility.getSafely&lt;MixFindInfo&gt;(mixFindInfoList, position - 2)</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">           &#125; else &#123;</div><div class="line">               if (position == 0 || position == 1) &#123;</div><div class="line">                   null</div><div class="line">               &#125; else &#123;</div><div class="line">                   Utility.getSafely&lt;MixFindInfo&gt;(mixFindInfoList, position - 2)</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125; else &#123;</div><div class="line">           if (position == 0) &#123;</div><div class="line">               null</div><div class="line">           &#125; else &#123;</div><div class="line">               Utility.getSafely&lt;MixFindInfo&gt;(mixFindInfoList, position - 1)</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这种时候，每一种判断的分支对应一个值，返回命中的分支对应的值</p>
+<h2 id="类型判断和类型转换"><a href="#类型判断和类型转换" class="headerlink" title="类型判断和类型转换"></a>类型判断和类型转换</h2><p>java中类型判断和转化:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if (holder instance of MemberVipHeaderHolder) &#123;</div><div class="line">    ((MemberVipHeaderHolder)holder).bindData(title, TYPE_VIP_HEADER, isVip, isBtnShow);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>java中利用instance of进行类型判断，然后直接通过(type)instance进行类型强转，将instance转化为type类型的实例。如果instance不是type类型，那么将会抛出类型转化异常。<br>而在kotlin中，可以通过as和is关键字进行类型判断和转化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) &#123;</div><div class="line">        when (getItemViewType(position)) &#123;</div><div class="line">            ITEM_TYPE_ACTIVITY -&gt; &#123;</div><div class="line">                if (holder is MemberAssignViewHolder) &#123;</div><div class="line">                    holder.bindData(activityList)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            ITEM_TYPE_MEMBER_INFO_CARD -&gt; &#123;</div><div class="line">                if (holder is MemberInfoCardViewHolder) &#123;</div><div class="line">                    holder.bindData()</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            else -&gt; &#123;</div><div class="line">                holder.itemView.setPadding(0, 0, 0, if (position == itemCount - 1) UIUtil.dp2px(40f) else 0)</div><div class="line">                if (holder is BaseViewHolder) &#123;</div><div class="line">                    holder.holderType = BaseViewHolder.TYPE_MEMBER</div><div class="line">                &#125;</div><div class="line">                super.onBindViewHolder(holder, position)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>利用 a is type 来判断a是否是type类型，如果是type类型的话，那么kotlin将会自动为我们将a转化为type类型，而不需要我们再手动的利用as进行类型转化。如果kotlin直接利用as进行类型转化的话，如果类型不一致或者a为null时，也会抛出异常，但是kotlin提供了类型不一致时的安全转化，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">val x: String ?= y as? String</div></pre></td></tr></table></figure></p>
+<p>上面的例子中，as?是一个安全转化符，如果失败，将会返回null，而不会直接进行类型转化。</p>
+<h2 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h2><p>在java中，需要升级到java8才支持lambda表达，而kotlin天生支持lambda表达式，lambda表达式的完成语法如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">val sum = &#123; x: Int, y: Int -&gt; x + y &#125;</div></pre></td></tr></table></figure></p>
+<p>上面的例子定义了一个函数，求得sum = x + y,lambda表达式总是括在大括号中，完整的参数声明和表达式都放在大括号内，函数体在-&gt;之后，-&gt;之前都是参数，并且可能有类型标注，如果推断出该lambda的返回值类型不是Unit，也就是返回值不为空，那么该lambda主体的最后一个表达式将被视为返回值<br>下面是某一个lambda的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">FindExchangeManager.getInstance().loadExchangeData(mContext, findInfo.discoveryModuleId,</div><div class="line">                    holder.adapterPosition, findInfo, FindExchangeManager.ExchangeCallback &#123; data, position, discoveryModuleId -&gt;</div><div class="line">                if (Utility.isEmpty(mContext)) &#123;</div><div class="line">                    return@ExchangeCallback</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                val info = getMixInfoFromPosition(position)</div><div class="line">                if (data != null &amp;&amp; info != null) &#123;</div><div class="line">                    info.topics = data</div><div class="line">                    notifyItemChanged(position)</div><div class="line">                &#125;</div><div class="line">            &#125;)</div></pre></td></tr></table></figure></p>
+<p>如果在lambda表达式中调用return，将会直接return掉整个上层函数，因为lambda表达式只是一个代码块，虽然看起来功能像是函数，不过也不能说在lambda表达式中不能够return，只要给return指定一个标签，就会结束掉标签所指定的代码块，就像上面的例子，这个lambda表达式是在ExchangeCallback中使用的，如果要结束这个lambda，那么只需要在lambda中return代码添加上@ExchangeCallback标签就行，就绘结束掉ExchangeCallback的这个方法。</p>
+<h2 id="ViewHolder中使用kotlin-extension"><a href="#ViewHolder中使用kotlin-extension" class="headerlink" title="ViewHolder中使用kotlin extension"></a>ViewHolder中使用kotlin extension</h2><p>kotlin extension的使用需要先导入相应的xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//在上一篇的activity中</div><div class="line">import kotlinx.android.synthetic.main.activity_member_center.*</div><div class="line"></div><div class="line">//在这个viewHolder中</div><div class="line">import kotlinx.android.synthetic.main.listitem_assign.view.*</div></pre></td></tr></table></figure></p>
+<p>对于这个导包操作，需要注意的是，kotlinx.android.synthetic.main是固定前缀，后面的是当前页面的layout文件名称，如果是activity，只需要再在后面添加上.<em>，那就能够在activity中直接以id的形式调用对应的View。如果是在viewHolder中，那么还需要添加上.view,在添加.</em>才能够使用，而且在viewHolder中，需要以其itemView为持有者来调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">init &#123;</div><div class="line">        context = itemView.context</div><div class="line">        itemView.btn_get_gift.setOnClickListener(this)</div><div class="line">        itemView.btn_not_gift.setOnClickListener(this)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>如上所示，利用itemView来持有其中的view的id，并直接调用。<br>这个init块，通常都是来做类的初始化的，在构造器执行完之后，会调用这个init块，我们如果有什么需要做初始化的，只需要放在这个init块中</p>
+<h2 id="String-转其他类型"><a href="#String-转其他类型" class="headerlink" title="String 转其他类型"></a>String 转其他类型</h2><p>java中String转long类型的话，需要调用Long.paras(string)进行转化，如果string不是相应的的类型，那么将会抛出异常。而在kotlin中也有这个方法，不过还新增了几个转化的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//如果string不是一个合法的类型，那么将会抛出异常NumberFormatException</div><div class="line">string.toLong()</div><div class="line"></div><div class="line">//如果string不是一个合法的类型，那么将会返回null</div><div class="line">string.toLongOrNull()</div></pre></td></tr></table></figure></p>
+<h2 id="结合rxjava"><a href="#结合rxjava" class="headerlink" title="结合rxjava"></a>结合rxjava</h2><p>kotlin中有专门的rx-kotlin库，刚开始并没有引入这个库，所以尝试着还是使用rxjava<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Observable.timer(getDelayTime(), TimeUnit.MILLISECONDS)</div><div class="line">                .subscribeOn(Schedulers.io())</div><div class="line">                .observeOn(AndroidSchedulers.mainThread())</div><div class="line">                .subscribe(&#123;</div><div class="line">                    getGrabResult(activityId, thirdId)</div><div class="line">                &#125;)</div></pre></td></tr></table></figure></p>
+<p>还是一样的用法，不过好的一点是可以使用lambda表达式了，subscribe({})中间的花括号就是lambda表达式</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/04/09/20180409Kotlin入门记录/" rel="next" title="kotlin入门学习记录(1)">
+                <i class="fa fa-chevron-left"></i> kotlin入门学习记录(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">1.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表"><span class="nav-number">2.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素访问"><span class="nav-number">2.1.</span> <span class="nav-text">列表元素访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素遍历"><span class="nav-number">2.2.</span> <span class="nav-text">列表元素遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三目运算符"><span class="nav-number">3.</span> <span class="nav-text">三目运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数中流程语句的返回值"><span class="nav-number">4.</span> <span class="nav-text">函数中流程语句的返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型判断和类型转换"><span class="nav-number">5.</span> <span class="nav-text">类型判断和类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda"><span class="nav-number">6.</span> <span class="nav-text">lambda</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewHolder中使用kotlin-extension"><span class="nav-number">7.</span> <span class="nav-text">ViewHolder中使用kotlin extension</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-转其他类型"><span class="nav-number">8.</span> <span class="nav-text">String 转其他类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结合rxjava"><span class="nav-number">9.</span> <span class="nav-text">结合rxjava</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
