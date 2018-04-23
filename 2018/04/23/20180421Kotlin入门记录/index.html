@@ -1,0 +1,697 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="title: Kotlin学习记录3date: 2018-04-21 13:14
+Kotlin学习记录3todo标注在java中，使用todo标识并不会出现什么问题，在kotlin中，一旦我们实现了接口或者抽象类，那么我们自动生成的实现方法，将会带上kotlin的todo标注123override fun refreshServerTime(time: Long?) &amp;#123;        T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="沉迷学习却日渐发福">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/04/23/20180421Kotlin入门记录/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="title: Kotlin学习记录3date: 2018-04-21 13:14
+Kotlin学习记录3todo标注在java中，使用todo标识并不会出现什么问题，在kotlin中，一旦我们实现了接口或者抽象类，那么我们自动生成的实现方法，将会带上kotlin的todo标注123override fun refreshServerTime(time: Long?) &amp;#123;        T">
+<meta property="og:updated_time" content="2018-04-23T03:14:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="沉迷学习却日渐发福">
+<meta name="twitter:description" content="title: Kotlin学习记录3date: 2018-04-21 13:14
+Kotlin学习记录3todo标注在java中，使用todo标识并不会出现什么问题，在kotlin中，一旦我们实现了接口或者抽象类，那么我们自动生成的实现方法，将会带上kotlin的todo标注123override fun refreshServerTime(time: Long?) &amp;#123;        T">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/04/23/20180421Kotlin入门记录/"/>
+
+
+
+
+
+  <title>  | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/04/23/20180421Kotlin入门记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T11:14:44+08:00">
+                2018-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>title: Kotlin学习记录3<br>date: 2018-04-21 13:14</p>
+<h1 id="Kotlin学习记录3"><a href="#Kotlin学习记录3" class="headerlink" title="Kotlin学习记录3"></a>Kotlin学习记录3</h1><h2 id="todo标注"><a href="#todo标注" class="headerlink" title="todo标注"></a>todo标注</h2><p>在java中，使用todo标识并不会出现什么问题，在kotlin中，一旦我们实现了接口或者抽象类，那么我们自动生成的实现方法，将会带上kotlin的todo标注<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">override fun refreshServerTime(time: Long?) &#123;</div><div class="line">        TODO(&quot;not implemented&quot;) //To change body of created functions use File | Settings | File Templates.</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>如果我们没有删除掉todo这行代码，那么kotlin将会直接报错，kotlin.NotImplementedError，因为这个todo是kotlin默认我们将会删除掉的，如果在运行时还存在，那么执行到todo，并不会跳过，而是会执行，然后报错。</p>
+<h2 id="kotlin标注"><a href="#kotlin标注" class="headerlink" title="kotlin标注"></a>kotlin标注</h2><p>在kotlin中，如果需要在kotlin的高阶函数表达式返回，而不需要直接在外层函数中返回，或者嵌套循环，想从内层循环终止外层循环等，这种时候我们就需要用到kotlin的label了。比如说下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">private fun canAutoContinue(pos: Int): Boolean &#123;</div><div class="line">        if (commonGoodList == null || continueGoodList == null || commonGoodList!!.size &lt; pos) &#123;</div><div class="line">            return false</div><div class="line">        &#125;</div><div class="line">        val commonGood: RechargeGood? = commonGoodList!![pos]</div><div class="line"></div><div class="line">        continueGoodList!!.forEach &#123;</div><div class="line">            if (it.upRenewId == commonGood?.id) &#123;</div><div class="line">                return true</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        print(&quot;1111&quot;)</div><div class="line">        return false</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>上面的在forEach中，return的执行将会直接将会结束掉canAutoContinue方法，如果我们只想结束掉forEach，我们可以像下面这样做。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">private fun canAutoContinue(pos: Int): Boolean &#123;</div><div class="line">        if (commonGoodList == null || continueGoodList == null || commonGoodList!!.size &lt; pos) &#123;</div><div class="line">            return false</div><div class="line">        &#125;</div><div class="line">        val commonGood: RechargeGood? = commonGoodList!![pos]</div><div class="line"></div><div class="line">        continueGoodList!!.forEach lit@&#123;</div><div class="line">            if (it.upRenewId == commonGood?.id) &#123;</div><div class="line">                return@lit</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        print(&quot;1111&quot;)</div><div class="line">        return false</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>如上面的lit label，那么这样return将会结束lit所指定的lable循环，从而继续往下执行。<br>比如说for循环嵌套<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">outFor@ for(x in 1..5) &#123;</div><div class="line">            for (y in 1..6) &#123;</div><div class="line">                if(x == y) &#123;</div><div class="line">                    break@outFor</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>一旦满足了x==y，然么将会直接跳出外层的for循环，否则一般的break，只会中断内层的for循环。要为一个表达式加标签，我们只要在其前加标签即可。<br>在返回和跳转语句中，可以指定标签来表示结束哪个标签对应的代码段<br>如果需要在lambda表达式</p>
+<h2 id="kotlin-定义属性时的get和set方法"><a href="#kotlin-定义属性时的get和set方法" class="headerlink" title="kotlin 定义属性时的get和set方法"></a>kotlin 定义属性时的get和set方法</h2><p>kotlin定义属性时，可以同时定义get和set方法，而不需要再重新定义方法去赋值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">private var delayTime: Long</div><div class="line">        private set(value) &#123;</div><div class="line">            delayTime = value</div><div class="line">        &#125;</div><div class="line">        get() &#123;</div><div class="line">            return KKConfigManager.getInstance().</div><div class="line">                    getConfig(KKConfigManager.ConfigType.GET_RECHARGE_ORDER_DELAY)</div><div class="line">                    .toLongOrNull() ?: 1000</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>而且，可以添加上访问限定符。而这个get和set方法的设置，主要是通过代码中的位置来标示修饰的哪个变量。</p>
+<h2 id="kotlin的幕后字段"><a href="#kotlin的幕后字段" class="headerlink" title="kotlin的幕后字段"></a>kotlin的幕后字段</h2><p>Kotlin 中的类不能有字段， 然而我们在有时在自定义访问器时，也就是get和set方法时，需要又一个幕后字段，这个字段是kotlin提供的，field,我们可以直接使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var counter = 0 // 注意:这个初始器直接为幕后字段赋值 set(value) &#123;</div><div class="line">if (value &gt;= 0) field = value &#125;</div><div class="line"></div><div class="line"></div><div class="line">val nameHash:Int = 3</div><div class="line">        get() &#123;</div><div class="line">            field = 5</div><div class="line">            return 10</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>有可能我们需要临时缓存变量的值，因为可能其变量的值可能和返回的值不一致，所以一旦我们需要知道变量的值，我们便可以通过幕后字段来访问。</p>
+<h2 id="kotlin的幕后属性"><a href="#kotlin的幕后属性" class="headerlink" title="kotlin的幕后属性"></a>kotlin的幕后属性</h2><p>幕后属性主要用于外部只能读，内部可以读写的需求下出现的。例如下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">val counter get() = _counter</div><div class="line">private var _counter = 0</div></pre></td></tr></table></figure></p>
+<p>这个_counter就是counter的幕后属性，外部只能访问counter，不能访问_counter，而counter的值又是_counter来指定的。</p>
+<h2 id="kotlin的扩展"><a href="#kotlin的扩展" class="headerlink" title="kotlin的扩展"></a>kotlin的扩展</h2><p>在kotlin中，if else的三目运算符如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if(a) x else y</div></pre></td></tr></table></figure></p>
+<p>而我们也能通过扩展函数来扩展boolean<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">inline fun &lt;T&gt; Boolean.yes(action: () -&gt; T): Boolean &#123;</div><div class="line">    if (this) action()</div><div class="line">    return this</div><div class="line">&#125;</div><div class="line"></div><div class="line">inline fun &lt;T&gt; Boolean.no(action: () -&gt; T): Boolean &#123;</div><div class="line">    if (!this) action()</div><div class="line">    return this</div></pre></td></tr></table></figure></p>
+<p>这样，我们在kt文件中，只要引入相应的类，定义在文件内，而非class下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import com.kuaikan.community.extend.yes</div></pre></td></tr></table></figure></p>
+<p>扩展函数是静态解析的，所以不能够进行重载，这就意味着我们，我们不能重载类原有的方法，比如说collection的add方法等..<br>对于扩展函数还有一个非常好用的东西，被扩展的类型可以为空，被称为可空接收者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fun Any?.toString(): String &#123;</div><div class="line">if (this == null) return &quot;null&quot;</div><div class="line">// 空检测之后，“this”会自动转换为非空类型，所以下面的 toString() // 解析为 Any 类的成员函数</div><div class="line">return toString()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="kotlin的扩展属性"><a href="#kotlin的扩展属性" class="headerlink" title="kotlin的扩展属性"></a>kotlin的扩展属性</h2><p>既然kotlin支持扩展函数，当然也支持扩展属性了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">val &lt;T&gt; List&lt;T&gt;.lastIndex: Int</div><div class="line">   get() = size - 1</div></pre></td></tr></table></figure></p>
+<p>这样就给了List的一个属性lastIndex</p>
+<h2 id="kotlin的范型"><a href="#kotlin的范型" class="headerlink" title="kotlin的范型"></a>kotlin的范型</h2><p>关于out和in这两个关键字，out是用来输出的，也就是生产者，所以只能作为返回类型，相当于java中的extends，用来界定类型上限；in是用来输入的，所以只能作为消费类型，in类似于java中的super，用来界定类型下限</p>
+<h2 id="kotlin的单例"><a href="#kotlin的单例" class="headerlink" title="kotlin的单例"></a>kotlin的单例</h2><p>在kotlin中，声明单例变得非常简单，只需要一个关键字object用来修饰对象，就像变量声明一样，对象声明不是一个表达式，不能用在赋值语句右边，对象的初始化是线程安全的。如果需要引用该对象，我们只需要通过其名称来调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">object DataProviderManager &#123;</div><div class="line">fun registerDataProvider(provider: DataProvider) &#123;</div><div class="line">// ......</div><div class="line">&#125;</div><div class="line">val allDataProviders: Collection&lt;DataProvider&gt; get() = // ......</div><div class="line">&#125;</div><div class="line"></div><div class="line">//调用</div><div class="line">DataProviderManager.registerDataProvider(......)</div></pre></td></tr></table></figure></p>
+<h2 id="伴生对象"><a href="#伴生对象" class="headerlink" title="伴生对象"></a>伴生对象</h2><p>类内部的伴生对象的声明如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class MyClass &#123; </div><div class="line">    companion object &#123; &#125;</div><div class="line">&#125;</div><div class="line">val x = MyClass.Companion</div></pre></td></tr></table></figure></p>
+<p>请注意，即使伴生对象的成员看起来像其他语言的静态成员，在运行时他们仍然是真实对象的实例成员，而且，例如还可以实现接口:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">interface Factory&lt;T&gt; &#123; fun create(): T</div><div class="line">&#125;</div><div class="line">class MyClass &#123;</div><div class="line">companion object : Factory&lt;MyClass&gt; &#123;</div><div class="line">override fun create(): MyClass = MyClass() &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果我们想将伴生对象的成员生成为真正的静态方法和字段，我们我们可以使用@JvmStatic注解</p>
+<h2 id="对象表达式和对象声明之间的语义差异"><a href="#对象表达式和对象声明之间的语义差异" class="headerlink" title="对象表达式和对象声明之间的语义差异"></a>对象表达式和对象声明之间的语义差异</h2><p>对象表达式和对象声明之间有一个重要的语义差别:</p>
+<ul>
+<li>对象表达式是在使用他们的地方立即执行(及初始化)的;</li>
+<li>对象声明是在第一次被访问到时延迟初始化的;</li>
+<li>伴生对象的初始化是在相应的类被加载(解析)时，与 Java 静态初始化器的语义相匹配。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/04/11/20180411Kotlin入门记录/" rel="next" title="kotlin入门学习记录(2)">
+                <i class="fa fa-chevron-left"></i> kotlin入门学习记录(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kotlin学习记录3"><span class="nav-number">1.</span> <span class="nav-text">Kotlin学习记录3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#todo标注"><span class="nav-number">1.1.</span> <span class="nav-text">todo标注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin标注"><span class="nav-number">1.2.</span> <span class="nav-text">kotlin标注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin-定义属性时的get和set方法"><span class="nav-number">1.3.</span> <span class="nav-text">kotlin 定义属性时的get和set方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的幕后字段"><span class="nav-number">1.4.</span> <span class="nav-text">kotlin的幕后字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的幕后属性"><span class="nav-number">1.5.</span> <span class="nav-text">kotlin的幕后属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的扩展"><span class="nav-number">1.6.</span> <span class="nav-text">kotlin的扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的扩展属性"><span class="nav-number">1.7.</span> <span class="nav-text">kotlin的扩展属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的范型"><span class="nav-number">1.8.</span> <span class="nav-text">kotlin的范型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin的单例"><span class="nav-number">1.9.</span> <span class="nav-text">kotlin的单例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伴生对象"><span class="nav-number">1.10.</span> <span class="nav-text">伴生对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象表达式和对象声明之间的语义差异"><span class="nav-number">1.11.</span> <span class="nav-text">对象表达式和对象声明之间的语义差异</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
