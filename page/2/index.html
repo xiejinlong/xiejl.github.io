@@ -247,6 +247,134 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/09/03/0903微信Tinker尝试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/xiejl.github.io/2017/09/03/0903微信Tinker尝试/" itemprop="url">
+                  微信tinker接入尝试详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T13:14:00+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          #tinker接入过程其实tinker接入对于一些第三方sdk接入来说算是一个比较复杂了。但是照着tinker团队提供的文档去实现，还是一件比较轻松的事情。
+gradle修改gradle引入依赖修改通过gradle的方式引入tinker是最简单不过的了。首先通过在项目的根目录的build.gradl
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/xiejl.github.io/2017/09/03/0903微信Tinker尝试/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/08/13/0813DataBinding的实现原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1389,136 +1517,6 @@ MessageMessage是handler里面传递的元素，这个类会实现parcelble接�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/06/04/0604APP启动到开启第一个activity流程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="phiCoo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沉迷学习却日渐发福">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/xiejl.github.io/2017/06/04/0604APP启动到开启第一个activity流程/" itemprop="url">
-                  app进程创建后到启动第一个activity流程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T15:52:50+08:00">
-                2017-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          关于activity创建的几个相关的类
-Instrumentation: activityThread并不负责activity创建，它只负责和AMS交互，真正执行操作的类是Instrumentation。
-
-application初始化在新的进程创建之后，就是创建ActivityThread成功之后
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/xiejl.github.io/2017/06/04/0604APP启动到开启第一个activity流程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1568,7 +1566,7 @@ application初始化在新的进程创建之后，就是创建ActivityThread成�
           
             <div class="site-state-item site-state-posts">
               <a href="/xiejl.github.io/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

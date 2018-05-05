@@ -1,0 +1,685 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="onAttachedToWindow和onDetachedFromWindow这个是无关kotlin的，只是刚好在写kt代码时遇到的一个问题，关于onAttachedToWindow和onDetachedFromWindow的触发时机，
+onAttachedToWindow就是在这个View被添加到Window时触发的顾名思义，onAttachedToWindow就是在这个View被添加到Wind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin入门学习记录(4)">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/05/07/20180507Kotlin入门记录/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="onAttachedToWindow和onDetachedFromWindow这个是无关kotlin的，只是刚好在写kt代码时遇到的一个问题，关于onAttachedToWindow和onDetachedFromWindow的触发时机，
+onAttachedToWindow就是在这个View被添加到Window时触发的顾名思义，onAttachedToWindow就是在这个View被添加到Wind">
+<meta property="og:updated_time" content="2018-05-05T15:15:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kotlin入门学习记录(4)">
+<meta name="twitter:description" content="onAttachedToWindow和onDetachedFromWindow这个是无关kotlin的，只是刚好在写kt代码时遇到的一个问题，关于onAttachedToWindow和onDetachedFromWindow的触发时机，
+onAttachedToWindow就是在这个View被添加到Window时触发的顾名思义，onAttachedToWindow就是在这个View被添加到Wind">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/05/07/20180507Kotlin入门记录/"/>
+
+
+
+
+
+  <title> kotlin入门学习记录(4) | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/05/07/20180507Kotlin入门记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                kotlin入门学习记录(4)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T13:14:00+08:00">
+                2018-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="onAttachedToWindow和onDetachedFromWindow"><a href="#onAttachedToWindow和onDetachedFromWindow" class="headerlink" title="onAttachedToWindow和onDetachedFromWindow"></a>onAttachedToWindow和onDetachedFromWindow</h2><p>这个是无关kotlin的，只是刚好在写kt代码时遇到的一个问题，<br>关于onAttachedToWindow和onDetachedFromWindow的触发时机，</p>
+<h3 id="onAttachedToWindow就是在这个View被添加到Window时触发的"><a href="#onAttachedToWindow就是在这个View被添加到Window时触发的" class="headerlink" title="onAttachedToWindow就是在这个View被添加到Window时触发的"></a>onAttachedToWindow就是在这个View被添加到Window时触发的</h3><p>顾名思义，onAttachedToWindow就是在这个View被添加到Window时触发的，通过了dispatchAttachedToWindow这个方法触发的，那么View被添加到window的时机又是什么，其实就是对应的activity在生命周期onResume的时候调用的，activity对应的view在onResume的时候被添加添加到window。且每一个view都只会被调用一次，父view调用在前，不论view的visibility状态都会被调用，适合做些view特定的初始化操作；</p>
+<h3 id="onDetachedFromWindow"><a href="#onDetachedFromWindow" class="headerlink" title="onDetachedFromWindow"></a>onDetachedFromWindow</h3><p>onDetachedFromWindow方法是在activity的生命周期destroy的时候被调用的，也就是act对应的view从window中移除的时候，且每个view只会被调用一次，父view的调用在后，也不论view的visibility状态都会被调用，适合做最后的清理操作；</p>
+<h2 id="kotlin类的继承性"><a href="#kotlin类的继承性" class="headerlink" title="kotlin类的继承性"></a>kotlin类的继承性</h2><p>java的class默认都是可以继承的，只有在声明为final的class才是不可继承的。而kotlin却是相反的，默认的类都是不可继承的，也就是默认的修饰符为final，只有显式的声明为open的类才是可以继承的。而对于抽象类，java和kotlin默认都是可以继承的，但是子类必须是抽象类或者实现了该类的所有抽象方法。</p>
+<h2 id="kotlin扩展函数的java调用方式"><a href="#kotlin扩展函数的java调用方式" class="headerlink" title="kotlin扩展函数的java调用方式"></a>kotlin扩展函数的java调用方式</h2><p>kotlin中的扩展函数是非常方便的，刚开始以为在java中不能够调用到kotlin中的扩展函数，后面发现不是的，对于我们定义的扩展函数类，在java中有相应的使用方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//KotlinExt.kt</div><div class="line">fun Int.dp2px(context: Context?): Int &#123;</div><div class="line">    val scale = context?.resources?.displayMetrics?.density?.toInt()</div><div class="line">    return (this * (scale ?: 2) + 0.5f).toInt()</div><div class="line">&#125;</div><div class="line">//java中调用</div><div class="line">KotlinExtKt.dp2px(2, getContext());</div></pre></td></tr></table></figure></p>
+<p>我们只需要import相应的kotlinExt文件，然后就可以调用其中的方法，但使用方式和kotlin有不一致的地方，对于kt的扩展函数的接收者，也就是上面的Int，在java中会被认为是第一个入参， 如果扩展函数接受的是普通参数，那么这个参数就直接作为后续的入参。<br>如果扩展数据的第二个参数是lambda表达式，那么有java相应的生成方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//KotlinExt.kt</div><div class="line">inline fun &lt;T&gt; Boolean.yes(action: () -&gt; T): Boolean &#123;</div><div class="line">    if (this) action()</div><div class="line">    return this</div><div class="line">&#125;</div><div class="line">//java中调用</div><div class="line">KotlinExtKt.yes(true, new Function0&lt;Object&gt;() &#123;</div><div class="line">                    @Override</div><div class="line">                    public Object invoke() &#123;</div><div class="line">                        return null;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div></pre></td></tr></table></figure></p>
+<p>上面的Boolean的扩展yes方法，接收一个高阶函数，kt中用lambda表示，而在java中，需要以一个匿名内部类的方式替代，</p>
+<h2 id="kotlin中内部类"><a href="#kotlin中内部类" class="headerlink" title="kotlin中内部类"></a>kotlin中内部类</h2><p>在java中，如果定义一个非静态类内部类，默认将会持有外部类的引用，经常会造成外部类无法被回收，导致内存泄漏，而kotlin中，内部类默认不会持有外部类的引用，只有添加上inner关键字修饰，才会持有外部引用。</p>
+<h2 id="kotlin-密封类"><a href="#kotlin-密封类" class="headerlink" title="kotlin 密封类"></a>kotlin 密封类</h2><p>kotlin的密封类是java所没有的，在kotlin中，如果一个类被标明为密封类，那么其所有的子类都需要在父类中列出，作为密封类的嵌套内部类</p>
+<h2 id="kotlin中的惰性集合操作"><a href="#kotlin中的惰性集合操作" class="headerlink" title="kotlin中的惰性集合操作"></a>kotlin中的惰性集合操作</h2><p>kotlin中一些集合操作，比如说map和filter，对于我们来说是非常方便的，比如说筛选一个人群的年龄大于30的人的名称。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">people.map(it.name).filter&#123;it.age &gt; 30&#125;</div></pre></td></tr></table></figure></p>
+<p>但是上面这种方式，在链式调用的链足够长时，将会产生性能问题，因为链式调用的每一个步骤都会创建一个中间集合，用来存储中间结果，也就是说，每一个步骤的结果都存储在另外一个变量中。所以，kotlin给我们提供了另外一种使用方式，来避免创建中间对象。也就是惰性集合。sequencez作为惰性集合操作，可以优化map和filter等操作，将不会生成任何中间对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">people.asSequence().map(people.name).filter(it.startWith(&quot;a&quot;)).toList()</div></pre></td></tr></table></figure></p>
+<p>sequencez会将元数据生成一个流式对象，对于集合的每一个元素利用iterator遍历，执行map和filter，筛选出符合条件的数据。<br>惰性集合的操作包含了中间操作和末端操作，中间操作就是转换操作，末端操作就是筛选操作，在上面的例子里面，map是中间操作，filter是末端操作，如果没有末端操作，那么，中间操作也不会执行，既然这样，如果我们末端操作停止了，中间操作也会停止，也就是说，并不会保证所有的中间操作都能够执行。</p>
+<h2 id="butterknife库的使用"><a href="#butterknife库的使用" class="headerlink" title="butterknife库的使用"></a>butterknife库的使用</h2><p>在java中，butterknife库是一个众所周知的代替findViewId操作的库，如果我们直接在kotlin中想要使用butterknife这个库，那还是需要一些额外的操作的。</p>
+<h3 id="引入KotterKnife或者自己提供extension"><a href="#引入KotterKnife或者自己提供extension" class="headerlink" title="引入KotterKnife或者自己提供extension"></a>引入KotterKnife或者自己提供extension</h3><p>这个是butterknife作者提供的另外一个kotlin版本的替代库。使用方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">val updateTime by bind&lt;TextView&gt;(R.id.update_time)</div></pre></td></tr></table></figure></p>
+<p>虽然我没看KotterKnife内部实现，但是应该跟我们自己提供扩展函数的实现方式是一样的，我们可以通过自己提供扩展函数来设置做这些操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">fun &lt;T : View&gt; Activity.bind(@IdRes idRes: Int): Lazy&lt;T&gt; &#123;</div><div class="line">    return lazy &#123; findViewById&lt;T&gt;(idRes) &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">fun &lt;T : View&gt; View.bind(@IdRes idRes: Int): Lazy&lt;T&gt; &#123;</div><div class="line">    return lazy &#123; findViewById&lt;T&gt;(idRes) &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">fun &lt;T : View&gt; android.support.v7.widget.RecyclerView.ViewHolder.bind(@IdRes idRes: Int): Lazy&lt;T&gt; &#123;</div><div class="line">    return lazy &#123; this.itemView.findViewById&lt;T&gt;(idRes) &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">fun &lt;T : View&gt; Fragment.bind(@IdRes idRes: Int): Lazy&lt;T?&gt; &#123;</div><div class="line">    return lazy &#123; this.view?.findViewById&lt;T&gt;(idRes) &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个扩展数据其实就是代替我们执行findViewById操作，虽然我们是在初始化的时候定义了View的对象，但是它并不会马上执行，lazy关键字修饰的对象将会等到使用时再执行相应方法。也就是说，这个findViewById将会在setContentView之后执行，因为我们使用这个对象肯定是在其之后的。</p>
+<h3 id="仍然使用butterknife"><a href="#仍然使用butterknife" class="headerlink" title="仍然使用butterknife"></a>仍然使用butterknife</h3><p>其实在kotlin中，我们还是可以使用butterknife的，只是我们需要将butterknife的注解解释器替换为kotlin annotation Processor tool，这样，在kt文件中就能够使用butterknife的注解了，我们不需要担心会对之前的注解产生影响，因为kapt是兼容了annotationProcessor的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">annotationProcessor &apos;com.jakewharton:butterknife-compiler:8.4.0&apos;</div><div class="line">====&gt;</div><div class="line">kapt &apos;com.jakewharton:butterknife-compiler:8.4.0&apos;</div></pre></td></tr></table></figure></p>
+<p>替换了kapt之后，就可以进行第二步了,在kt中利用laterinit修饰对象，来保证view对象可以在通过butterknife库赋值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@BindView(R.id.user_v_layout)</div><div class="line">   lateinit var vLayout: ImageView</div><div class="line">   @BindView(R.id.comment_user_icon)</div><div class="line">   lateinit var userIconIV: ImageView</div><div class="line">   @BindView(R.id.comment_user_name)</div><div class="line">   lateinit var userNameTV: TextView</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/04/21/20180421Kotlin入门记录/" rel="next" title="kotlin入门学习记录(3)">
+                <i class="fa fa-chevron-left"></i> kotlin入门学习记录(3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#onAttachedToWindow和onDetachedFromWindow"><span class="nav-number">1.</span> <span class="nav-text">onAttachedToWindow和onDetachedFromWindow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#onAttachedToWindow就是在这个View被添加到Window时触发的"><span class="nav-number">1.1.</span> <span class="nav-text">onAttachedToWindow就是在这个View被添加到Window时触发的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onDetachedFromWindow"><span class="nav-number">1.2.</span> <span class="nav-text">onDetachedFromWindow</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin类的继承性"><span class="nav-number">2.</span> <span class="nav-text">kotlin类的继承性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin扩展函数的java调用方式"><span class="nav-number">3.</span> <span class="nav-text">kotlin扩展函数的java调用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin中内部类"><span class="nav-number">4.</span> <span class="nav-text">kotlin中内部类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin-密封类"><span class="nav-number">5.</span> <span class="nav-text">kotlin 密封类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin中的惰性集合操作"><span class="nav-number">6.</span> <span class="nav-text">kotlin中的惰性集合操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#butterknife库的使用"><span class="nav-number">7.</span> <span class="nav-text">butterknife库的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入KotterKnife或者自己提供extension"><span class="nav-number">7.1.</span> <span class="nav-text">引入KotterKnife或者自己提供extension</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#仍然使用butterknife"><span class="nav-number">7.2.</span> <span class="nav-text">仍然使用butterknife</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
