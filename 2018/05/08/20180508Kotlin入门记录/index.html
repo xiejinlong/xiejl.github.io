@@ -87,30 +87,30 @@
 
 
 
-<meta name="description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko，在这里我们主要设计的时anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
+<meta name="description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko在这里我们主要涉及的是anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
 
 不是类型安全的;
 不是null-safe;
-强迫">
+强迫你">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kotlin入门学习记录(5)">
 <meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/05/08/20180508Kotlin入门记录/index.html">
 <meta property="og:site_name" content="沉迷学习却日渐发福">
-<meta property="og:description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko，在这里我们主要设计的时anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
+<meta property="og:description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko在这里我们主要涉及的是anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
 
 不是类型安全的;
 不是null-safe;
-强迫">
+强迫你">
 <meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/as%E4%B8%8B%E8%BD%BD%E6%8F%92%E4%BB%B6">
 <meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/as%E5%AF%BC%E5%85%A5%E6%8F%92%E4%BB%B6">
-<meta property="og:updated_time" content="2018-05-08T03:02:19.000Z">
+<meta property="og:updated_time" content="2018-05-08T09:26:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kotlin入门学习记录(5)">
-<meta name="twitter:description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko，在这里我们主要设计的时anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
+<meta name="twitter:description" content="ankoAnko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点https://github.com/Kotlin/anko在这里我们主要涉及的是anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：
 
 不是类型安全的;
 不是null-safe;
-强迫">
+强迫你">
 <meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/as%E4%B8%8B%E8%BD%BD%E6%8F%92%E4%BB%B6">
 
 
@@ -336,7 +336,7 @@
       
 
       
-        <h2 id="anko"><a href="#anko" class="headerlink" title="anko"></a>anko</h2><p>Anko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点<a href="https://github.com/Kotlin/anko，在这里我们主要设计的时anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：" target="_blank" rel="external">https://github.com/Kotlin/anko，在这里我们主要设计的时anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：</a></p>
+        <h2 id="anko"><a href="#anko" class="headerlink" title="anko"></a>anko</h2><p>Anko 是一个用 Kotlin 写的Android DSL (Domain-Specific Language)。 内部提供很多工具，详情可点<a href="https://github.com/Kotlin/anko" target="_blank" rel="external">https://github.com/Kotlin/anko</a><br>在这里我们主要涉及的是anko的layout部分，长久以来，Android视图都是用XML来完成布局的。用xml写布局有下面这些缺点：</p>
 <ul>
 <li>不是类型安全的;</li>
 <li>不是null-safe;</li>
@@ -350,7 +350,16 @@
 <h3 id="可能出现的问题"><a href="#可能出现的问题" class="headerlink" title="可能出现的问题"></a>可能出现的问题</h3><p>目前官网最新的anko support插件版本是0.10.5,如果我们的as版本是3.0，那么还是将会出现anko preview不能预览的情况，报错情况为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Anko Support threw an uncaught NoSuchMethodError</div></pre></td></tr></table></figure></p>
 <p>这个是因为as3.0的问题不支持anko support，这个时候我们只需要更新as的版本到3.1之后，anko support就能够使用了。</p>
 <h2 id="开始使用anko"><a href="#开始使用anko" class="headerlink" title="开始使用anko"></a>开始使用anko</h2><p>首先需要先引入anko依赖库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">implementation &quot;org.jetbrains.anko:anko:0.10.5&quot;</div></pre></td></tr></table></figure></p>
-<p>然后就可以在我们的代码中使用anko了。</p>
+<p>这个是anko给我们集成的一个包含anko所有功能的库，包含了</p>
+<ul>
+<li>anko commons： 一些常用的扩展函数，包括intent、dialog、log、resources等</li>
+<li>ankoLayout： anko布局</li>
+<li>ankoSqlite： anko优化的数据库操作</li>
+<li>anko Coroutines: anko对于kotlin协程的扩展</li>
+</ul>
+<p>如果我们需要大部分的anko的功能，我们可以直接这么引入，否则我们需要单独引入每一个功能的依赖。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    // Anko Commons</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-commons:$anko_version&quot;</div><div class="line"></div><div class="line">    // Anko Layouts</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-sdk25:$anko_version&quot; // sdk15, sdk19, sdk21, sdk23 are also available</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-appcompat-v7:$anko_version&quot;</div><div class="line"></div><div class="line">    // Coroutine listeners for Anko Layouts</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-sdk25-coroutines:$anko_version&quot;</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version&quot;</div><div class="line"></div><div class="line">    // Anko SQLite</div><div class="line">    implementation &quot;org.jetbrains.anko:anko-sqlite:$anko_version&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们只需要从中引入我们所必须的库就ok了。在这里我们需要注意的是anko-sdk的引入需要和我们build.gradle中的minSdkVersion做下适配。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">org.jetbrains.anko:anko-sdk15 ： 15 &lt;= minSdkVersion &lt; 19</div><div class="line"></div><div class="line">org.jetbrains.anko:anko-sdk19 ： 19 &lt;= minSdkVersion &lt; 21</div><div class="line"></div><div class="line">org.jetbrains.anko:anko-sdk21 ： 21 &lt;= minSdkVersion &lt; 23</div><div class="line"></div><div class="line">org.jetbrains.anko:anko-sdk23 ： 23 &lt;= minSdkVersion &lt; 25</div><div class="line"></div><div class="line">org.jetbrains.anko:anko-sdk25 ： 25 &lt;= minSdkVersion</div></pre></td></tr></table></figure></p>
+<p>如果没有按照要求做sdk适配，那么一旦运行在不符合的版本，将会直接崩溃～切记</p>
 <h3 id="AnkoComponent"><a href="#AnkoComponent" class="headerlink" title="AnkoComponent"></a>AnkoComponent</h3><p>我们可以在activity的onCreate、fragemnt的onCreateView中直接绘制ui，但是这样就让ui绘制代码�与activity、fragment代码有了耦合了。所有我们可以将Anko代码定义到另外一个class中，作为对应的UiClass，这就需要AnkoComponent。</p>
 <h4 id="定义UIClass"><a href="#定义UIClass" class="headerlink" title="定义UIClass"></a>定义UIClass</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class MemberCenterActivityUI : AnkoComponent&lt;MemberCenterActivity&gt; &#123;</div><div class="line">        override fun createView(ui: AnkoContext&lt;MemberCenterActivity&gt;) : View = with(ui)&#123;</div><div class="line">        </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>在我们定义了相应的uiclass之后，我们需要实现其中的oncreateView方法，这个类的返回就是一个View，就是我们anko绘制的布局。<br>添加上with(ui)，是为了让dsl代码块能够以this的形式持有AnkoContext，这个AnkoContext是一个非常有用的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">val ctx: Context</div><div class="line">val owner: T</div><div class="line">val view: View</div></pre></td></tr></table></figure></p>
