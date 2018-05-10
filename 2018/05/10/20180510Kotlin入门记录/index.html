@@ -1,0 +1,707 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="ViewManager在了解anko之前，我们必须要先了解一下ViewManager这个类，这个是一个接口，通过这个接口，我们可以在Activity中添加、移除和更新View，我们可以通过 Context.getSystemService()来或者这个类。123public void addView(View view, ViewGroup.LayoutParams params);public">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kotlin入门学习记录(6) - anko Layout绘制原理">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/05/10/20180510Kotlin入门记录/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="ViewManager在了解anko之前，我们必须要先了解一下ViewManager这个类，这个是一个接口，通过这个接口，我们可以在Activity中添加、移除和更新View，我们可以通过 Context.getSystemService()来或者这个类。123public void addView(View view, ViewGroup.LayoutParams params);public">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/ankoView.jpeg">
+<meta property="og:updated_time" content="2018-05-10T10:03:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kotlin入门学习记录(6) - anko Layout绘制原理">
+<meta name="twitter:description" content="ViewManager在了解anko之前，我们必须要先了解一下ViewManager这个类，这个是一个接口，通过这个接口，我们可以在Activity中添加、移除和更新View，我们可以通过 Context.getSystemService()来或者这个类。123public void addView(View view, ViewGroup.LayoutParams params);public">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/ankoView.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/05/10/20180510Kotlin入门记录/"/>
+
+
+
+
+
+  <title> kotlin入门学习记录(6) - anko Layout绘制原理 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/05/10/20180510Kotlin入门记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                kotlin入门学习记录(6) - anko Layout绘制原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-10T13:14:00+08:00">
+                2018-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ViewManager"><a href="#ViewManager" class="headerlink" title="ViewManager"></a>ViewManager</h2><p>在了解anko之前，我们必须要先了解一下ViewManager这个类，这个是一个接口，通过这个接口，我们可以在Activity中添加、移除和更新View，我们可以通过 Context.getSystemService()来或者这个类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void addView(View view, ViewGroup.LayoutParams params);</div><div class="line">public void updateViewLayout(View view, ViewGroup.LayoutParams params);</div><div class="line">public void removeView(View view);</div></pre></td></tr></table></figure></p>
+<p>也就是说，只有实现了这个接口的类才能够在activity中对view进行操作。系统的ViewGroup就实现了这个接口。</p>
+<h2 id="AnkoContext"><a href="#AnkoContext" class="headerlink" title="AnkoContext"></a>AnkoContext</h2><p>在anko中，所有的View的操作是通过AnkoContext这个类来实现 的，所以，AnkoContext实现了ViewManager接口，但是AnkoContext只提供添加功能，不提供view的移除和更新。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">interface AnkoContext&lt;out T&gt; : ViewManager &#123;</div><div class="line">    val ctx: Context</div><div class="line">    val owner: T</div><div class="line">    val view: View</div><div class="line"></div><div class="line">    override fun updateViewLayout(view: View, params: ViewGroup.LayoutParams) &#123;</div><div class="line">        throw UnsupportedOperationException()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override fun removeView(view: View) &#123;</div><div class="line">        throw UnsupportedOperationException()</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>一旦我们调用了updateViewLayout或者removeView方法，那么将会抛异常，UnsupportedOperationException，不支持这种操作。<br>这个类中包含了下面的三个参数</p>
+<ul>
+<li>ctx: Context– 上下文信息</li>
+<li>owner: T– 这个owner是这个UI的依附者，可能是Activity、fragment、viewHolder</li>
+<li>view： View–AnkoComponent生成并返回的View<br>下面来看看ankoContext提供的几个静态方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">companion object &#123;</div><div class="line">        fun create(ctx: Context, setContentView: Boolean = false): AnkoContext&lt;Context&gt;</div><div class="line">                = AnkoContextImpl(ctx, ctx, setContentView)</div><div class="line"></div><div class="line">        fun createReusable(ctx: Context, setContentView: Boolean = false): AnkoContext&lt;Context&gt;</div><div class="line">                = ReusableAnkoContext(ctx, ctx, setContentView)</div><div class="line"></div><div class="line">        fun &lt;T&gt; create(ctx: Context, owner: T, setContentView: Boolean = false): AnkoContext&lt;T&gt;</div><div class="line">                = AnkoContextImpl(ctx, owner, setContentView)</div><div class="line"></div><div class="line">        fun &lt;T&gt; createReusable(ctx: Context, owner: T, setContentView: Boolean = false): AnkoContext&lt;T&gt;</div><div class="line">                = ReusableAnkoContext(ctx, owner, setContentView)</div><div class="line"></div><div class="line">        fun &lt;T: ViewGroup&gt; createDelegate(owner: T): AnkoContext&lt;T&gt; = DelegatingAnkoContext(owner)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这4个方法返回的都是AnkoContext实体，那么区别是什么？</p>
+<ul>
+<li>create表示直接创建出AnkoContext，并且不能重用，一旦已经绑定了View，那么将抛出异常。</li>
+<li>createReusable表示创建出可以复用的AnkoContext,如果一个AnkoContext已经添加了子View，那么它会重新add View</li>
+<li>createDelegate；表示将view添加到相应的委托对象中，用来在自定义View中代替inflate方法。<br>我们来看看这几个方法的实现：<h3 id="AnkoContextImpl"><a href="#AnkoContextImpl" class="headerlink" title="AnkoContextImpl"></a>AnkoContextImpl</h3>create方法返回的是AnkoContextImpl<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">open class AnkoContextImpl&lt;T&gt;(</div><div class="line">        override val ctx: Context,</div><div class="line">        override val owner: T,</div><div class="line">        private val setContentView: Boolean</div><div class="line">) : AnkoContext&lt;T&gt; &#123;</div><div class="line">    private var myView: View? = null</div><div class="line"></div><div class="line">    override val view: View</div><div class="line">        get() = myView ?: throw IllegalStateException(&quot;View was not set previously&quot;)</div><div class="line"></div><div class="line">    //将View添加到context中</div><div class="line">    override fun addView(view: View?, params: ViewGroup.LayoutParams?) &#123;</div><div class="line">        </div><div class="line">        if (view == null) return</div><div class="line"></div><div class="line">        if (myView != null) &#123;</div><div class="line">            //如果myView！=null，表示已经添加了View了，如果是create方法调用的，那么将会抛出异常</div><div class="line">            alreadyHasView()</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        this.myView = view</div><div class="line"></div><div class="line">        if (setContentView) &#123;</div><div class="line">            //如果需要setContentView，那么执行addView操作</div><div class="line">            doAddView(ctx, view)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun doAddView(context: Context, view: View) &#123;</div><div class="line">        when (context) &#123;</div><div class="line">            //找到activity，然后执行setContentView</div><div class="line">            is Activity -&gt; context.setContentView(view)</div><div class="line">            is ContextWrapper -&gt; doAddView(context.baseContext, view)</div><div class="line">            else -&gt; throw IllegalStateException(&quot;Context is not an Activity, can&apos;t set content view&quot;)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    open protected fun alreadyHasView(): Unit = throw IllegalStateException(&quot;View is already set: $myView&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="ReusableAnkoContext"><a href="#ReusableAnkoContext" class="headerlink" title="ReusableAnkoContext"></a>ReusableAnkoContext</h3><p>createReusable返回的是ReusableAnkoContext实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">internal class ReusableAnkoContext&lt;T&gt;(</div><div class="line">        override val ctx: Context,</div><div class="line">        override val owner: T,</div><div class="line">        setContentView: Boolean</div><div class="line">) : AnkoContextImpl&lt;T&gt;(ctx, owner, setContentView) &#123;</div><div class="line">    override fun alreadyHasView() &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>因为createReusable表示创建的是可重用布局，而AnkoContextImpl在已经绑定了View的时候，将会通过alreadyHasView抛出异常。所以ReusableAnkoContext通过复写alreadyHasView，并且来让布局可重用。</p>
+<h3 id="DelegatingAnkoContext"><a href="#DelegatingAnkoContext" class="headerlink" title="DelegatingAnkoContext"></a>DelegatingAnkoContext</h3><p>createDelegate(owner: T)返回的是DelegatingAnkoContext实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">internal class DelegatingAnkoContext&lt;T: ViewGroup&gt;(override val owner: T): AnkoContext&lt;T&gt; &#123;</div><div class="line">    override val ctx: Context = owner.context</div><div class="line">    override val view: View = owner</div><div class="line"></div><div class="line">    override fun addView(view: View?, params: ViewGroup.LayoutParams?) &#123;</div><div class="line">        if (view == null) return</div><div class="line"></div><div class="line">        if (params == null) &#123;</div><div class="line">            owner.addView(view)</div><div class="line">        &#125; else &#123;</div><div class="line">            owner.addView(view, params)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>DelegatingAnkoContext会将view添加到owner上，而不是Activity。</p>
+<h2 id="AnkoComponen"><a href="#AnkoComponen" class="headerlink" title="AnkoComponen"></a>AnkoComponen</h2><p>在Anko中，如果我们想要它的预览特性，那么我们就需要用到AnkoComponen，只有继承了AnkoComponen，并且结合anko support，就能�够预览了，我们需要在实现createView方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">interface AnkoComponent&lt;in T&gt; &#123;</div><div class="line">    fun createView(ui: AnkoContext&lt;T&gt;): View</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们通过createView方法绘制我们想要的View并返回。AnkoComponent有一个扩展方法setContentView,是用来给Activity设置ContentView的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fun &lt;T : Activity&gt; AnkoComponent&lt;T&gt;.setContentView(activity: T): View =</div><div class="line">        createView(AnkoContextImpl(activity, activity, true))</div></pre></td></tr></table></figure></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>AnkoContext内部添加了几个扩展函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">inline fun Context.UI(setContentView: Boolean, init: AnkoContext&lt;Context&gt;.() -&gt; Unit): AnkoContext&lt;Context&gt; =</div><div class="line">        createAnkoContext(this, init, setContentView)</div><div class="line"></div><div class="line">inline fun Context.UI(init: AnkoContext&lt;Context&gt;.() -&gt; Unit): AnkoContext&lt;Context&gt; =</div><div class="line">        createAnkoContext(this, init)</div><div class="line"></div><div class="line">inline fun Fragment.UI(init: AnkoContext&lt;Fragment&gt;.() -&gt; Unit): AnkoContext&lt;Fragment&gt; =</div><div class="line">        createAnkoContext(activity, init)</div></pre></td></tr></table></figure></p>
+<p>在Activity和fragment中，可以直接通过UI的方式调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">UI &#123; </div><div class="line">   .....</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>然后内部会调用createAnkoContext，将UI里面的View传入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">inline fun &lt;T&gt; T.createAnkoContext(</div><div class="line">           ctx: Context,</div><div class="line">           init: AnkoContext&lt;T&gt;.() -&gt; Unit,</div><div class="line">           setContentView: Boolean = false</div><div class="line">   ): AnkoContext&lt;T&gt; &#123;</div><div class="line">       val dsl = AnkoContextImpl(ctx, this, setContentView)</div><div class="line">       dsl.init()</div><div class="line">       return dsl</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>内部还是调用AnkoContextImpl，并且调用内部还是调用AnkoContextImpl的init方法，初始化UI，并添加ctx中.</p>
+<h2 id="AnkoUI布局的动态创建"><a href="#AnkoUI布局的动态创建" class="headerlink" title="AnkoUI布局的动态创建"></a>AnkoUI布局的动态创建</h2><p>在了解AnkoUI的布局的创建之前，我们需要先了解一下anko支持的dsl.</p>
+<h3 id="DSL-Domain-Specific-Language"><a href="#DSL-Domain-Specific-Language" class="headerlink" title="DSL(Domain-Specific-Language)"></a>DSL(Domain-Specific-Language)</h3><p>dsl指的是特定领域的语言，kotlin的DSL特性支持就是扩展，anko通过dsl，才有了anko layout库。</p>
+<h3 id="带接收者的函数字面值"><a href="#带接收者的函数字面值" class="headerlink" title="带接收者的函数字面值"></a>带接收者的函数字面值</h3><p>在kotlin中，支持给函数指定接收者对象，而无需额外的限定符，有点类似于扩展函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">init: (@AnkoViewDslMarker _RelativeLayout).() -&gt; Unit</div></pre></td></tr></table></figure></p>
+<p>相当于() -&gt; Unit指定的接收者对象为_RelativeLayout<br>如果在函数体内部可以调用接收者对象的方法，那么假若这个方法又是带接收者类型的方法，那么就可以不断的往下调用了。</p>
+<h3 id="anko布局"><a href="#anko布局" class="headerlink" title="anko布局"></a>anko布局</h3><p>下面是一个简单的anko布局<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">relativeLayout &#123;</div><div class="line">                imageView &#123;</div><div class="line">                    adjustViewBounds = true</div><div class="line">                    scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">                    imageResource = R.drawable.bg_members</div><div class="line">                &#125;.lparams(width = matchParent, height = matchParent)</div><div class="line">                statusBar = view &#123;</div><div class="line">                    id = statusBarHolder</div><div class="line">                &#125;</div></pre></td></tr></table></figure></p>
+<p>anko给ViewManager添加了大部分组件的扩展函数,这个根节点relativeLayout将会调用到扩展函数中，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">inline fun ViewManager.relativeLayout(): android.widget.RelativeLayout = relativeLayout() &#123;&#125;</div><div class="line">inline fun ViewManager.relativeLayout(init: (@AnkoViewDslMarker _RelativeLayout).() -&gt; Unit): android.widget.RelativeLayout &#123;</div><div class="line">    return ankoView(`$$Anko$Factories$Sdk15ViewGroup`.RELATIVE_LAYOUT, theme = 0) &#123; init() &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在上面这个relativeLayout方法中，接收一个() -&gt; Unit的lambada表达式，这个表达式限定于relativeLayout，所以这个参数就是relativelayout里面的元素,在上面的例子就是这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">imageView &#123;</div><div class="line">        adjustViewBounds = true</div><div class="line">        scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">        imageResource = R.drawable.bg_members</div><div class="line">        &#125;.lparams(width = matchParent, height =matchParent)&#123;</div><div class="line">            statusBar = view &#123;</div><div class="line">            id = statusBarHolder</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>有一个注解AnkoViewDslMarker，这个参数会给对应_RelativeLayout的View对象扩展一个applyRecursively方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@DslMarker</div><div class="line">@Target(AnnotationTarget.TYPE)</div><div class="line">annotation class AnkoViewDslMarker</div><div class="line"></div><div class="line">/**</div><div class="line"> * Apply [f] to this [View] and to all of its children recursively.</div><div class="line"> * </div><div class="line"> * @return the receiver.</div><div class="line"> */</div><div class="line">inline fun &lt;T : View&gt; T.applyRecursively(noinline f: (View) -&gt; Unit): T &#123;</div><div class="line">    AnkoInternals.applyRecursively(this, f)</div><div class="line">    return this</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>applyRecursively扩展T对象，并且接收一个f函数，在这里指的是View的init方法，会先执行f方法，然后遍历所有的子元素，并进行创建。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">fun applyRecursively(v: View, style: (View) -&gt; Unit) &#123;</div><div class="line">       //执行init方法，创建对象</div><div class="line">       style(v)</div><div class="line">       if (v is ViewGroup) &#123;</div><div class="line">       //如果是ViewGroup，那么可以添加子View，看看是否有子View</div><div class="line">           val maxIndex = v.childCount - 1</div><div class="line">           for (i in 0 .. maxIndex) &#123;</div><div class="line">               //对子View执行applyRecursively方法</div><div class="line">               v.getChildAt(i)?.let &#123; applyRecursively(it, style) &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>将会调用ViewManager的ankoView方法。</p>
+<h4 id="anko默认支持的工厂"><a href="#anko默认支持的工厂" class="headerlink" title="anko默认支持的工厂"></a>anko默认支持的工厂</h4><p>我们上面的用的构造工厂是sdk15提供的工厂，我们看看工厂里面的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">internal object `$$Anko$Factories$Sdk15ViewGroup` &#123;</div><div class="line">    val APP_WIDGET_HOST_VIEW = &#123; ctx: Context -&gt; _AppWidgetHostView(ctx) &#125;</div><div class="line">    val ABSOLUTE_LAYOUT = &#123; ctx: Context -&gt; _AbsoluteLayout(ctx) &#125;</div><div class="line">    val FRAME_LAYOUT = &#123; ctx: Context -&gt; _FrameLayout(ctx) &#125;</div><div class="line">    val GALLERY = &#123; ctx: Context -&gt; _Gallery(ctx) &#125;</div><div class="line">    val GRID_LAYOUT = &#123; ctx: Context -&gt; _GridLayout(ctx) &#125;</div><div class="line">    val GRID_VIEW = &#123; ctx: Context -&gt; _GridView(ctx) &#125;</div><div class="line">    val HORIZONTAL_SCROLL_VIEW = &#123; ctx: Context -&gt; _HorizontalScrollView(ctx) &#125;</div><div class="line">    val IMAGE_SWITCHER = &#123; ctx: Context -&gt; _ImageSwitcher(ctx) &#125;</div><div class="line">    val LINEAR_LAYOUT = &#123; ctx: Context -&gt; _LinearLayout(ctx) &#125;</div><div class="line">    val RADIO_GROUP = &#123; ctx: Context -&gt; _RadioGroup(ctx) &#125;</div><div class="line">    val RELATIVE_LAYOUT = &#123; ctx: Context -&gt; _RelativeLayout(ctx) &#125;</div><div class="line">    val SCROLL_VIEW = &#123; ctx: Context -&gt; _ScrollView(ctx) &#125;</div><div class="line">    val TABLE_LAYOUT = &#123; ctx: Context -&gt; _TableLayout(ctx) &#125;</div><div class="line">    val TABLE_ROW = &#123; ctx: Context -&gt; _TableRow(ctx) &#125;</div><div class="line">    val TEXT_SWITCHER = &#123; ctx: Context -&gt; _TextSwitcher(ctx) &#125;</div><div class="line">    val VIEW_ANIMATOR = &#123; ctx: Context -&gt; _ViewAnimator(ctx) &#125;</div><div class="line">    val VIEW_SWITCHER = &#123; ctx: Context -&gt; _ViewSwitcher(ctx) &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对于每一个View，内部都有一个相对应的构建方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">open class _RelativeLayout(ctx: Context): RelativeLayout(ctx) &#123;</div><div class="line">     ...</div><div class="line">     inline fun &lt;T: View&gt; T.lparams(</div><div class="line">            width: Int = android.view.ViewGroup.LayoutParams.WRAP_CONTENT,</div><div class="line">            height: Int = android.view.ViewGroup.LayoutParams.WRAP_CONTENT,</div><div class="line">            init: RelativeLayout.LayoutParams.() -&gt; Unit</div><div class="line">    ): T &#123;</div><div class="line">        val layoutParams = RelativeLayout.LayoutParams(width, height)</div><div class="line">        layoutParams.init()</div><div class="line">        this@lparams.layoutParams = layoutParams</div><div class="line">        return this</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个_RelativeLayout内部都是重载的lparams，也就是通过这个方法来创建布局的param属性。</p>
+<h3 id="ankoView的实现"><a href="#ankoView的实现" class="headerlink" title="ankoView的实现"></a>ankoView的实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">inline fun &lt;T : View&gt; ViewManager.ankoView(factory: (ctx: Context) -&gt; T, theme: Int, init: T.() -&gt; Unit): T &#123;</div><div class="line">    //获取需要依附的context对象</div><div class="line">    val ctx = AnkoInternals.wrapContextIfNeeded(AnkoInternals.getContext(this), theme)</div><div class="line">    //通过工厂模式返回View</div><div class="line">    val view = factory(ctx)</div><div class="line">    view.init()</div><div class="line">    //添加View，并返回</div><div class="line">    AnkoInternals.addView(this, view)</div><div class="line">    return view</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个ankoView将会接收工厂方法，返回View，然后执行init方法。这个init方法就行上面的工厂对象的构造函数。下面看看View添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">fun &lt;T : View&gt; addView(manager: ViewManager, view: T) = when (manager) &#123;</div><div class="line">      //针对于根节点下的View</div><div class="line">      is ViewGroup -&gt; manager.addView(view)</div><div class="line">      //针对于根节点</div><div class="line">      is AnkoContext&lt;*&gt; -&gt; manager.addView(view, null)</div><div class="line">      else -&gt; throw AnkoException(&quot;$manager is the wrong parent&quot;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>将会直接添加到parent节点或者context下。</p>
+<p>下面是一个自己理解的ankoView的绘制步骤:<br><img src="http://onu21exz8.bkt.clouddn.com/ankoView.jpeg" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/05/08/20180508Kotlin入门记录/" rel="next" title="kotlin入门学习记录(5) - anko Layout使用">
+                <i class="fa fa-chevron-left"></i> kotlin入门学习记录(5) - anko Layout使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewManager"><span class="nav-number">1.</span> <span class="nav-text">ViewManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AnkoContext"><span class="nav-number">2.</span> <span class="nav-text">AnkoContext</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AnkoContextImpl"><span class="nav-number">2.1.</span> <span class="nav-text">AnkoContextImpl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReusableAnkoContext"><span class="nav-number">2.2.</span> <span class="nav-text">ReusableAnkoContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DelegatingAnkoContext"><span class="nav-number">2.3.</span> <span class="nav-text">DelegatingAnkoContext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AnkoComponen"><span class="nav-number">3.</span> <span class="nav-text">AnkoComponen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">4.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AnkoUI布局的动态创建"><span class="nav-number">5.</span> <span class="nav-text">AnkoUI布局的动态创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DSL-Domain-Specific-Language"><span class="nav-number">5.1.</span> <span class="nav-text">DSL(Domain-Specific-Language)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带接收者的函数字面值"><span class="nav-number">5.2.</span> <span class="nav-text">带接收者的函数字面值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#anko布局"><span class="nav-number">5.3.</span> <span class="nav-text">anko布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#anko默认支持的工厂"><span class="nav-number">5.3.1.</span> <span class="nav-text">anko默认支持的工厂</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ankoView的实现"><span class="nav-number">5.4.</span> <span class="nav-text">ankoView的实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
