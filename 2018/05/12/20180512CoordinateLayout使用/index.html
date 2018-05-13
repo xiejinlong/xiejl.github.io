@@ -1,0 +1,719 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Material Design 是专为设计适用于多个平台和设备的视觉、运动与互动效果而制定的综合指南。 Android 现在已支持 Material Design 应用。 如果要在您的 Android 应用中使用 Material Design，请遵循Material Design 规范内定义的指导方针，并使用 Android 5.0（API 级别 21）及以上版本所提供的新组件和功能。
+而Coo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CoordinateLayout使用">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/05/12/20180512CoordinateLayout使用/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="Material Design 是专为设计适用于多个平台和设备的视觉、运动与互动效果而制定的综合指南。 Android 现在已支持 Material Design 应用。 如果要在您的 Android 应用中使用 Material Design，请遵循Material Design 规范内定义的指导方针，并使用 Android 5.0（API 级别 21）及以上版本所提供的新组件和功能。
+而Coo">
+<meta property="og:updated_time" content="2018-05-13T10:51:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CoordinateLayout使用">
+<meta name="twitter:description" content="Material Design 是专为设计适用于多个平台和设备的视觉、运动与互动效果而制定的综合指南。 Android 现在已支持 Material Design 应用。 如果要在您的 Android 应用中使用 Material Design，请遵循Material Design 规范内定义的指导方针，并使用 Android 5.0（API 级别 21）及以上版本所提供的新组件和功能。
+而Coo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/05/12/20180512CoordinateLayout使用/"/>
+
+
+
+
+
+  <title> CoordinateLayout使用 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/05/12/20180512CoordinateLayout使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CoordinateLayout使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T13:14:00+08:00">
+                2018-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Material Design 是专为设计适用于多个平台和设备的视觉、运动与互动效果而制定的综合指南。 Android 现在已支持 Material Design 应用。 如果要在您的 Android 应用中使用 Material Design，请遵循Material Design 规范内定义的指导方针，并使用 Android 5.0（API 级别 21）及以上版本所提供的新组件和功能。</p>
+<p>而CoordinateLayout就是其中一个比较难的组件。</p>
+<h2 id="coordinateLayout"><a href="#coordinateLayout" class="headerlink" title="coordinateLayout"></a>coordinateLayout</h2><p>coordinateLayout作为一个功能较为强大的FrameLayout，但是它并没有直接继承于FrameLayout。而是作为ViewGroup的直接子类。主要用在以下的场景：</p>
+<ul>
+<li>作为一个顶层布局</li>
+<li>需要与一个获多个子视图进行特殊交互，主要是指的滑动交互。</li>
+</ul>
+<p>可以通过Behaviors来指定子视图</p>
+<h3 id="引入coordinateLayout"><a href="#引入coordinateLayout" class="headerlink" title="引入coordinateLayout"></a>引入coordinateLayout</h3><p>既然Material Design作为android的一个新特性，需要我们在gradle文件中引入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">implementation &apos;com.android.support:design:&apos; + rootProject.supportLibVersion</div></pre></td></tr></table></figure></p>
+<p>###基本使用</p>
+<h4 id="coordinateLayout结合AppBarLayout"><a href="#coordinateLayout结合AppBarLayout" class="headerlink" title="coordinateLayout结合AppBarLayout"></a>coordinateLayout结合AppBarLayout</h4><p>AppBarLayout是具有Material Design特性的垂直的线性布局，直接继承于LinearLayout，需要作为coordinateLayout的直接子View才有作用，在appLayout中的子View将会依据scrollFlag随着滑动进行变化，可以通过scrollFlag属性来设置其中的子View来设置滑动特性，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//代码中</div><div class="line">appBarLayout.setScrollFlags(int)</div><div class="line">//xml中</div><div class="line">app:layout_scrollFlags</div></pre></td></tr></table></figure></p>
+<h4 id="scrollFlag"><a href="#scrollFlag" class="headerlink" title="scrollFlag"></a>scrollFlag</h4><ul>
+<li>scroll:值设为scroll的View会跟随滚动事件一起发生移动。就好像这个View也是列表的某个item，会随着滑动消失和出现</li>
+<li>enterAlways：只要外部的scrollView或recyclerView有向下的滑动事件，那么这个View就有出现</li>
+<li>exitUntilCollapsed：需要结合属性miniHeight使用，在滑动时，将会先将这个View滑动到指定的最低高度，再滑动recyclerView元素。</li>
+<li>enterAlwaysCollapsed： 这个属性需要结合enterAlway和miniHeight使用，在recyclerView有向下滑动的时候，会先触发enterAlways，让这个View出现到最低高度，然后等到recyclerView向下滑到不能再滑动时，再滑动这个View到原始高度。</li>
+<li>snap: 这个属性将会在滑动结束时，让这个View完全可见或者完全不可见。如果滑动结束后，这个View显示的高度低于0.25,那么这个View将会直接不可见，如果这个View显示的高度大于0.75,那么这个View将会完全可见</li>
+</ul>
+<p>###AppBarLayout结合CollapsingToolbarLayout<br>CollapsingToolbarLayout是一个折叠式的toolBar，直接继承于FrameLayout，需要作为AppBarLayout的直接子View，有下面几个特性供我们使用</p>
+<ul>
+<li>折叠标题： 标题布局在完全可见时更大，但随着屏幕滚动将会折叠并且变小，通过setTitle来设置标题，并且通过collapsedTextAppearance和expandedTextAppearance来改变标题外观</li>
+<li>toolbar内容填充：当屏幕滚动至折叠到toolbar高度时，会给toolbard设置背景，通过setContentScrim(Drawable)设置</li>
+<li>statusBar内容填充：当屏幕滚动至折叠到toolbar高度时，会给状态栏设置背景，通过setStatusBarScrim(Drawable)设置，只有在5.0以上起作用</li>
+<li>滑动视差效果：子View的滑动可以和外部recylerView形成视察效果，通过设置子view的layout_collapseMode为parallax开启，通过setParallaxMultiplier(float)来设置视差的效果。</li>
+<li>固定子view位置：在屏幕滚动时，如果我们设置了子view的layout_collapseMode为pin的话，那么这个子View将会固定在顶部，当然，我们可以同时设置多个子View为pin</li>
+<li>我们最好不要在运行时动态的给toolbar添加子View，否则title的大小计算可能会出问题</li>
+</ul>
+<h3 id="xml例子"><a href="#xml例子" class="headerlink" title="xml例子"></a>xml例子</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;android.support.design.widget.CoordinateLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</div><div class="line">    android:id=&quot;@+id/main_layout&quot;</div><div class="line">    android:layout_width=&quot;match_parent&quot;</div><div class="line">    android:layout_height=&quot;match_parent&quot;</div><div class="line">    android:background=&quot;@color/color_F7F9FA&quot;&gt;</div><div class="line"></div><div class="line">    &lt;android.support.design.widget.AppBarLayout</div><div class="line">        android:id=&quot;@+id/app_bar_layout&quot;</div><div class="line">        android:layout_width=&quot;match_parent&quot;</div><div class="line">        android:layout_height=&quot;wrap_content&quot;</div><div class="line">        android:theme=&quot;@color/color_ffffff&quot;&gt;</div><div class="line"></div><div class="line">        &lt;android.support.design.widget.CollapsingToolbarLayout</div><div class="line">            android:id=&quot;@+id/collap_tool_bar_layout&quot;</div><div class="line">            android:layout_width=&quot;match_parent&quot;</div><div class="line">            android:layout_height=&quot;wrap_content&quot;</div><div class="line">            android:background=&quot;@color/color_FFFFFF&quot;</div><div class="line">            app:contentScrim=&quot;@color/color_ffffff&quot;</div><div class="line">            app:expandedTitleGravity=&quot;center_horizontal&quot;</div><div class="line">            app:expandedTitleMarginEnd=&quot;64dp&quot;</div><div class="line">            app:expandedTitleMarginStart=&quot;48dp&quot;</div><div class="line">            app:layout_scrollFlags=&quot;scroll|exitUntilCollapsed&quot;</div><div class="line">            app:scrimVisibleHeightTrigger=&quot;@dimen/dimens_80dp&quot;&gt;</div><div class="line"></div><div class="line">            &lt;com.facebook.drawee.view.SimpleDraweeView</div><div class="line">                android:id=&quot;@+id/bg_collaps&quot;</div><div class="line">                android:layout_width=&quot;match_parent&quot;</div><div class="line">                android:layout_height=&quot;375dp&quot;</div><div class="line">                android:scaleType=&quot;centerCrop&quot;</div><div class="line">                app:layout_collapseMode=&quot;parallax&quot; /&gt;</div><div class="line"></div><div class="line">            &lt;android.support.v7.widget.Toolbar</div><div class="line">                android:id=&quot;@+id/toolbar&quot;</div><div class="line">                android:layout_width=&quot;match_parent&quot;</div><div class="line">                android:layout_height=&quot;@dimen/toolbar_height&quot;</div><div class="line">                app:layout_collapseMode=&quot;pin&quot;</div><div class="line">                app:layout_scrollFlags=&quot;scroll|enterAlways&quot;&gt;</div><div class="line"></div><div class="line">            &lt;/android.support.v7.widget.Toolbar&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">        &lt;/android.support.design.widget.CollapsingToolbarLayout&gt;</div><div class="line">    &lt;/android.support.design.widget.AppBarLayout&gt;</div><div class="line">    &lt;RecyclerView</div><div class="line">        android:id=&quot;@+id/recycler_view&quot;</div><div class="line">        android:layout_width=&quot;match_parent&quot;</div><div class="line">        android:layout_height=&quot;match_parent&quot;</div><div class="line">        app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior</div><div class="line">        /&gt;</div><div class="line">&lt;/android.support.design.widget.CoordinateLayout&gt;</div></pre></td></tr></table></figure>
+<p>上面这个就是简单的CoordinateLayout、AppBarLayout及CollapsingToolbarLayout的结合使用，只要记得它必须是直接子View，和使用一些特性的属性就行。<br>上面非常重要的一点时，如何让可滑动的View和CoordinateLayout这些View建立联系，能够监听其滑动？其实只需要一个属性，在上面的recyclerView中，添加了一个layout_behavior属性，这个属性就标识了appBarLayout将会依赖于这个RecyclerView的滑动做处理。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h4 id="layout-behavior绑定过程"><a href="#layout-behavior绑定过程" class="headerlink" title="layout_behavior绑定过程"></a>layout_behavior绑定过程</h4><p>既然AppBarLayout和recyclerView的滑动是通过app:layout_behavior这个属性维系的，那么它究竟是如何通过这个属性来绑定的,我们需要来看看CoordinateLayout的源码实现了，</p>
+<h5 id="layout-behavior的创建"><a href="#layout-behavior的创建" class="headerlink" title="layout_behavior的创建"></a>layout_behavior的创建</h5><p>CoordinateLayout内部自定义了一个LayoutParam类，这个类包含了对Behavior的解析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">LayoutParams(Context context, AttributeSet attrs) &#123;</div><div class="line">            super(context, attrs);</div><div class="line"></div><div class="line">            final TypedArray a = context.obtainStyledAttributes(attrs,</div><div class="line">                    R.styleable.CoordinatorLayout_Layout);</div><div class="line">            ...</div><div class="line">            mBehaviorResolved = a.hasValue(</div><div class="line">                    R.styleable.CoordinatorLayout_Layout_layout_behavior);</div><div class="line">            if (mBehaviorResolved) &#123;</div><div class="line">                //如果存在layout_behavior属性，那么将会尝试解析behavior</div><div class="line">                mBehavior = parseBehavior(context, attrs, a.getString(</div><div class="line">                        R.styleable.CoordinatorLayout_Layout_layout_behavior));</div><div class="line">            &#125;</div><div class="line">            a.recycle();</div><div class="line"></div><div class="line">            if (mBehavior != null) &#123;</div><div class="line">                // 如果解析出behavior，那么将会绑定这个layoutParam</div><div class="line">                mBehavior.onAttachedToLayoutParams(this);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>在我们了解behavior的解析操作前，我们需要先了解一下app:layout_behavior的默认值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;string name=&quot;appbar_scrolling_view_behavior&quot; translatable=&quot;false&quot;&gt;android.support.design.widget.AppBarLayout$ScrollingViewBehavior&lt;/string&gt;</div></pre></td></tr></table></figure></p>
+<p>通过parseBehavior创建Behavior实例，如果存在，那就直接复用，不存在就通过反射创建实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">static Behavior parseBehavior(Context context, AttributeSet attrs, String name) &#123;</div><div class="line">        if (TextUtils.isEmpty(name)) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">        //拼出全拼</div><div class="line">        final String fullName;</div><div class="line">        if (name.startsWith(&quot;.&quot;)) &#123;</div><div class="line">            // Relative to the app package. Prepend the app package name.</div><div class="line">            fullName = context.getPackageName() + name;</div><div class="line">        &#125; else if (name.indexOf(&apos;.&apos;) &gt;= 0) &#123;</div><div class="line">            // Fully qualified package name.</div><div class="line">            fullName = name;</div><div class="line">        &#125; else &#123;</div><div class="line">            // Assume stock behavior in this package (if we have one)</div><div class="line">            fullName = !TextUtils.isEmpty(WIDGET_PACKAGE_NAME)</div><div class="line">                    ? (WIDGET_PACKAGE_NAME + &apos;.&apos; + name)</div><div class="line">                    : name;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        try &#123;</div><div class="line">            //用threadLocal存储Behavior</div><div class="line">            Map&lt;String, Constructor&lt;Behavior&gt;&gt; constructors = sConstructors.get();</div><div class="line">            if (constructors == null) &#123;</div><div class="line">                constructors = new HashMap&lt;&gt;();</div><div class="line">                sConstructors.set(constructors);</div><div class="line">            &#125;</div><div class="line">            //判断是否已经有相应的behavior</div><div class="line">            Constructor&lt;Behavior&gt; c = constructors.get(fullName);</div><div class="line">            if (c == null) &#123;</div><div class="line">                //没有就创建，通过反射创建实例</div><div class="line">                final Class&lt;Behavior&gt; clazz = (Class&lt;Behavior&gt;) context.getClassLoader()</div><div class="line">                        .loadClass(fullName);</div><div class="line">                c = clazz.getConstructor(CONSTRUCTOR_PARAMS);</div><div class="line">                c.setAccessible(true);</div><div class="line">                constructors.put(fullName, c);</div><div class="line">            &#125;</div><div class="line">            return c.newInstance(context, attrs);</div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            throw new RuntimeException(&quot;Could not inflate Behavior subclass &quot; + fullName, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>在创建后需要将behavior绑定layoutParam。<br>coordirnateLayout在传递事件时，如果子View存在Behavior，那么会将滑动事件和子View都交给behavior来处理。</p>
+<h5 id="Behavior的事件"><a href="#Behavior的事件" class="headerlink" title="Behavior的事件"></a>Behavior的事件</h5><h6 id="Coordinatelayout-Behavior"><a href="#Coordinatelayout-Behavior" class="headerlink" title="Coordinatelayout.Behavior"></a>Coordinatelayout.Behavior</h6><p>在coordinateLyout中定义了一个Behavior的抽象类，所有的Behavior都需要继承于该类，我们看看一个最基本的Behavior具有比较重要的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line">//设置两个View的依赖        </div><div class="line">public boolean layoutDependsOn(CoordinatorLayout parent, V child, View dependency) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">//依赖的View改变</div><div class="line">public boolean onDependentViewChanged(CoordinatorLayout parent, V child, View dependency) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">//依赖View的移除</div><div class="line">public void onDependentViewRemoved(CoordinatorLayout parent, V child, View dependency) &#123;&#125;</div><div class="line">//准备开始移动的回调</div><div class="line">public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View directTargetChild, @NonNull View target,</div><div class="line">                @ScrollAxis int axes, @NestedScrollType int type) &#123;</div><div class="line">            if (type == ViewCompat.TYPE_TOUCH) &#123;</div><div class="line">                return onStartNestedScroll(coordinatorLayout, child, directTargetChild,</div><div class="line">                        target, axes);</div><div class="line">            &#125;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View directTargetChild, @NonNull View target,</div><div class="line">                @ScrollAxis int axes) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">//滑动事件被接收的回调</div><div class="line">public void onNestedScrollAccepted(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View directTargetChild, @NonNull View target,</div><div class="line">                @ScrollAxis int axes, @NestedScrollType int type) &#123;</div><div class="line">            if (type == ViewCompat.TYPE_TOUCH) &#123;</div><div class="line">                onNestedScrollAccepted(coordinatorLayout, child, directTargetChild,</div><div class="line">                        target, axes);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">public void onNestedScrollAccepted(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View directTargetChild, @NonNull View target,</div><div class="line">                @ScrollAxis int axes) &#123;</div><div class="line">            // Do nothing</div><div class="line">        &#125;</div><div class="line">//停止滑动事件的回调</div><div class="line">public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View target, @NestedScrollType int type) &#123;</div><div class="line">            if (type == ViewCompat.TYPE_TOUCH) &#123;</div><div class="line">                onStopNestedScroll(coordinatorLayout, child, target);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View target) &#123;</div><div class="line">            // Do nothing</div><div class="line">        &#125;</div><div class="line">//滑动事件的接收</div><div class="line">public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,</div><div class="line">                @NonNull View target, int dxConsumed, int dyConsumed,</div><div class="line">                int dxUnconsumed, int dyUnconsumed, @NestedScrollType int type) &#123;</div><div class="line">            if (type == ViewCompat.TYPE_TOUCH) &#123;</div><div class="line">                onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed,</div><div class="line">                        dxUnconsumed, dyUnconsumed);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,</div><div class="line">                @NonNull View target, int dxConsumed, int dyConsumed,</div><div class="line">                int dxUnconsumed, int dyUnconsumed) &#123;</div><div class="line">            // Do nothing</div><div class="line">        &#125;</div><div class="line">//滑动事件前的回调</div><div class="line">public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child,</div><div class="line">                @NonNull View target, int dxConsumed, int dyConsumed,</div><div class="line">                int dxUnconsumed, int dyUnconsumed) &#123;</div><div class="line">            // Do nothing</div><div class="line">        &#125;</div><div class="line">public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View target, int dx, int dy, @NonNull int[] consumed) &#123;</div><div class="line">            // Do nothing</div><div class="line">        &#125;</div><div class="line">//fling事件回调</div><div class="line">public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View target, float velocityX, float velocityY,</div><div class="line">                boolean consumed) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">//fling事件前回调</div><div class="line">public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout,</div><div class="line">                @NonNull V child, @NonNull View target, float velocityX, float velocityY) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>AppBarLayout也有一个默认的behavior，我们不需要显示的指定这个Behavior的使用，因为AppBarLayout在代码中添加了注解，来给CoordinateLayout添加默认behavior。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class)</div></pre></td></tr></table></figure></p>
+<p>appBarLayout中用的behavior，同样的也是继承于CoordinateLayout中的behavior，通过重写其中的方法，来做相应的滑动处理。</p>
+<h3 id="CoordinateLayout实现可放大的封面"><a href="#CoordinateLayout实现可放大的封面" class="headerlink" title="CoordinateLayout实现可放大的封面"></a>CoordinateLayout实现可放大的封面</h3><p>这个是参照的网上的实现</p>
+<ul>
+<li><p>设置需要传递放大的View，View的正常高度和可放大的最大高度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void setPullZoom(View zoomView, int zoomViewHeight, int maxZoomViewHeight, IPullZoom pullZoom) &#123;</div><div class="line">        this.mZoomView = zoomView;</div><div class="line">        mZoomViewHeight = zoomViewHeight;</div><div class="line">        mZoomViewMaxHeight = maxZoomViewHeight;</div><div class="line">        mPullZoom = pullZoom;</div><div class="line">        //防止 onInterceptTouchEvent的ACTION_MOVE事件不执行，避免就是子view的down事件返回fasle</div><div class="line">        mZoomView.setClickable(true);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>重写事件拦截器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">public boolean onInterceptTouchEvent(MotionEvent event) &#123;</div><div class="line">        if (!isPullToZoomEnabled()) &#123;</div><div class="line">            //如果没有传入需要放大的view，那么不拦截</div><div class="line">            return super.onInterceptTouchEvent(event);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        final int action = event.getAction();</div><div class="line"></div><div class="line">        if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) &#123;</div><div class="line">            //如果是取消或者抬起事件，那么不拦截</div><div class="line">            mIsBeingDragged = false;</div><div class="line">            return super.onInterceptTouchEvent(event);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (action != MotionEvent.ACTION_DOWN &amp;&amp; mIsBeingDragged) &#123;</div><div class="line">            //如果已经处于放大中状态，且事件是down，那么直接拦截</div><div class="line">            return true;</div><div class="line">        &#125;</div><div class="line">        switch (action) &#123;</div><div class="line">            case MotionEvent.ACTION_MOVE: &#123;</div><div class="line">                //开始触发的放大的条件</div><div class="line">                if (isReadyForPullStart()) &#123;</div><div class="line">                    </div><div class="line">                    final float y = event.getY(), x = event.getX();</div><div class="line">                    final float diff, oppositeDiff, absDiff;</div><div class="line">                    // 计算此次位移的距离</div><div class="line">                    diff = y - mLastMotionY;</div><div class="line">                    oppositeDiff = x - mLastMotionX;</div><div class="line">                    absDiff = Math.abs(diff);</div><div class="line">                    </div><div class="line">                </div><div class="line">                    </div><div class="line">                    if (absDiff &gt; mTouchSlop &amp;&amp; absDiff &gt; Math.abs(oppositeDiff)) &#123;</div><div class="line">                        </div><div class="line">                        if (diff &gt;= 1f &amp;&amp; isReadyForPullStart()) &#123;</div><div class="line">                    //修改last位置，并且设置mIsBeingDragged为ture</div><div class="line">                            mLastMotionY = y;</div><div class="line">                            mLastMotionX = x;</div><div class="line">                            mIsBeingDragged = true;</div><div class="line">                        &#125;</div><div class="line">                    &#125; else &#123;</div><div class="line">                        mIsBeingDragged = false;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">            case MotionEvent.ACTION_DOWN: &#123;</div><div class="line">                if (isReadyForPullStart()) &#123;</div><div class="line">                    mLastMotionY = mInitialMotionY = event.getY();</div><div class="line">                    mLastMotionX = mInitialMotionX = event.getX();</div><div class="line">                    mIsBeingDragged = false;</div><div class="line">                &#125; else &#123;</div><div class="line">                    mIsBeingDragged = false;</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        //利用mIsBeingDragged标志是否拦截事件</div><div class="line">        return mIsBeingDragged || super.onInterceptTouchEvent(event);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>onTouchEvent做事件处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">public boolean onTouchEvent(MotionEvent event) &#123;</div><div class="line">        if (!isPullToZoomEnabled()) &#123;</div><div class="line">            return super.onTouchEvent(event);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (event.getAction() == MotionEvent.ACTION_DOWN &amp;&amp; event.getEdgeFlags() != 0) &#123;</div><div class="line">            return super.onTouchEvent(event);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        switch (event.getAction()) &#123;</div><div class="line">            case MotionEvent.ACTION_MOVE: &#123;</div><div class="line">                if (mIsBeingDragged) &#123;</div><div class="line">                    //开始进行拖动放大，通过pullEvent放大</div><div class="line">                    mLastMotionY = event.getY();</div><div class="line">                    mLastMotionX = event.getX();</div><div class="line">                    pullEvent();</div><div class="line">                    isZooming = true;</div><div class="line">                    return true;</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            case MotionEvent.ACTION_DOWN: &#123;</div><div class="line">                if (isReadyForPullStart()) &#123;</div><div class="line">                    mLastMotionY = mInitialMotionY = event.getY();</div><div class="line">                    mLastMotionX = mInitialMotionX = event.getX();</div><div class="line">                    return true;</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            case MotionEvent.ACTION_CANCEL:</div><div class="line">            case MotionEvent.ACTION_UP: &#123;</div><div class="line">                if (mIsBeingDragged) &#123;</div><div class="line">                    mIsBeingDragged = false;</div><div class="line">                    // 如果up和cancel事件前，处于放大状态，那么需要还原到先前的位置</div><div class="line">                    if (isZooming()) &#123;</div><div class="line">                        //首先滑动到顶部</div><div class="line">                        smoothScrollToTop();</div><div class="line">                        if (onPullZoomListener != null) &#123;</div><div class="line">                            onPullZoomListener.onPullZoomEnd();</div><div class="line">                        &#125;</div><div class="line">                        if (mPullZoom != null) &#123;</div><div class="line">                            mPullZoom.onPullZoomEnd();</div><div class="line">                        &#125;</div><div class="line">                        isZooming = false;</div><div class="line">                        return true;</div><div class="line">                    &#125;</div><div class="line">                    return true;</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return super.onTouchEvent(event);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>放大的动画pullEvent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">private void pullEvent() &#123;</div><div class="line">        final int newScrollValue;</div><div class="line">        final float initialMotionValue, lastMotionValue;</div><div class="line"></div><div class="line">        //按下的位置，y</div><div class="line">        initialMotionValue = mInitialMotionY;</div><div class="line">        //此次滑动到的y坐标</div><div class="line">        lastMotionValue = mLastMotionY;</div><div class="line"></div><div class="line">        //计算新的scroll距离，距离/3</div><div class="line">        newScrollValue = Math.round(Math.min(initialMotionValue - lastMotionValue, 0) / FRICTION);</div><div class="line">        //做动画处理</div><div class="line">        pullHeaderToZoom(newScrollValue);</div><div class="line">        if (onPullZoomListener != null) &#123;</div><div class="line">            onPullZoomListener.onPullZooming(newScrollValue);</div><div class="line">        &#125;</div><div class="line">        if (mPullZoom != null) &#123;</div><div class="line">            mPullZoom.onPullZooming(newScrollValue);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>pullHeaderToZoom</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">private void pullHeaderToZoom(int newScrollValue) &#123;</div><div class="line">        //放大动画是否结束，没结束先停止回到原始高度的动画</div><div class="line">        if (mScalingRunnable != null &amp;&amp; !mScalingRunnable.isFinished()) &#123;</div><div class="line">            mScalingRunnable.abortAnimation();</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        ViewGroup.LayoutParams localLayoutParams = mZoomView.getLayoutParams();</div><div class="line">        //计算最新View的高度</div><div class="line">        int toHeight = Math.abs(newScrollValue) + mZoomViewHeight;</div><div class="line">        if (mZoomViewMaxHeight &gt; 0 &amp;&amp; toHeight &gt; mZoomViewMaxHeight) &#123;</div><div class="line">            toHeight = mZoomViewMaxHeight;</div><div class="line">        &#125;</div><div class="line">        localLayoutParams.height = toHeight;</div><div class="line">        mZoomView.setLayoutParams(localLayoutParams);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/05/10/20180510Kotlin入门记录/" rel="next" title="kotlin入门学习记录(6) - anko Layout绘制原理">
+                <i class="fa fa-chevron-left"></i> kotlin入门学习记录(6) - anko Layout绘制原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#coordinateLayout"><span class="nav-number">1.</span> <span class="nav-text">coordinateLayout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入coordinateLayout"><span class="nav-number">1.1.</span> <span class="nav-text">引入coordinateLayout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#coordinateLayout结合AppBarLayout"><span class="nav-number">1.1.1.</span> <span class="nav-text">coordinateLayout结合AppBarLayout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrollFlag"><span class="nav-number">1.1.2.</span> <span class="nav-text">scrollFlag</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xml例子"><span class="nav-number">1.2.</span> <span class="nav-text">xml例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.3.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#layout-behavior绑定过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">layout_behavior绑定过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#layout-behavior的创建"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">layout_behavior的创建</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Behavior的事件"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Behavior的事件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Coordinatelayout-Behavior"><span class="nav-number">1.3.1.2.1.</span> <span class="nav-text">Coordinatelayout.Behavior</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CoordinateLayout实现可放大的封面"><span class="nav-number">1.4.</span> <span class="nav-text">CoordinateLayout实现可放大的封面</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
