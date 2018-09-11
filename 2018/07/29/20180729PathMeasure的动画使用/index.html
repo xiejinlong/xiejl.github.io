@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="##PathMeasure的简单使用pathMeasure是android给我们提供的一个用于自定义View的绘制的类。
+创建1234public PathMeasure() &amp;#123;       mPath = null;       native_instance = native_create(0, false);   &amp;#125;
+创建出一个空的pathMeasure对象，如果我们需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PathMeasure动画使用">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="##PathMeasure的简单使用pathMeasure是android给我们提供的一个用于自定义View的绘制的类。
+创建1234public PathMeasure() &amp;#123;       mPath = null;       native_instance = native_create(0, false);   &amp;#125;
+创建出一个空的pathMeasure对象，如果我们需要">
+<meta property="og:image" content="http://onu21exz8.bkt.clouddn.com/record.jpeg">
+<meta property="og:updated_time" content="2018-09-11T11:38:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PathMeasure动画使用">
+<meta name="twitter:description" content="##PathMeasure的简单使用pathMeasure是android给我们提供的一个用于自定义View的绘制的类。
+创建1234public PathMeasure() &amp;#123;       mPath = null;       native_instance = native_create(0, false);   &amp;#125;
+创建出一个空的pathMeasure对象，如果我们需要">
+<meta name="twitter:image" content="http://onu21exz8.bkt.clouddn.com/record.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/"/>
+
+
+
+
+
+  <title> PathMeasure动画使用 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                PathMeasure动画使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T13:14:00+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##PathMeasure的简单使用<br>pathMeasure是android给我们提供的一个用于自定义View的绘制的类。</p>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public PathMeasure() &#123;</div><div class="line">       mPath = null;</div><div class="line">       native_instance = native_create(0, false);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>创建出一个空的pathMeasure对象，如果我们需要调用其中的方法，那么我们需要提前调用setPath</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public PathMeasure(Path path, boolean forceClosed) &#123;</div><div class="line">        // The native implementation does not copy the path, prevent it from being GC&apos;d</div><div class="line">        mPath = path;</div><div class="line">        native_instance = native_create(path != null ? path.readOnlyNI() : 0,</div><div class="line">                                        forceClosed);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>创建出一个带path的PathMeasure对象，forceClosed表示是否需要强制将path进行连接</p>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><p>获取当前的path的总长度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Return the total length of the current contour, or 0 if no path is</div><div class="line"> * associated with this measure object.</div><div class="line"> */</div><div class="line">public float getLength() &#123;</div><div class="line">    return native_getLength(native_instance);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>获取当前距离所在的坐标<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public boolean getPosTan(float distance, float pos[], float tan[]) &#123;</div><div class="line">        if (pos != null &amp;&amp; pos.length &lt; 2 ||</div><div class="line">            tan != null &amp;&amp; tan.length &lt; 2) &#123;</div><div class="line">            throw new ArrayIndexOutOfBoundsException();</div><div class="line">        &#125;</div><div class="line">        return native_getPosTan(native_instance, distance, pos, tan);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>获取两个指定点之间的片段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">    * Given a start and stop distance, return in dst the intervening</div><div class="line">    * segment(s). If the segment is zero-length, return false, else return</div><div class="line">    * true. startD and stopD are pinned to legal values (0..getLength()).</div><div class="line">    * If startD &gt;= stopD then return false (and leave dst untouched).</div><div class="line">    * Begin the segment with a moveTo if startWithMoveTo is true.</div><div class="line">    *</div><div class="line">    * &lt;p&gt;On &#123;@link android.os.Build.VERSION_CODES#KITKAT&#125; and earlier</div><div class="line">    * releases, the resulting path may not display on a hardware-accelerated</div><div class="line">    * Canvas. A simple workaround is to add a single operation to this path,</div><div class="line">    * such as &lt;code&gt;dst.rLineTo(0, 0)&lt;/code&gt;.&lt;/p&gt;</div><div class="line">    */</div><div class="line">   public boolean getSegment(float startD, float stopD, Path dst, boolean startWithMoveTo) &#123;</div><div class="line">       // Skia used to enforce this as part of it&apos;s API, but has since relaxed that restriction</div><div class="line">       // so to maintain consistency in our API we enforce the preconditions here.</div><div class="line">       float length = getLength();</div><div class="line">       if (startD &lt; 0) &#123;</div><div class="line">           startD = 0;</div><div class="line">       &#125;</div><div class="line">       if (stopD &gt; length) &#123;</div><div class="line">           stopD = length;</div><div class="line">       &#125;</div><div class="line">       if (startD &gt;= stopD) &#123;</div><div class="line">           return false;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       return native_getSegment(native_instance, startD, stopD, dst.mutateNI(), startWithMoveTo);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法将会将指定点的距离路径set到传入的path中。</p>
+<h2 id="圆环动画实现"><a href="#圆环动画实现" class="headerlink" title="圆环动画实现"></a>圆环动画实现</h2><p>对于一个圆环进度条动画，我们也可以通过这个PathMeasure来实现。</p>
+<h3 id="创建圆环PathMeasure"><a href="#创建圆环PathMeasure" class="headerlink" title="创建圆环PathMeasure"></a>创建圆环PathMeasure</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">private fun initPathMeasure() &#123;</div><div class="line">        pathMeasure = PathMeasure()</div><div class="line">    &#125;</div><div class="line">//创建circle</div><div class="line"> circlePath.addCircle(centerX, centerY, dip(35).toFloat(), Path.Direction.CW)</div><div class="line">//设置path</div><div class="line">pathMeasure.setPath(circlePath, false)</div></pre></td></tr></table></figure>
+<h3 id="获取进度"><a href="#获取进度" class="headerlink" title="获取进度"></a>获取进度</h3><p>对于不同的业务场景下，我们可以通过不同的方式获取进度。</p>
+<ul>
+<li><p>通过ValueAnimator获取进度</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">  private ValueAnimator initTranslateAnimator(final ImageView imageView) &#123;</div><div class="line"></div><div class="line">    ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);</div><div class="line">    valueAnimator.setDuration(VIEW_ANIMATION_DURING);</div><div class="line">    valueAnimator.setInterpolator(new LinearInterpolator());</div><div class="line">    valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">        @Override</div><div class="line">        public void onAnimationUpdate(ValueAnimator animation) &#123;</div><div class="line">            float value = (float) animation.getAnimatedValue();</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    return valueAnimator;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  这个value就是获取到的实时进度</p>
+</li>
+<li><p>根据业务场景获取进度<br>  比如说我项目中的场景是一个录音的按钮，那么总的录制时长就是最大进度，当前的录制时长就是实时的进度</p>
+</li>
+</ul>
+<h3 id="获取片段"><a href="#获取片段" class="headerlink" title="获取片段"></a>获取片段</h3><p>通过PathMeasure的getSegment获取当前的片段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pathMeasure.getSegment(getDistance(getLastRecordTime()), getDistance(time), rPath, true)</div></pre></td></tr></table></figure></p>
+<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3><p>在onDraw方法中绘制获取出来的path<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">canvas?.drawPath(path, recordPaint)</div></pre></td></tr></table></figure></p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><h3 id="需要有暂停，并且暂停有间隔"><a href="#需要有暂停，并且暂停有间隔" class="headerlink" title="需要有暂停，并且暂停有间隔"></a>需要有暂停，并且暂停有间隔</h3><p>比如下面图片中的例子：<br><img src="http://onu21exz8.bkt.clouddn.com/record.jpeg" alt=""><br>这个动画需要可以暂停，然后每次暂停后都会有分隔符。<br>处理方案： 我们需要将path缓存起来，并且每次生成小间隔，在onDraw时先绘制之前缓存的path，在计算进度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//绘制之前的进度</div><div class="line">       destPathList.forEachIndexed &#123; index, path -&gt;</div><div class="line">           //0表示录音path，1表示间隔path</div><div class="line">           canvas?.drawPath(path, if (index % 2 == 0) recordPaint else dividerPaint)</div><div class="line">       &#125;</div><div class="line">       //需要先空出间隔的时间不绘制</div><div class="line">       if (durationStack.isEmpty()) &#123;</div><div class="line">           val path = Path()</div><div class="line">           pathMeasure.getSegment(getDistance(getLastRecordTime()), getDistance(currentTime + getLastRecordTime()), path, true)</div><div class="line">           canvas?.drawPath(path, recordPaint)</div><div class="line">       &#125; else if (currentTime &gt;= dividerStep) &#123;</div><div class="line">           //再进行此时的绘制, 肯定是录音绘制</div><div class="line">           val path = Path()</div><div class="line">           pathMeasure.getSegment(getDistance(getLastRecordTime()), getDistance(currentTime + getLastRecordTime() - dividerStep), path, true)</div><div class="line">           canvas?.drawPath(path, recordPaint)</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<h4 id="onDraw并没有手动执行"><a href="#onDraw并没有手动执行" class="headerlink" title="onDraw并没有手动执行"></a>onDraw并没有手动执行</h4><p>在设置的时候，发现onDraw方法在request或者invaliate方法触发下并不会执行，是因为ViewGroup默认情况下，出于性能考虑，会被设置成WILL_NOT_DROW，这样，ondraw就不会被执行了。<br>解决方案,在构造函数中，设置WILL_NOT_DROW为false<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setWillNotDraw（false）</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/07/18/20180718ViewSwitcher的使用/" rel="next" title="ViewSwitcher的使用">
+                <i class="fa fa-chevron-left"></i> ViewSwitcher的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">2.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆环动画实现"><span class="nav-number"></span> <span class="nav-text">圆环动画实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建圆环PathMeasure"><span class="nav-number">1.</span> <span class="nav-text">创建圆环PathMeasure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取进度"><span class="nav-number">2.</span> <span class="nav-text">获取进度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取片段"><span class="nav-number">3.</span> <span class="nav-text">获取片段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制"><span class="nav-number">4.</span> <span class="nav-text">绘制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number"></span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#需要有暂停，并且暂停有间隔"><span class="nav-number">1.</span> <span class="nav-text">需要有暂停，并且暂停有间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#onDraw并没有手动执行"><span class="nav-number">1.1.</span> <span class="nav-text">onDraw并没有手动执行</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
