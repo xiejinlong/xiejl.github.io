@@ -87,22 +87,22 @@
 
 
 
-<meta name="description" content="如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
+<meta name="description" content="常见问题如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
 通过设置宽度为double.infinity，将会将宽度填充父布局.
-如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(context).">
+如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(conte">
 <meta property="og:type" content="article">
-<meta property="og:title" content="flutter常见问题">
-<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/10/08/flutter常见问题/index.html">
+<meta property="og:title" content="flutter的常见问题">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/10/08/20181008flutter常见问题/index.html">
 <meta property="og:site_name" content="沉迷学习却日渐发福">
-<meta property="og:description" content="如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
+<meta property="og:description" content="常见问题如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
 通过设置宽度为double.infinity，将会将宽度填充父布局.
-如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(context).">
-<meta property="og:updated_time" content="2018-11-04T09:24:56.000Z">
+如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(conte">
+<meta property="og:updated_time" content="2018-11-04T09:28:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="flutter常见问题">
-<meta name="twitter:description" content="如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
+<meta name="twitter:title" content="flutter的常见问题">
+<meta name="twitter:description" content="常见问题如何实现android的match_param？flutter控件默认的宽高为wrap_content123new Container(    width:double.infinity,)
 通过设置宽度为double.infinity，将会将宽度填充父布局.
-如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(context).">
+如何获取状态栏的高度12345final double statusBarHeight = MediaQuery.of(conte">
 
 
 
@@ -130,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/10/08/flutter常见问题/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/10/08/20181008flutter常见问题/"/>
 
 
 
 
 
-  <title> flutter常见问题 | 沉迷学习却日渐发福 </title>
+  <title> flutter的常见问题 | 沉迷学习却日渐发福 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +255,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/10/08/flutter常见问题/">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/10/08/20181008flutter常见问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="phiCoo">
@@ -276,7 +276,7 @@
             
             
               
-                flutter常见问题
+                flutter的常见问题
               
             
           </h1>
@@ -327,7 +327,7 @@
       
 
       
-        <h4 id="如何实现android的match-param？"><a href="#如何实现android的match-param？" class="headerlink" title="如何实现android的match_param？"></a>如何实现android的match_param？</h4><p>flutter控件默认的宽高为wrap_content<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">new Container(</div><div class="line">    width:double.infinity,</div><div class="line">)</div></pre></td></tr></table></figure></p>
+        <h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h4 id="如何实现android的match-param？"><a href="#如何实现android的match-param？" class="headerlink" title="如何实现android的match_param？"></a>如何实现android的match_param？</h4><p>flutter控件默认的宽高为wrap_content<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">new Container(</div><div class="line">    width:double.infinity,</div><div class="line">)</div></pre></td></tr></table></figure></p>
 <p>通过设置宽度为double.infinity，将会将宽度填充父布局.</p>
 <h4 id="如何获取状态栏的高度"><a href="#如何获取状态栏的高度" class="headerlink" title="如何获取状态栏的高度"></a>如何获取状态栏的高度</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">final double statusBarHeight = MediaQuery.of(context).padding.top;</div><div class="line">return new Padding(</div><div class="line">      padding: new EdgeInsets.only(top: statusBarHeight),</div><div class="line">      child: content</div><div class="line">);</div></pre></td></tr></table></figure>
 <h4 id="如何检测系统返回键"><a href="#如何检测系统返回键" class="headerlink" title="如何检测系统返回键"></a>如何检测系统返回键</h4><p>需要再外部的Widget嵌套一层WillPopScope来捕获返回事件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class HomePageState extends State&lt;HomePage&gt; &#123;</div><div class="line">  @override</div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line"></div><div class="line">    return WillPopScope(</div><div class="line">        child: Scaffold(</div><div class="line">          appBar: new AppBar(</div><div class="line">            backgroundColor: new Color(0xfffde23d),</div><div class="line">            title: new Text(&quot;快看漫画&quot;,</div><div class="line">                style: new TextStyle(color: const Color(0xff442509))),</div><div class="line">          ),</div><div class="line">          body: new Container(),</div><div class="line">        ),</div><div class="line">        onWillPop: _onWillPop);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  Future&lt;bool&gt; _onWillPop() &#123;</div><div class="line">    exit(0);</div><div class="line">    return new Future.value(false);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -494,7 +494,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现android的match-param？"><span class="nav-number">1.</span> <span class="nav-text">如何实现android的match_param？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何获取状态栏的高度"><span class="nav-number">2.</span> <span class="nav-text">如何获取状态栏的高度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何检测系统返回键"><span class="nav-number">3.</span> <span class="nav-text">如何检测系统返回键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bottomTab"><span class="nav-number">4.</span> <span class="nav-text">bottomTab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Column内部控件的居中"><span class="nav-number">5.</span> <span class="nav-text">Column内部控件的居中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于Android使用的EditText，可以用TextField来代替，但是如果在列表中，则需要使用Flexible包裹着，否则将会报错。"><span class="nav-number">6.</span> <span class="nav-text">对于Android使用的EditText，可以用TextField来代替，但是如果在列表中，则需要使用Flexible包裹着，否则将会报错。</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题"><span class="nav-number">1.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现android的match-param？"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">如何实现android的match_param？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何获取状态栏的高度"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">如何获取状态栏的高度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何检测系统返回键"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">如何检测系统返回键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bottomTab"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">bottomTab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Column内部控件的居中"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">Column内部控件的居中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于Android使用的EditText，可以用TextField来代替，但是如果在列表中，则需要使用Flexible包裹着，否则将会报错。"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">对于Android使用的EditText，可以用TextField来代替，但是如果在列表中，则需要使用Flexible包裹着，否则将会报错。</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
