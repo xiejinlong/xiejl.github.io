@@ -1,0 +1,772 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="# 关于Adnroid processor
+LovelyInject项目地址：https://github.com/xiejinlong/LovelyInject这个是一个基于https://github.com/enbandari/TieGuanYin库实现的一个简易版的intent注入框架。
+使用流程使用注解可以使用的有3个注解，BuilderActivity，BuilderFragment">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Adnroid processor的一次尝试">
+<meta property="og:url" content="https://xiejinlong.github.io/xiejl.github.io/2018/11/04/20181104关于Adnroid processor/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="# 关于Adnroid processor
+LovelyInject项目地址：https://github.com/xiejinlong/LovelyInject这个是一个基于https://github.com/enbandari/TieGuanYin库实现的一个简易版的intent注入框架。
+使用流程使用注解可以使用的有3个注解，BuilderActivity，BuilderFragment">
+<meta property="og:updated_time" content="2018-11-04T09:06:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Adnroid processor的一次尝试">
+<meta name="twitter:description" content="# 关于Adnroid processor
+LovelyInject项目地址：https://github.com/xiejinlong/LovelyInject这个是一个基于https://github.com/enbandari/TieGuanYin库实现的一个简易版的intent注入框架。
+使用流程使用注解可以使用的有3个注解，BuilderActivity，BuilderFragment">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xiejl.github.io/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/11/04/20181104关于Adnroid processor/"/>
+
+
+
+
+
+  <title> Adnroid processor的一次尝试 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xiejl.github.io/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xiejl.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xiejl.github.io/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xiejl.github.io/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/11/04/20181104关于Adnroid processor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xiejl.github.io/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Adnroid processor的一次尝试
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-04T13:14:00+08:00">
+                2018-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>﻿# 关于Adnroid processor</p>
+<h2 id="LovelyInject"><a href="#LovelyInject" class="headerlink" title="LovelyInject"></a>LovelyInject</h2><p>项目地址：<a href="https://github.com/xiejinlong/LovelyInject" target="_blank" rel="external">https://github.com/xiejinlong/LovelyInject</a><br>这个是一个基于<a href="https://github.com/enbandari/TieGuanYin库实现的一个简易版的intent注入框架。" target="_blank" rel="external">https://github.com/enbandari/TieGuanYin库实现的一个简易版的intent注入框架。</a></p>
+<h3 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h3><h4 id="使用注解"><a href="#使用注解" class="headerlink" title="使用注解"></a>使用注解</h4><p>可以使用的有3个注解，BuilderActivity，BuilderFragment和BuilderModel，这三个注解是用来修饰类的,三个注解的retention都是编译期间，targetType都是ElementType.TYPE，也就是用来修饰Class。<br>其中，BuilderActivity用来修饰Activity，可以指定默认的跳转Scheme，会生成一个通过scheme跳转的静态方法。<br>BuilderFragme用来修饰Fragment。<br>BuilderModel用来修饰普通的model类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@Retention(RetentionPolicy.CLASS)</div><div class="line">@Target(ElementType.TYPE)</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>修饰activity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@BuilderActivity(routerValue = &quot;to_test_scheme&quot;)</div><div class="line">    class TestActivity: Activity() &#123;</div><div class="line">    @Fields</div><div class="line">    var name: String? = null</div><div class="line">    @Fields</div><div class="line">    var age: Int = 0</div><div class="line">    @Fields</div><div class="line">    var msg: String? = null</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>修饰fragment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@BuilderFragment</div><div class="line">    class TestFragment: Fragment() &#123;</div><div class="line">    @Fields</div><div class="line">    var name: String? = null</div><div class="line">    @Fields</div><div class="line">    var age: Int = 0</div><div class="line">    @Fields</div><div class="line">    var msg: String? = null</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>修饰model类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@BuilderModel</div><div class="line">    class TestModel &#123;</div><div class="line">    @Fields</div><div class="line">    var name: String? = null</div><div class="line">    @Fields</div><div class="line">    var age: Int = 0</div><div class="line">    @Fields</div><div class="line">    var msg: String? = null</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="编译build"><a href="#编译build" class="headerlink" title="编译build"></a>编译build</h4><ul>
+<li><p>生成的ActivityBuilder</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public final class TestActivityBuilder &#123;</div><div class="line">  public static final String FIELD_NAME = &quot;name&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_AGE = &quot;age&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_MSG = &quot;msg&quot;;</div><div class="line"></div><div class="line">  private String name;</div><div class="line"></div><div class="line">  private int age;</div><div class="line"></div><div class="line">  private String msg;</div><div class="line"></div><div class="line">  public static TestActivityBuilder builder() &#123;</div><div class="line">    TestActivityBuilder builder = new TestActivityBuilder();</div><div class="line">    return builder;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestActivityBuilder name(String name) &#123;</div><div class="line">    this.name = name;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestActivityBuilder age(int age) &#123;</div><div class="line">    this.age = age;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestActivityBuilder msg(String msg) &#123;</div><div class="line">    this.msg = msg;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private void fillIntent(Intent intent) &#123;</div><div class="line">    intent.putExtra(&quot;name&quot;, name);</div><div class="line">    intent.putExtra(&quot;age&quot;, age);</div><div class="line">    intent.putExtra(&quot;msg&quot;, msg);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public void start(Context context) &#123;</div><div class="line">    Intent intent = new Intent(context, TestActivity.class);</div><div class="line">    fillIntent(intent);</div><div class="line">    context.startActivity(intent);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>生成的fragmentBuilder</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">public final class TestFragmentBuilder &#123;</div><div class="line">  public static final String FIELD_NAME = &quot;name&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_AGE = &quot;age&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_MSG = &quot;msg&quot;;</div><div class="line"></div><div class="line">  private String name;</div><div class="line"></div><div class="line">  private int age;</div><div class="line"></div><div class="line">  private String msg;</div><div class="line"></div><div class="line">  public static TestFragmentBuilder builder() &#123;</div><div class="line">    TestFragmentBuilder builder = new TestFragmentBuilder();</div><div class="line">    return builder;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestFragmentBuilder name(String name) &#123;</div><div class="line">    this.name = name;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestFragmentBuilder age(int age) &#123;</div><div class="line">    this.age = age;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestFragmentBuilder msg(String msg) &#123;</div><div class="line">    this.msg = msg;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  private void fillIntent(Intent intent) &#123;</div><div class="line">    intent.putExtra(&quot;name&quot;, name);</div><div class="line">    intent.putExtra(&quot;age&quot;, age);</div><div class="line">    intent.putExtra(&quot;msg&quot;, msg);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestFragment build() &#123;</div><div class="line">    TestFragment fragment = new TestFragment();</div><div class="line">    Intent intent = new Intent();</div><div class="line">    fillIntent(intent);</div><div class="line">    fragment.setArguments(intent.getExtras());</div><div class="line">    return fragment;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>-生成的modelBuilder<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">public final class TestModelBuilder &#123;</div><div class="line">  public static final String FIELD_NAME = &quot;name&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_AGE = &quot;age&quot;;</div><div class="line"></div><div class="line">  public static final String FIELD_MSG = &quot;msg&quot;;</div><div class="line"></div><div class="line">  private String name;</div><div class="line"></div><div class="line">  private int age;</div><div class="line"></div><div class="line">  private String msg;</div><div class="line"></div><div class="line">  public static TestModelBuilder builder() &#123;</div><div class="line">    TestModelBuilder builder = new TestModelBuilder();</div><div class="line">    return builder;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestModelBuilder name(String name) &#123;</div><div class="line">    this.name = name;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestModelBuilder age(int age) &#123;</div><div class="line">    this.age = age;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestModelBuilder msg(String msg) &#123;</div><div class="line">    this.msg = msg;</div><div class="line">    return this;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  public TestModel build() &#123;</div><div class="line">    TestModel model = new TestModel();</div><div class="line">    return model;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这三个builder文件基本类似，每个@Fields修饰的成员变量都将生成一个对应的builder方法。activityBuilder会多一个fillIntent方法和start方法，用来填充intent和开启新页面。而fragmentBuilder会多一个fillIntent方法和build方法，fillIntent也是用来填充intent，而build方法是用来返回fragment实例的。</p>
+<h3 id="使用Builder"><a href="#使用Builder" class="headerlink" title="使用Builder"></a>使用Builder</h3><ul>
+<li><p>in ActivityBuilder</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//调用</div><div class="line">TestActivityBuilder.builder().age(12)</div><div class="line">                    .name(&quot;xie&quot;)</div><div class="line">                    .msg(&quot;我是从mainAc过来的参数&quot;)</div><div class="line">                    .start(this)</div><div class="line">//使用变量，in TestActivity</div><div class="line"> Toast.makeText(this,</div><div class="line">                &quot;我是 $name，今年 $age, $msg&quot;, Toast.LENGTH_LONG).show()</div></pre></td></tr></table></figure>
+</li>
+<li><p>in fragmentBuilder</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//调用</div><div class="line">fragmentManager.beginTransaction()</div><div class="line">                    .replace(R.id.mainLayout,</div><div class="line">                            TestFragmentBuilder.builder()</div><div class="line">                                    .name(&quot;lovely&quot;)</div><div class="line">                                    .age(13)                                .msg(&quot;我是从testAc过来的参数&quot;).build())</div><div class="line">                    .commitAllowingStateLoss()</div><div class="line">//使用变量，in TestFragment</div><div class="line"> Toast.makeText(context,</div><div class="line">                &quot;我是 $name，今年 $age, $msg&quot;, Toast.LENGTH_LONG).show()</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Prossor生成代码原理"><a href="#Prossor生成代码原理" class="headerlink" title="Prossor生成代码原理"></a>Prossor生成代码原理</h2><p>上面就是通过builder生成的代码来给我简化使用流程，每一个activity和fragment都会相对应的生成一个Builder类来供我们使用。下面我们来详细了解一下这个框架的原理实现。</p>
+<h3 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h3><h4 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h4><p>Element是基类，可在不同的情况下转化成不同的子类，具体的类型可以通过getKind方法获得</p>
+<ul>
+<li>TypeElement: 表示类或者接口</li>
+<li>VariableElement: 表示字段参数</li>
+<li>PackageElement: 表示一个包</li>
+<li>ExecutableElement: 表示方法</li>
+<li>TypeParameterElement: 表示范型参数</li>
+</ul>
+<h4 id="TypeMirror"><a href="#TypeMirror" class="headerlink" title="TypeMirror"></a>TypeMirror</h4><p>Element表示的是元素，而TypeMirror表示的是参数类型。可以通过getkind来获取参数类型。</p>
+<h4 id="TypeSpec"><a href="#TypeSpec" class="headerlink" title="TypeSpec"></a>TypeSpec</h4><p>是javapoet库用来生成文件的主要的类。</p>
+<h4 id="ProcessingEnvironment"><a href="#ProcessingEnvironment" class="headerlink" title="ProcessingEnvironment"></a>ProcessingEnvironment</h4><p>ProcessingEnvironment中提供了4个工具接口</p>
+<ul>
+<li>lateinit var types: Types //java类型工具</li>
+<li>lateinit var elements: Elements //注解获取出来的元素</li>
+<li>lateinit var messager: Messager//消息输出</li>
+<li>lateinit var filer: Filer//文件写入</li>
+</ul>
+<h2 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h2><ol>
+<li><p>首先我们需要先创建出Annotation库，创建出对应的注解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Retention(RetentionPolicy.CLASS)</div><div class="line">@Target(ElementType.TYPE)</div><div class="line">public @interface BuilderActivity &#123;</div><div class="line">    String routerValue() default &quot;&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建出Processor库，并且自定义Processor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class KKProcessor : AbstractProcessor() &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在这里需要注意的是，我们必须手动的建立Processor索引，不然编译期间不会执行到这个Processor。<br>需要在和java同级目下创建出resources/META-INF/services/javax.annotation.processing.Processor文件，然后在内部添加processor的引用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">com.inject.xie.processor.KKProcessor</div></pre></td></tr></table></figure></p>
+<p>而且，需要在app的gradle中添加该processor的编译。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kapt project(&quot;:Processor&quot;)</div></pre></td></tr></table></figure></p>
+<ol>
+<li>开始编译，解析注解<br>在编译时，会调用到processor的process方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">override fun process(p0: MutableSet&lt;out TypeElement&gt;?, p1: RoundEnvironment?): Boolean &#123;</div><div class="line">        LogUtils.warn(&quot;KKProcessor process&quot;)</div><div class="line"></div><div class="line">        return true</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在这个方法中，我们需要解析出我们要的注解<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">//解析class</div><div class="line">env.getElementsAnnotatedWith(BuilderActivity::class.java)</div><div class="line">                .asSequence()</div><div class="line">                .filter(SuperficialValidation::validateElement)</div><div class="line">                .filter &#123; it.kind.isClass &#125;</div><div class="line">                .toList()</div><div class="line">                .forEach &#123; element -&gt;</div><div class="line">                    LogUtils.warn(&quot;KKProcessor parasClass $&#123;element.simpleName&#125; is Activity~&quot;)</div><div class="line">                    if (ProcessorEnv.types.isSubtype(element.asType(), ClassType.KKACTIVITY.typeMirror)) &#123;</div><div class="line">                        classMap[element] = KKActivityBuilder(element as TypeElement)</div><div class="line">                    &#125;</div><div class="line">                &#125;</div></pre></td></tr></table></figure></p>
+<p>通过getElementsAnnotatedWith方法来获取被BuilderActivity修饰的所有的类。其他几个注解类似，然后存储在classMap，这里需要注意一点，process方法可能会执行多次，所以需要将解析的产物放在map中或者每次解析都将list清空。<br>然后解析field<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">private fun parasFiled(env: RoundEnvironment) &#123;</div><div class="line">        env.getElementsAnnotatedWith(Fields::class.java)</div><div class="line">                .asSequence()</div><div class="line">                .filter(SuperficialValidation::validateElement)</div><div class="line">                .filter &#123; it.kind.isField &#125;</div><div class="line">                .toList()</div><div class="line">                .forEach &#123; element -&gt;</div><div class="line">                    LogUtils.warn(&quot;KKProcessor parasFiled $&#123;element.simpleName&#125;&quot;)</div><div class="line">                    classMap[element.enclosingElement]?.addFiled(element)</div><div class="line">                &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>将解析生成的fields存储到上一步生成的class产物中，这样，就拿到了被注解的类和其中的被注解的成员变量。</p>
+<ol>
+<li>生成代码</li>
+</ol>
+<ul>
+<li><p>创建class</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">val classFileBuilder = TypeSpec.classBuilder(builderClassName)</div><div class="line">        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建成员及成员的builder方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">fields.forEach &#123; field -&gt;</div><div class="line">            LogUtils.warn(&quot;fieldBuilder $&#123;field.name&#125;&quot;)</div><div class="line">            //构造临时变量</div><div class="line">            classFileBuilder.addField(FieldSpec.builder(field.asTypeName(), field.name, Modifier.PRIVATE).build())</div><div class="line"></div><div class="line">            //构造变量相关的静态变量</div><div class="line">            classFileBuilder.addField(FieldSpec.builder(String::class.java, KKActivityBuilder.CONST_POSIX + field.name.toUpperCase())</div><div class="line">                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)</div><div class="line">                    .initializer(&quot;\$S&quot;, field.name)</div><div class="line">                    .build())</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">            //构造相关变量的builder方法</div><div class="line">            classFileBuilder.addMethod(MethodSpec.methodBuilder(field.name)</div><div class="line">                    .addModifiers(Modifier.PUBLIC)</div><div class="line">                    .addParameter(field.asTypeName(), field.name)</div><div class="line">                    .addStatement(&quot;this.$&#123;field.name&#125; = $&#123;field.name&#125;&quot;)</div><div class="line">                    .addStatement(&quot;return this&quot;)</div><div class="line">                    .returns(builderClassTypeName)</div><div class="line">                    .build())</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建方法<br>首先需要静态的builder方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//构造主builder</div><div class="line">        classFileBuilder.addMethod(MethodSpec.methodBuilder(&quot;builder&quot;)</div><div class="line">                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)</div><div class="line">                .returns(builderClassTypeName)</div><div class="line">                .addStatement(&quot;\$T builder = new \$T()&quot;, builderClassTypeName, builderClassTypeName)</div><div class="line">                .addStatement(&quot;return builder&quot;).build())</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>对于Activity，需要创建fillIntent和start方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">//对于Activity，需要创建fillIntent和start方法</div><div class="line">       val intentMethod = MethodSpec.methodBuilder(&quot;fillIntent&quot;)</div><div class="line">               .addModifiers(Modifier.PRIVATE)</div><div class="line">               .addParameter(INTENT.java, &quot;intent&quot;)</div><div class="line">       fields.forEach &#123; field -&gt;</div><div class="line">           //给fillIntent方法添加元素</div><div class="line">           intentMethod.addStatement(&quot;intent.putExtra(\$S, \$L)&quot;, field.name, field.name)</div><div class="line">       &#125;</div><div class="line">       typeBuilder.addMethod(intentMethod.build())</div><div class="line"></div><div class="line"></div><div class="line">       //start</div><div class="line">       typeBuilder.addMethod(MethodSpec.methodBuilder(&quot;start&quot;)</div><div class="line">               .addModifiers(Modifier.PUBLIC)</div><div class="line">               .addParameter(CONTEXT.java, &quot;context&quot;)</div><div class="line">               .addStatement(&quot;Intent intent = new Intent(context, \$L.class)&quot;, simpleName)</div><div class="line">               .addStatement(&quot;fillIntent(intent)&quot;)</div><div class="line">               .addStatement(&quot;context.startActivity(intent)&quot;)</div><div class="line">               .build())</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>对于fragment需要创建fillIntent和build方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">//fragment也需要fillIntent</div><div class="line">     val intentMethod = MethodSpec.methodBuilder(&quot;fillIntent&quot;)</div><div class="line">             .addModifiers(Modifier.PRIVATE)</div><div class="line">             .addParameter(ClassType.INTENT.java, &quot;intent&quot;)</div><div class="line">     fields.forEach &#123; field -&gt;</div><div class="line">         //给fillIntent方法添加元素</div><div class="line">         intentMethod.addStatement(&quot;intent.putExtra(\$S, \$L)&quot;, field.name, field.name)</div><div class="line">     &#125;</div><div class="line">     typeBuilder.addMethod(intentMethod.build())</div><div class="line"></div><div class="line"></div><div class="line">     val originClassName = ClassName.get(packageName, simpleName.toString())</div><div class="line">     //通过builder方法返回实例</div><div class="line">     typeBuilder.addMethod(MethodSpec.methodBuilder(&quot;build&quot;)</div><div class="line">             .returns(originClassName)</div><div class="line">             .addModifiers(Modifier.PUBLIC)</div><div class="line">             .addStatement(&quot;\$T fragment = new \$T()&quot;, originClassName, originClassName)</div><div class="line">             .addStatement(&quot;Intent intent = new Intent()&quot;)</div><div class="line">             .addStatement(&quot;fillIntent(intent)&quot;)</div><div class="line">             .addStatement(&quot;fragment.setArguments(intent.getExtras())&quot;)</div><div class="line">             .addStatement(&quot;return fragment&quot;)</div><div class="line">             .build())</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>写入文件<br>当构建好了TypeSpec，通过Filer进行文件写入<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private fun writeJavaToFile(typeSpec: TypeSpec) &#123;</div><div class="line">       try &#123;</div><div class="line">           val file = JavaFile.builder(packageName, typeSpec).build()</div><div class="line">           file.writeTo(ProcessorEnv.filer)</div><div class="line">       &#125; catch (e: IOException) &#123;</div><div class="line">           e.printStackTrace()</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这样，对应的生成文件就创建出来了。</p>
+<ol>
+<li>依赖注入<br>在文件生成之后，我们通过对应的Builder类来启动activity或者创建fragment实例，那我们如何直接在activity或者fragment中直接使用被注解的成员变量呢？这个其实也比较简单。</li>
+</ol>
+<ul>
+<li>对于activity<br>在application中注册activity监听，然后通过onActivityCreate的回调方法中进行inject，这个方法会在oncreate之前调用。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"> override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) &#123;</div><div class="line">                if (activity == null) &#123;</div><div class="line">                    return</div><div class="line">                &#125;</div><div class="line">                if (!activity.javaClass.isAnnotationPresent(BuilderActivity::class.java)) &#123;</div><div class="line">                    //该activity没有被Builder标注，跳过</div><div class="line">                    return</div><div class="line">                &#125;</div><div class="line">                Log.d(&quot;KKActivityBuilder&quot;, &quot;onActivityCreated~&quot;)</div><div class="line">                val intent = activity.intent ?: return</div><div class="line">                var fields = activity.javaClass.declaredFields</div><div class="line">                inject(activity, fields, intent.extras)</div><div class="line">            &#125;</div><div class="line"></div><div class="line">fun inject(activity: Activity?, fields: Array&lt;Field&gt;?, extras: Bundle?) &#123;</div><div class="line">        if (fields == null) &#123;</div><div class="line">            Log.d(&quot;KKActivityBuilder&quot;, &quot;declaredFields is null, should return~&quot;)</div><div class="line">            return</div><div class="line">        &#125;</div><div class="line">        fields.forEach &#123; field -&gt;</div><div class="line">            if (field.isAnnotationPresent(Fields::class.java)) &#123;</div><div class="line">                val name = field.name</div><div class="line">                try &#123;</div><div class="line">                    val access = field.isAccessible</div><div class="line">                    if (!access) field.isAccessible = true</div><div class="line">                    val value = getIntentExtra(extras, name)</div><div class="line">                    if (value != null) &#123;</div><div class="line">                        field.set(activity, getIntentExtra(extras, name))</div><div class="line">                    &#125; else &#123;</div><div class="line">                        Log.d(&quot;KKActivityBuilder&quot;, &quot;get value is null, continue~&quot;)</div><div class="line">                    &#125;</div><div class="line"></div><div class="line">                    if (!access) field.isAccessible = false</div><div class="line"></div><div class="line">                &#125; catch (e: Exception) &#123;</div><div class="line">                    Log.e(&quot;KKActivityBuilder&quot;, &quot;error in -&gt; $&#123;e.message&#125;&quot;)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fun  getIntentExtra(extras: Bundle?, name: String): Any? &#123;</div><div class="line">        return extras?.get(name)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol>
+<li>判断当前的activity是否被BuilderActivity修饰过</li>
+<li>如果被BuilderActivity修饰过，遍历fields，判断是否被Fields修饰过</li>
+<li>如果被Fields修饰过，从intent中获取field的name对应的value，以object的形式取出即可</li>
+<li>通过反射，给field赋值为上一步取出的值。</li>
+<li>完成</li>
+</ol>
+<ul>
+<li>对于fragment<br>fragment的注入其实与activity基本一致，只是fragment没有相对应的生命周期的监听，不过我们可以在统一的基类的onCreateView方法中调用inject方法进行注入。实际的注入流程完全一样。不过activity是从intent中取值，fragment是从argument中取值。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/" rel="next" title="PathMeasure动画使用">
+                <i class="fa fa-chevron-left"></i> PathMeasure动画使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/xiejl.github.io/images/avatar.gif"
+               alt="phiCoo" />
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/xiejl.github.io/archives">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LovelyInject"><span class="nav-number">1.</span> <span class="nav-text">LovelyInject</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用流程"><span class="nav-number">1.1.</span> <span class="nav-text">使用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用注解"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译build"><span class="nav-number">1.1.2.</span> <span class="nav-text">编译build</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Builder"><span class="nav-number">1.2.</span> <span class="nav-text">使用Builder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prossor生成代码原理"><span class="nav-number">2.</span> <span class="nav-text">Prossor生成代码原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本元素"><span class="nav-number">2.1.</span> <span class="nav-text">基本元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Element"><span class="nav-number">2.1.1.</span> <span class="nav-text">Element</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TypeMirror"><span class="nav-number">2.1.2.</span> <span class="nav-text">TypeMirror</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TypeSpec"><span class="nav-number">2.1.3.</span> <span class="nav-text">TypeSpec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProcessingEnvironment"><span class="nav-number">2.1.4.</span> <span class="nav-text">ProcessingEnvironment</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现流程"><span class="nav-number">3.</span> <span class="nav-text">实现流程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xiejl.github.io/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/xiejl.github.io/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xiejl.github.io/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
