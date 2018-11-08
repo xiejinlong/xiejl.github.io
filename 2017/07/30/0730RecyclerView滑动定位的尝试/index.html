@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -136,7 +138,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/">
 
 
 
@@ -167,16 +169,16 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,7 +208,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -216,7 +218,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -226,7 +228,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -260,7 +262,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/07/30/0730RecyclerView滑动定位的尝试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -351,7 +353,6 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 <p>#RecyclerView滚动速度的改变<br>假如我们使用smoothScrollToPosition方法，假如item过多的话，那么将会导致滑动到指定的position等待时间过长。其实linearLayoutmanager是开放了我们改变其移动速度的方法的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) &#123;</div><div class="line">    @Override</div><div class="line">    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) &#123;</div><div class="line">        LinearSmoothScroller linearSmoothScroller =</div><div class="line">                new LinearSmoothScroller(recyclerView.getContext()) &#123;</div><div class="line">                    //每滑动固定距离需要的时间。</div><div class="line">		    @Override</div><div class="line">                    protected int calculateTimeForScrolling(int dx) &#123;</div><div class="line">                        return super.calculateTimeForScrolling(dx);</div><div class="line">                    &#125;</div><div class="line">		    //</div><div class="line">                    @Override</div><div class="line">                    public PointF computeScrollVectorForPosition(int targetPosition) &#123;</div><div class="line">                        return mLayoutManager.computeScrollVectorForPosition(targetPosition);</div><div class="line">                    &#125;</div><div class="line">		    //滑动一个像素需要多少毫秒</div><div class="line">                    protected float calculateSpeedPerPixel</div><div class="line">                    (DisplayMetrics displayMetrics) &#123;</div><div class="line">				</div><div class="line">		    &#125;</div><div class="line">                &#125;;</div><div class="line">        linearSmoothScroller.setTargetPosition(position);</div><div class="line">        startSmoothScroll(linearSmoothScroller);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure><br>我们只需要在上面几个方法设置我们想要的速度就行了。</p>
 <p>#遇到的问题<br>首先是这样的格式,<br><img src="http://onu21exz8.bkt.clouddn.com/scroll_dest_1.jpeg" alt=""><br>在定位完成之后，会变成下面这样：<br><img src="http://onu21exz8.bkt.clouddn.com/scroll_dest_2.jpeg" alt=""><br>在滑动定位到指定位置时,刚开始是通过smoothScrollToPosition方法进行定位，发现滚动速度不符合预期，然后通过上面方法修改滚动定位的速度,发现滚动总距离的计算会出现问题，后面修改了滚动方法，结果每一个滚动的方法都出现同样的问题，都有滚动距离异常的问题。因为项目中的header封面并不是recyclerView的一部分，而是监听了recyclerView的滚动距离做的位移计算，一旦滚动距离出现异常,封面的位移动画也会出现错误。</p>
 <p>最后发现是因为recyclerView位移计算的时候，是以平均item的高度进行计算的，一旦有一个比较高的item，就会出现计算错误的情况。所以，解决方式比较简单，需要将内置的占位ViewHolder切换成几个比较小的占位item，这样，计算就没问题了。</p>
-
       
     </div>
 
@@ -447,7 +448,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -458,9 +459,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -483,6 +482,13 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -530,7 +536,7 @@ scrollByscrollBy需要传入x和y值，通过判断当前r">
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

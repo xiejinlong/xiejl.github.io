@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -133,7 +135,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/06/22/0622Handler底层原理实现/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/06/22/0622Handler底层原理实现/">
 
 
 
@@ -164,16 +166,16 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -203,7 +205,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -213,7 +215,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -223,7 +225,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -257,7 +259,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/06/22/0622Handler底层原理实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -393,7 +395,6 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 </li>
 </ul>
 <p>事实上，handler机制就是通过自线程持有外部线程的handler引用，然后调用该引用的handler的postMessage方法，这样就会将message发送到这个线程的消息队列里面了。这个message内部有个target标记了所属的hanlder对象，这样保证了一个线程中可以存在多个handler对象。在发送时，底层通过线程间通信，通过管道传递消息，因为管道分为两种，其中一种就是用与父子线程的传递，消耗的资源较少。而Looper在取消息时，因为消息中就存储了target Handler的引用，那么就可以调用这个handler的handleMessage方法，并且处理将这个消息携带过去处理。</p>
-
       
     </div>
 
@@ -489,7 +490,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -500,9 +501,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -525,6 +524,13 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -572,7 +578,7 @@ what:这个是我们用来确认消息的类型，在handleMessage里面处理�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

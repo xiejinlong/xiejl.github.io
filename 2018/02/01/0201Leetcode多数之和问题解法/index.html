@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -124,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/02/01/0201Leetcode多数之和问题解法/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/02/01/0201Leetcode多数之和问题解法/">
 
 
 
@@ -155,16 +157,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -194,7 +196,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -204,7 +206,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -214,7 +216,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -248,7 +250,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/02/01/0201Leetcode多数之和问题解法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -328,7 +330,6 @@
 <h1 id="3Sum问题"><a href="#3Sum问题" class="headerlink" title="3Sum问题"></a>3Sum问题</h1><h2 id="题目：在一个数组中找到所有3数和为0的列表，需要保证去重。"><a href="#题目：在一个数组中找到所有3数和为0的列表，需要保证去重。" class="headerlink" title="题目：在一个数组中找到所有3数和为0的列表，需要保证去重。"></a>题目：在一个数组中找到所有3数和为0的列表，需要保证去重。</h2><h3 id="解法1-暴力解法，三层遍历，然后去重复-O-n-3"><a href="#解法1-暴力解法，三层遍历，然后去重复-O-n-3" class="headerlink" title="解法1:暴力解法，三层遍历，然后去重复,O(n^3)"></a>解法1:暴力解法，三层遍历，然后去重复,O(n^3)</h3><h3 id="解法2-将3数和转化为2数和，再进行求解O-n-2"><a href="#解法2-将3数和转化为2数和，再进行求解O-n-2" class="headerlink" title="解法2:将3数和转化为2数和，再进行求解O(n^2)"></a>解法2:将3数和转化为2数和，再进行求解O(n^2)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">  Arrays.sort(nums);</div><div class="line">       List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;();</div><div class="line">       for (int i = 0; i &lt; nums.length; i++) &#123;</div><div class="line">   //if判断去重复，保证每一个同样的数值只计算一次</div><div class="line">          if (i == 0 || nums[i] &gt; nums[i - 1]) &#123;</div><div class="line">               int targets = -nums[i];</div><div class="line">              int left = i + 1;</div><div class="line">              int right = nums.length - 1;</div><div class="line">              while (left &lt; right) &#123;</div><div class="line">                  if (nums[left] + nums[right] &gt; targets) &#123;</div><div class="line">                      left++;</div><div class="line">                  &#125; else if (nums[left] + nums[right] &lt; targets) &#123;</div><div class="line">                      right--;</div><div class="line">                  &#125; else &#123;</div><div class="line">                      List&lt;Integer&gt; list1 = new ArrayList&lt;&gt;();</div><div class="line">                      list1.add(nums[i]);</div><div class="line">                      list1.add(nums[left]);</div><div class="line">                      list1.add(nums[right]);</div><div class="line">                      list.add(list1);</div><div class="line">                      left++;</div><div class="line">                      right--;</div><div class="line">	       //去重复，保证每个同样的left和right只计算一次</div><div class="line">                      while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) &#123;</div><div class="line">                          left++;</div><div class="line">                      &#125;</div><div class="line">                      while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) &#123;</div><div class="line">                          right--;</div><div class="line">                      &#125;</div><div class="line">                  &#125;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">       &#125;</div><div class="line">       return list;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h1 id="3clostSum问题"><a href="#3clostSum问题" class="headerlink" title="3clostSum问题"></a>3clostSum问题</h1><h2 id="题目：求一个列表里面最接近指定数值的和，假设最接近的数值只会有一个。"><a href="#题目：求一个列表里面最接近指定数值的和，假设最接近的数值只会有一个。" class="headerlink" title="题目：求一个列表里面最接近指定数值的和，假设最接近的数值只会有一个。"></a>题目：求一个列表里面最接近指定数值的和，假设最接近的数值只会有一个。</h2><h3 id="解法：将3数和转化为2数和。与上面的三数和类似"><a href="#解法：将3数和转化为2数和。与上面的三数和类似" class="headerlink" title="解法：将3数和转化为2数和。与上面的三数和类似"></a>解法：将3数和转化为2数和。与上面的三数和类似</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">       Arrays.sort(nums);</div><div class="line">//定义一个最大值，</div><div class="line">       int minSum = Integer.MAX_VALUE;</div><div class="line">       for (int i = 0; i &lt; nums.length; i++) &#123;</div><div class="line">   //遍历并去重复</div><div class="line">          if (i == 0 || nums[i] &gt; nums[i - 1]) &#123;</div><div class="line">       //求剩余两数的目标和</div><div class="line">              int targets = target - nums[i];</div><div class="line">              int left = i + 1;</div><div class="line">       int ret = 0;</div><div class="line">              int right = nums.length - 1;</div><div class="line">              while (left &lt; right) &#123;</div><div class="line">	   //求和并比较，</div><div class="line">                  int sum = nums[i] + nums[left] + nums[right];</div><div class="line">                  if (Math.abs(sum - target) &lt; minSum) &#123;</div><div class="line">	      //找到更临近的</div><div class="line">                      minSum = Math.abs(sum - target);</div><div class="line">	       ret = sum;</div><div class="line">                  &#125;</div><div class="line">                  if (nums[left] + nums[right] &gt; targets) &#123;</div><div class="line">                      left++;</div><div class="line">                  &#125; else if (nums[left] + nums[right] &lt; targets) &#123;</div><div class="line">                      right--;</div><div class="line">                  &#125; else &#123;</div><div class="line">                    return sum;</div><div class="line">                  &#125;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">       &#125;</div><div class="line">       return ret;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h1 id="4Sum问题"><a href="#4Sum问题" class="headerlink" title="4Sum问题"></a>4Sum问题</h1><p>4数和为问题可以转化为3数和来求解，最外层加个for循环，然后完善下3sum的逻辑判断。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) &#123;</div><div class="line">      Arrays.sort(nums);</div><div class="line">      List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;();</div><div class="line">      for (int i = 0; i &lt; nums.length; i++) &#123;</div><div class="line">          for (int j = i + 1; j &lt; nums.length; j++) &#123;</div><div class="line">  //对j相等的值去重复</div><div class="line">                if (nums[j] == nums[j - 1] &amp;&amp; j - 1 &gt; i) &#123;</div><div class="line">                  continue;</div><div class="line">              &#125;</div><div class="line">//对i相等的值去重复</div><div class="line">              if (i == 0 || nums[i] &gt; nums[i - 1]) &#123;</div><div class="line">                  int target1 = target - nums[i] - nums[j];</div><div class="line">                  int left = j + 1;</div><div class="line">                  int right = nums.length - 1;</div><div class="line">                  while (left &lt; right) &#123;</div><div class="line">                      if (nums[left] + nums[right] &lt; target1) &#123;</div><div class="line">                          left++;</div><div class="line">                      &#125; else if (nums[left] + nums[right] &gt; target1) &#123;</div><div class="line">                          right--;</div><div class="line">                      &#125; else &#123;</div><div class="line">                          List&lt;Integer&gt; integers = new ArrayList&lt;&gt;();</div><div class="line">                          integers.add(nums[i]);</div><div class="line">                          integers.add(nums[j]);</div><div class="line">                          integers.add(nums[left]);</div><div class="line">                          integers.add(nums[right]);</div><div class="line">                          list.add(integers);</div><div class="line">                          left++;</div><div class="line">                          right--;</div><div class="line">	    //对left和right去重复</div><div class="line">                          while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) &#123;</div><div class="line">                              left++;</div><div class="line">                          &#125;</div><div class="line">                          while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) &#123;</div><div class="line">                              right--;</div><div class="line">                          &#125;</div><div class="line">                      &#125;</div><div class="line">                  &#125;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">          return list;</div><div class="line">      &#125;</div></pre></td></tr></table></figure></p>
-
       
     </div>
 
@@ -424,7 +425,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -435,9 +436,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -460,6 +459,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -507,7 +513,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -132,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/19/0119android启动优化/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/19/0119android启动优化/">
 
 
 
@@ -163,16 +165,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -202,7 +204,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -212,7 +214,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -222,7 +224,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -256,7 +258,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/01/19/0119android启动优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -370,7 +372,6 @@
 <p>这样，我们就会发现我们app启动时的白屏已经不存在了。</p>
 <h2 id="application的初始化流程优化"><a href="#application的初始化流程优化" class="headerlink" title="application的初始化流程优化"></a>application的初始化流程优化</h2><p>对于application的初始化，无非就是延迟初始化和异步初始化，但是这些都需要针对于具体的业务来做处理，因为有些操作在application做初始化，而一进activity就需要使用了，这种时候需要保证application初始化完毕时这些操作也已经完成。在这里有个思路，对在application中异步初始化的类，都提供一个统一管理的类。来保证类的成功初始化。<br>如果是一启动就必须使用，比如说常用的imageLoad、网络类的初始化，那么只能尽可能的在这个类的初始化中只完成一些必要的事情，然后这些类的初始化还是在onCreate方法中执行。<br>如果是非必须的，但是优先级较高的，那么可以通过异步初始化，比如asyncTask使用。<br>如果是非必须的，而且优先级比较低的，那么可以通过延迟初始化，在需要使用的时候才进行初始化。</p>
 <h2 id="Activity延迟初始化"><a href="#Activity延迟初始化" class="headerlink" title="Activity延迟初始化"></a>Activity延迟初始化</h2><p>如果在Activity的onCreate方法中做初始化，那么activity的UI绘制和初始化将会同时执行，这样，我们的初始化操作将会阻塞UI初始化。所以，这种时候我们应该将我们的操作放在UI绘制完毕之后做初始化。这里有个通用延迟初始化方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">getWindow().getDecorView().post(new Runnable() &#123; </div><div class="line">...</div><div class="line">...</div><div class="line">...</div><div class="line">&#125;);</div></pre></td></tr></table></figure><br>通过getDecorView的post方法，将会将这个runnable post到这个Ui的消息队列最后面，直到UI的消息绘制完毕，才会获取包含这个runable的消息执行。</p>
-
       
     </div>
 
@@ -466,7 +467,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -477,9 +478,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -502,6 +501,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -549,7 +555,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

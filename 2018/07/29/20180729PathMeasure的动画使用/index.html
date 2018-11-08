@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -132,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/">
 
 
 
@@ -163,16 +165,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -202,7 +204,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -212,7 +214,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -222,7 +224,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -256,7 +258,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/07/29/20180729PathMeasure的动画使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -353,7 +355,6 @@
 <h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3><p>在onDraw方法中绘制获取出来的path<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">canvas?.drawPath(path, recordPaint)</div></pre></td></tr></table></figure></p>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><h3 id="需要有暂停，并且暂停有间隔"><a href="#需要有暂停，并且暂停有间隔" class="headerlink" title="需要有暂停，并且暂停有间隔"></a>需要有暂停，并且暂停有间隔</h3><p>比如下面图片中的例子：<br><img src="http://onu21exz8.bkt.clouddn.com/record.jpeg" alt=""><br>这个动画需要可以暂停，然后每次暂停后都会有分隔符。<br>处理方案： 我们需要将path缓存起来，并且每次生成小间隔，在onDraw时先绘制之前缓存的path，在计算进度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//绘制之前的进度</div><div class="line">       destPathList.forEachIndexed &#123; index, path -&gt;</div><div class="line">           //0表示录音path，1表示间隔path</div><div class="line">           canvas?.drawPath(path, if (index % 2 == 0) recordPaint else dividerPaint)</div><div class="line">       &#125;</div><div class="line">       //需要先空出间隔的时间不绘制</div><div class="line">       if (durationStack.isEmpty()) &#123;</div><div class="line">           val path = Path()</div><div class="line">           pathMeasure.getSegment(getDistance(getLastRecordTime()), getDistance(currentTime + getLastRecordTime()), path, true)</div><div class="line">           canvas?.drawPath(path, recordPaint)</div><div class="line">       &#125; else if (currentTime &gt;= dividerStep) &#123;</div><div class="line">           //再进行此时的绘制, 肯定是录音绘制</div><div class="line">           val path = Path()</div><div class="line">           pathMeasure.getSegment(getDistance(getLastRecordTime()), getDistance(currentTime + getLastRecordTime() - dividerStep), path, true)</div><div class="line">           canvas?.drawPath(path, recordPaint)</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
 <h4 id="onDraw并没有手动执行"><a href="#onDraw并没有手动执行" class="headerlink" title="onDraw并没有手动执行"></a>onDraw并没有手动执行</h4><p>在设置的时候，发现onDraw方法在request或者invaliate方法触发下并不会执行，是因为ViewGroup默认情况下，出于性能考虑，会被设置成WILL_NOT_DROW，这样，ondraw就不会被执行了。<br>解决方案,在构造函数中，设置WILL_NOT_DROW为false<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setWillNotDraw（false）</div></pre></td></tr></table></figure></p>
-
       
     </div>
 
@@ -449,7 +450,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -460,9 +461,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -485,6 +484,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -512,7 +518,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">2.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆环动画实现"><span class="nav-number"></span> <span class="nav-text">圆环动画实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建圆环PathMeasure"><span class="nav-number">1.</span> <span class="nav-text">创建圆环PathMeasure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取进度"><span class="nav-number">2.</span> <span class="nav-text">获取进度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取片段"><span class="nav-number">3.</span> <span class="nav-text">获取片段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制"><span class="nav-number">4.</span> <span class="nav-text">绘制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number"></span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#需要有暂停，并且暂停有间隔"><span class="nav-number">1.</span> <span class="nav-text">需要有暂停，并且暂停有间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#onDraw并没有手动执行"><span class="nav-number">1.1.</span> <span class="nav-text">onDraw并没有手动执行</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">1.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">2.</span> <span class="nav-text">常用方法</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#圆环动画实现"><span class="nav-number"></span> <span class="nav-text">圆环动画实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建圆环PathMeasure"><span class="nav-number">1.</span> <span class="nav-text">创建圆环PathMeasure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取进度"><span class="nav-number">2.</span> <span class="nav-text">获取进度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取片段"><span class="nav-number">3.</span> <span class="nav-text">获取片段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制"><span class="nav-number">4.</span> <span class="nav-text">绘制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number"></span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#需要有暂停，并且暂停有间隔"><span class="nav-number">1.</span> <span class="nav-text">需要有暂停，并且暂停有间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#onDraw并没有手动执行"><span class="nav-number">1.1.</span> <span class="nav-text">onDraw并没有手动执行</span></a></li></ol></li></ol></li></div>
             
 
           </div>
@@ -532,7 +538,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

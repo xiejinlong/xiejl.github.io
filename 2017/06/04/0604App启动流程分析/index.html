@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -136,7 +138,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/">
 
 
 
@@ -167,16 +169,16 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -206,7 +208,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -216,7 +218,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -226,7 +228,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -260,7 +262,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/06/04/0604App启动流程分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -353,7 +355,6 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 <h3 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h3><p>接下来在Process代码中看看与zygote的交互过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"> public static final ProcessStartResult start(final String processClass,</div><div class="line">                                  final String niceName,</div><div class="line">                                  int uid, int gid, int[] gids,</div><div class="line">                                  int debugFlags, int mountExternal,</div><div class="line">                                  int targetSdkVersion,</div><div class="line">                                  String seInfo,</div><div class="line">                                  String abi,</div><div class="line">                                  String instructionSet,</div><div class="line">                                  String appDataDir,</div><div class="line">                                  String[] zygoteArgs) &#123;</div><div class="line">            return startViaZygote(processClass, niceName, uid, gid, gids,</div><div class="line">                    debugFlags, mountExternal, targetSdkVersion, seInfo,</div><div class="line">                    abi, instructionSet, appDataDir, zygoteArgs);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">==========&gt;</div><div class="line"> private static ProcessStartResult startViaZygote(final String processClass,</div><div class="line">                                  final String niceName,</div><div class="line">                                  final int uid, final int gid,</div><div class="line">                                  final int[] gids,</div><div class="line">                                  int debugFlags, int mountExternal,</div><div class="line">                                  int targetSdkVersion,</div><div class="line">                                  String seInfo,</div><div class="line">                                  String abi,</div><div class="line">                                  String instructionSet,</div><div class="line">                                  String appDataDir,</div><div class="line">                                  String[] extraArgs)</div><div class="line">                                  throws ZygoteStartFailedEx &#123;</div><div class="line">	...</div><div class="line">	//封装args</div><div class="line">	 return zygoteSendArgsAndGetResult(openZygoteSocketIfNeeded(abi), argsForZygote);</div><div class="line">&#125;</div><div class="line">=======&gt;</div><div class="line"></div><div class="line"> private static ProcessStartResult zygoteSendArgsAndGetResult(</div><div class="line">            ZygoteState zygoteState, ArrayList&lt;String&gt; args)</div><div class="line">            throws ZygoteStartFailedEx &#123;</div><div class="line">            ...</div><div class="line">	    //获取写通道和读通道</div><div class="line">	    final BufferedWriter writer = zygoteState.writer;</div><div class="line">            final DataInputStream inputStream = zygoteState.inputStream;</div><div class="line">	    </div><div class="line">	    //写入数据</div><div class="line">            writer.write(Integer.toString(args.size()));</div><div class="line">            writer.newLine();</div><div class="line"></div><div class="line">            int sz = args.size();</div><div class="line">            for (int i = 0; i &lt; sz; i++) &#123;</div><div class="line">                String arg = args.get(i);</div><div class="line">                if (arg.indexOf(&apos;\n&apos;) &gt;= 0) &#123;</div><div class="line">                    throw new ZygoteStartFailedEx(</div><div class="line">                            &quot;embedded newlines not allowed&quot;);</div><div class="line">                &#125;</div><div class="line">                writer.write(arg);</div><div class="line">                writer.newLine();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            writer.flush();</div><div class="line"></div><div class="line">            ProcessStartResult result = new ProcessStartResult();</div><div class="line">            result.pid = inputStream.readInt();</div><div class="line">            if (result.pid &lt; 0) &#123;</div><div class="line">                throw new ZygoteStartFailedEx(&quot;fork() failed&quot;);</div><div class="line">            &#125;</div><div class="line">            result.usingWrapper = inputStream.readBoolean();</div><div class="line">            return result;</div></pre></td></tr></table></figure><br>这里主要是对流的操作，因为socket通信相当于是建立了一条流通道，传递数据只需要写入数据即可，接收数据只需要read即可。ZygoteState存储了Zygote的socket连接状态信息。可以直接通过这个类获取出zygote的读通道和写通道。</p>
 <h3 id="Zygote"><a href="#Zygote" class="headerlink" title="Zygote"></a>Zygote</h3><p>我们可以很简单的相对Zygote对于进程的创建的实现，在收到了消息之后，只需要执行一个fork便可创建出子进程。我们看看zygote的轮询方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">private static void runSelectLoop(String abiList) throws MethodAndArgsCaller &#123;</div><div class="line">        ArrayList&lt;FileDescriptor&gt; fds = new ArrayList&lt;FileDescriptor&gt;();</div><div class="line">        ArrayList&lt;ZygoteConnection&gt; peers = new ArrayList&lt;ZygoteConnection&gt;();</div><div class="line"></div><div class="line">        fds.add(sServerSocket.getFileDescriptor());</div><div class="line">        peers.add(null);</div><div class="line"></div><div class="line">        while (true) &#123;</div><div class="line">            StructPollfd[] pollFds = new StructPollfd[fds.size()];</div><div class="line">            for (int i = 0; i &lt; pollFds.length; ++i) &#123;</div><div class="line">                pollFds[i] = new StructPollfd();</div><div class="line">                pollFds[i].fd = fds.get(i);</div><div class="line">                pollFds[i].events = (short) POLLIN;</div><div class="line">            &#125;</div><div class="line">            try &#123;</div><div class="line">                Os.poll(pollFds, -1);</div><div class="line">            &#125; catch (ErrnoException ex) &#123;</div><div class="line">                throw new RuntimeException(&quot;poll failed&quot;, ex);</div><div class="line">            &#125;</div><div class="line">            for (int i = pollFds.length - 1; i &gt;= 0; --i) &#123;</div><div class="line">                if ((pollFds[i].revents &amp; POLLIN) == 0) &#123;</div><div class="line">                    continue;</div><div class="line">                &#125;</div><div class="line">                if (i == 0) &#123;</div><div class="line">                    ZygoteConnection newPeer = acceptCommandPeer(abiList);</div><div class="line">                    peers.add(newPeer);</div><div class="line">                    fds.add(newPeer.getFileDesciptor());</div><div class="line">                &#125; else &#123;</div><div class="line">                    boolean done = peers.get(i).runOnce();</div><div class="line">                    if (done) &#123;</div><div class="line">                        peers.remove(i);</div><div class="line">                        fds.remove(i);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>采用了多路复用的socket，利用poll监听感兴趣的socket事件，一旦事件过来，那么将会调用runOnce方法，执行一次创建进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"> boolean runOnce() throws ZygoteInit.MethodAndArgsCaller &#123;</div><div class="line"></div><div class="line">        String args[];</div><div class="line">        Arguments parsedArgs = null;</div><div class="line">        FileDescriptor[] descriptors;</div><div class="line"></div><div class="line">        args = readArgumentList();</div><div class="line">        descriptors = mSocket.getAncillaryFileDescriptors();</div><div class="line">	...</div><div class="line">	//fork子进程</div><div class="line">	pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid, parsedArgs.gids,</div><div class="line">                    parsedArgs.debugFlags, rlimits, parsedArgs.mountExternal, parsedArgs.seInfo,</div><div class="line">                    parsedArgs.niceName, fdsToClose, parsedArgs.instructionSet,</div><div class="line">                    parsedArgs.appDataDir);</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"></div><div class="line">===========&gt;</div><div class="line"> public static int forkAndSpecialize(int uid, int gid, int[] gids, int debugFlags,</div><div class="line">          int[][] rlimits, int mountExternal, String seInfo, String niceName, int[] fdsToClose,</div><div class="line">          String instructionSet, String appDataDir) &#123;</div><div class="line">        VM_HOOKS.preFork();</div><div class="line">	//native代码fork操作，应该是用c直接调用fork()创建出来。</div><div class="line">        int pid = nativeForkAndSpecialize(</div><div class="line">                  uid, gid, gids, debugFlags, rlimits, mountExternal, seInfo, niceName, fdsToClose,</div><div class="line">                  instructionSet, appDataDir);</div><div class="line">        VM_HOOKS.postForkCommon();</div><div class="line">        return pid;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>到这里，一个进程就已经创建成功了。</p>
-
       
     </div>
 
@@ -449,7 +450,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -460,9 +461,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -485,6 +484,13 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -532,7 +538,7 @@ ActivityManagerService：用来管理所有activity的生命周期，统一进�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

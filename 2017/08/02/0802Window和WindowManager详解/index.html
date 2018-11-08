@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -129,7 +131,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/08/02/0802Window和WindowManager详解/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/08/02/0802Window和WindowManager详解/">
 
 
 
@@ -160,16 +162,16 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -199,7 +201,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -209,7 +211,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -219,7 +221,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -253,7 +255,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/08/02/0802Window和WindowManager详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -331,7 +333,6 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 <h2 id="应用级window"><a href="#应用级window" class="headerlink" title="应用级window"></a>应用级window</h2><h3 id="window创建"><a href="#window创建" class="headerlink" title="window创建"></a>window创建</h3><p>我们这里首先了解一下我们最经常接触而又不在意的window，应用级window，实体类是PhoneWindow，我们从其创建的地方开始阅读，一个activity的window的创建肯定是在activity的初始化的时候进行创建的。<br>在activity初始化的最后一个地点，会调用newActivity方法，创建出一个activity，并调用其attach方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public Activity newActivity(Class&lt;?&gt; clazz, Context context, </div><div class="line">            IBinder token, Application application, Intent intent, ActivityInfo info, </div><div class="line">            CharSequence title, Activity parent, String id,</div><div class="line">            Object lastNonConfigurationInstance) throws InstantiationException, </div><div class="line">            IllegalAccessException &#123;</div><div class="line">        Activity activity = (Activity)clazz.newInstance();</div><div class="line">        ActivityThread aThread = null;</div><div class="line">        activity.attach(context, aThread, this, token, 0, application, intent,</div><div class="line">                info, title, parent, id,</div><div class="line">                (Activity.NonConfigurationInstances)lastNonConfigurationInstance,</div><div class="line">                new Configuration(), null, null);</div><div class="line">        return activity;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>而window的创建就是在attach方法中实现的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">final void attach(Context context, ActivityThread aThread,</div><div class="line">            Instrumentation instr, IBinder token, int ident,</div><div class="line">            Application application, Intent intent, ActivityInfo info,</div><div class="line">            CharSequence title, Activity parent, String id,</div><div class="line">            NonConfigurationInstances lastNonConfigurationInstances,</div><div class="line">            Configuration config, String referrer, IVoiceInteractor voiceInteractor) &#123;</div><div class="line">        attachBaseContext(context);</div><div class="line"></div><div class="line">        mFragments.attachHost(null /*parent*/);</div><div class="line">        //新建一个phoneWindow，与此activity相对应</div><div class="line">        mWindow = new PhoneWindow(this);</div><div class="line">        ....</div><div class="line">	mInstrumentation = instr;</div><div class="line">	//这个token也就是window的token</div><div class="line">        mToken = token;</div><div class="line">        mActivityInfo = info;</div><div class="line">	.....</div><div class="line">	//会给window和windowManager建立绑定，这个windowManager是系统初始化就会创建的</div><div class="line">        mWindow.setWindowManager(</div><div class="line">                (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),</div><div class="line">                mToken, mComponent.flattenToString(),</div><div class="line">                (info.flags &amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);</div><div class="line">     	//假如说存在parent节点，则需要将这个parent的window作为这个window的container。</div><div class="line">	//此时，window的根结点就是这个container，假如没有设置container，那么这个window的根结点就是DecorateView。</div><div class="line">        if (mParent != null) &#123;</div><div class="line">            mWindow.setContainer(mParent.getWindow());</div><div class="line">        &#125;</div><div class="line">        mWindowManager = mWindow.getWindowManager();</div><div class="line">        mCurrentConfig = config;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在初始化PhoneWindow的同时，会新建一个LayoutInflate对象，这个对象是用来解析view的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public PhoneWindow(Context context) &#123;</div><div class="line">       super(context);</div><div class="line">       mLayoutInflater = LayoutInflater.from(context);</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
 <h3 id="contentView初始化"><a href="#contentView初始化" class="headerlink" title="contentView初始化"></a>contentView初始化</h3><p>在我们activity的oncreate的方法调用时，我们必须要调用setContentView方法，这个方法是我们必须要实现的，activity只能通过这个方法来绑定其layout，并初始化view。其实这个方法内部就是调用的window的个体setContentView方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public void setContentView(@LayoutRes int layoutResID) &#123;</div><div class="line">        getWindow().setContentView(layoutResID);</div><div class="line">        initWindowDecorActionBar();</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>下面就是window的setContentView的方法了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">    public void setContentView(int layoutResID) &#123;</div><div class="line">        //如果没有设置container，那么这个window的根结点就是decorateView</div><div class="line">	if (mContentParent == null) &#123;</div><div class="line">            //初始化一个decorate顶层View</div><div class="line">	    installDecor();</div><div class="line">        &#125; else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</div><div class="line">	    //存在parent节点，那么需要移除所有子View</div><div class="line">            mContentParent.removeAllViews();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</div><div class="line">            final Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID,</div><div class="line">                    getContext());</div><div class="line">	    //切换新的scene</div><div class="line">            transitionTo(newScene);</div><div class="line">        &#125; else &#123;</div><div class="line">	    //解析新的View到parent节点</div><div class="line">            mLayoutInflater.inflate(layoutResID, mContentParent);</div><div class="line">        &#125;</div><div class="line">        mContentParent.requestApplyInsets();</div><div class="line">        final Callback cb = getCallback();</div><div class="line">        if (cb != null &amp;&amp; !isDestroyed()) &#123;</div><div class="line">            cb.onContentChanged();</div><div class="line">        &#125;</div><div class="line">        mContentParentExplicitlySet = true;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在这里，我们需要关注几点，假如在已经生成了mContentParent节点之后，那么就将会直接复用先前的根结点。我们来看看第一次初始化decorateView的操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">private void installDecor() &#123;</div><div class="line">        mForceDecorInstall = false;</div><div class="line">        if (mDecor == null) &#123;</div><div class="line">	    //简单的通过创建生成DecorateView，这是一个FrameLayout</div><div class="line">            mDecor = generateDecor(-1);</div><div class="line">            ...</div><div class="line">        &#125; else &#123;</div><div class="line">            mDecor.setWindow(this);</div><div class="line">        &#125;</div><div class="line">        if (mContentParent == null) &#123;</div><div class="line">	    //通过decorateView生成contentParent节点</div><div class="line">            mContentParent = generateLayout(mDecor);</div><div class="line">	    ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">==========&gt;generateLayout(mDecor)</div><div class="line">protected ViewGroup generateLayout(DecorView decor) &#123;</div><div class="line">	//windowManager的layoutParam</div><div class="line">        WindowManager.LayoutParams params = getAttributes();</div><div class="line"></div><div class="line">	....</div><div class="line">	//这个window的decorateView下的根节点</div><div class="line">        ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);</div><div class="line">        //假如没有设置container，那么decorateView就是根节点</div><div class="line">        if (getContainer() == null) &#123;</div><div class="line">            final Drawable background;</div><div class="line">            if (mBackgroundResource != 0) &#123;</div><div class="line">                background = getContext().getDrawable(mBackgroundResource);</div><div class="line">            &#125; else &#123;</div><div class="line">                background = mBackgroundDrawable;</div><div class="line">            &#125;</div><div class="line">            mDecor.setWindowBackground(background);</div><div class="line"></div><div class="line">            final Drawable frame;</div><div class="line">            if (mFrameResource != 0) &#123;</div><div class="line">                frame = getContext().getDrawable(mFrameResource);</div><div class="line">            &#125; else &#123;</div><div class="line">                frame = null;</div><div class="line">            &#125;</div><div class="line">            mDecor.setWindowFrame(frame);</div><div class="line"></div><div class="line">            mDecor.setElevation(mElevation);</div><div class="line">            mDecor.setClipToOutline(mClipToOutline);</div><div class="line"></div><div class="line">            if (mTitle != null) &#123;</div><div class="line">                setTitle(mTitle);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            if (mTitleColor == 0) &#123;</div><div class="line">                mTitleColor = mTextColor;</div><div class="line">            &#125;</div><div class="line">            setTitleColor(mTitleColor);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mDecor.finishChanging();</div><div class="line"></div><div class="line">        return contentParent;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在创建完DecorView和生成根节点之后，就开始解析xml文件到指定节点。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) &#123;</div><div class="line">        final Resources res = getContext().getResources();</div><div class="line">        final XmlResourceParser parser = res.getLayout(resource);</div><div class="line">        try &#123;</div><div class="line">            return inflate(parser, root, attachToRoot);</div><div class="line">        &#125; finally &#123;</div><div class="line">            parser.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>通过XmlResourceParser解析xml每一个节点，添加的根节点之后。生成整个layout的View对象。并进行绘制。我们下面来看一张window初始化的图。<br><img src="http://onu21exz8.bkt.clouddn.com/DecorView.jpeg" alt=""></p>
 <h3 id="关于window-token"><a href="#关于window-token" class="headerlink" title="关于window token"></a>关于window token</h3><p>因为android的架构机制就是通过binder实现的cs机制。所以需要有一个token来标识每一个window。<br>后续再添加</p>
-
       
     </div>
 
@@ -427,7 +428,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -438,9 +439,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -463,6 +462,13 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -510,7 +516,7 @@ Window在android中,一共有3种不同形式的window，分别是系统级windo
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

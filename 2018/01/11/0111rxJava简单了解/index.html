@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -124,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/11/0111rxJava简单了解/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2018/01/11/0111rxJava简单了解/">
 
 
 
@@ -155,16 +157,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -194,7 +196,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -204,7 +206,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -214,7 +216,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -248,7 +250,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2018/01/11/0111rxJava简单了解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -330,7 +332,6 @@
 <h3 id="Obserable-observeOn"><a href="#Obserable-observeOn" class="headerlink" title="Obserable.observeOn"></a>Obserable.observeOn</h3><p>rxjava中，用observeOn指定后面的观察者的执行线程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public final Observable&lt;T&gt; observeOn(Scheduler scheduler) &#123;</div><div class="line">	//bufferSize为默认的缓存区大小，为BUFFER_SIZE = Math.max(16, Integer.getInteger(&quot;rx2.buffer-size&quot;, 128))</div><div class="line">        return observeOn(scheduler, false, bufferSize());</div><div class="line">    &#125;</div><div class="line">=====&gt;</div><div class="line"> public final Observable&lt;T&gt; observeOn(Scheduler scheduler, boolean delayError, int bufferSize) &#123;</div><div class="line">        return RxJavaPlugins.onAssembly(new ObservableObserveOn&lt;T&gt;(this, scheduler, delayError, bufferSize));</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>执行了observeOn方法时，会将先前的Observable封装成ObservableObserveOn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public ObservableObserveOn(ObservableSource&lt;T&gt; source, Scheduler scheduler, boolean delayError, int bufferSize) &#123;</div><div class="line">       super(source);</div><div class="line">       this.scheduler = scheduler;</div><div class="line">       this.delayError = delayError;</div><div class="line">       this.bufferSize = bufferSize;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   @Override</div><div class="line">   protected void subscribeActual(Observer&lt;? super T&gt; observer) &#123;</div><div class="line">       if (scheduler instanceof TrampolineScheduler) &#123;</div><div class="line">           source.subscribe(observer);</div><div class="line">       &#125; else &#123;</div><div class="line">    //创建出一个Work线程，这个是当前执行线程的事件Looper，每一个需要执行的操作都需要在这个Looper中排队，等待执行。</div><div class="line">           Scheduler.Worker w = scheduler.createWorker();</div><div class="line">    //订阅ObserveOnObserver</div><div class="line">           source.subscribe(new ObserveOnObserver&lt;T&gt;(observer, w, delayError, bufferSize));</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure><br>在ObserveOnServer方法中，将会维护这个looper，对于每一个emitter发射出来的事件，都会将其置于looper中执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">    @Override</div><div class="line">        public void onNext(T t) &#123;</div><div class="line">	    ...</div><div class="line">            schedule();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void onError(Throwable t) &#123;</div><div class="line">           ... </div><div class="line">	   schedule();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void onComplete() &#123;</div><div class="line">          ...  </div><div class="line">	  schedule();</div><div class="line">        &#125;</div><div class="line">=====&gt;</div><div class="line"> void schedule() &#123;</div><div class="line">            if (getAndIncrement() == 0) &#123;</div><div class="line">                worker.schedule(this);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure><br>对于rxjava设置的observeOn方法，只有最后一个会生效，这个原因是因为每执行一次，都会将其放置在工作Looper执行。比如下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Observable.interval(1000, TimeUnit.MICROSECONDS)</div><div class="line">                .subscribeOn(Schedulers.io()).subscribeOn(Schedulers.newThread())</div><div class="line">                .subscribeOn(Schedulers.computation())</div><div class="line">                .observeOn(Schedulers.computation())</div><div class="line">                .observeOn(Schedulers.io())</div><div class="line">                .observeOn(AndroidSchedulers.mainThread())</div><div class="line">		.subscribe(...);</div></pre></td></tr></table></figure><br>首先会将原始的Observable放在computation线程中执行，io线程封装computation线程，最后主线程封装io线程。因为observeOn对后面的obsever起作用，所以最后subscribe执行的线程将会是最外层的线程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"> new Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        new Thread &#123;</div><div class="line">             @Override</div><div class="line">             public void run() &#123;</div><div class="line">                //执行原始被观察者的发射方法</div><div class="line">                ...</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">     //执行observer的方法</div><div class="line">     ...</div><div class="line">    &#125;</div><div class="line">&#125;  </div></pre></td></tr></table></figure><br>其实subscribe和observeOn比较类似，只是两个起作用的区域不一样，subscribe对前面起作用，所以最后执行的线程是最内层的。observeOn对后面起作用，所以最后执行到的线程是在最外层的线程。</p>
 <h3 id="Observable-subscribe"><a href="#Observable-subscribe" class="headerlink" title="Observable.subscribe"></a>Observable.subscribe</h3><p>这个是rxjava订阅的入口，如果未指明创建立即执行的话，默认是在订阅方法执行时执行。这个方法接收一个Observer，也就是观察者。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public final Disposable subscribe(Consumer&lt;? super T&gt; onNext) &#123;</div><div class="line">        return subscribe(onNext, Functions.ON_ERROR_MISSING, Functions.EMPTY_ACTION, Functions.emptyConsumer());</div><div class="line">    &#125;</div><div class="line">=====》</div><div class="line">public final Disposable subscribe(Consumer&lt;? super T&gt; onNext, Consumer&lt;? super Throwable&gt; onError,</div><div class="line">            Action onComplete, Consumer&lt;? super Disposable&gt; onSubscribe) &#123;</div><div class="line">	//封装程lambdaObserver</div><div class="line">        LambdaObserver&lt;T&gt; ls = new LambdaObserver&lt;T&gt;(onNext, onError, onComplete, onSubscribe);</div><div class="line">	//订阅入口</div><div class="line">        subscribe(ls);</div><div class="line"></div><div class="line">        return ls;</div><div class="line">    &#125;</div><div class="line">=====》subscribe</div><div class="line"> public final void subscribe(Observer&lt;? super T&gt; observer) &#123;</div><div class="line">	    ...</div><div class="line">            subscribeActual(observer);</div><div class="line">	    ...  </div><div class="line">&#125;</div></pre></td></tr></table></figure><br>对于这个subscribeActual我们应该很熟悉，对于每一个Observable都需要实现这个方法。这个方法是在Observable定义的抽象方法。这样，就会调用到特定Observable的subscribeActual，逐层调用，最后调用到原始的Observable的emitter方法，发射数据。</p>
 <h2 id="rxjava常用的操作符"><a href="#rxjava常用的操作符" class="headerlink" title="rxjava常用的操作符"></a>rxjava常用的操作符</h2><p>比较常用的有merge、zip、concat、takeUntil、concat，详情可见官方的中文使用文档<a href="https://github.com/mcxiaoke/RxDocs" target="_blank" rel="external">https://github.com/mcxiaoke/RxDocs</a></p>
-
       
     </div>
 
@@ -426,7 +427,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -437,9 +438,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -462,6 +461,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -509,7 +515,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

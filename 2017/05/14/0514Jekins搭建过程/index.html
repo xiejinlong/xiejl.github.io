@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -150,7 +152,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/">
 
 
 
@@ -181,16 +183,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -220,7 +222,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -230,7 +232,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -240,7 +242,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -274,7 +276,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/05/14/0514Jekins搭建过程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -374,7 +376,6 @@
 在导出ipa文件时，我们需要一个plist文件，指定打包类型，和对应的teamId<br><img src="http://onu21exz8.bkt.clouddn.com/233BB5C6-A7B6-4302-9F31-B16BC99AA265.jpeg" alt=""><br>我们选择打app-store的包，并且指定对应的teamId，这个TeamId是我们的发布证书的id值<br>在ios打包需要额外做打包命令之外的一个操作，需要在打包前将preject.pbxproj文件中的Automatic设置为Matual属性，因为如果利用工具的话，它可以自动为我们指定，但是jenkins目前没发现指定的这个属性的地方，为了ios的本地编译的方便，只是打包脚本中做这个处理：<br>sed -i ‘’ ‘s/Automatic/Manual/g’ $project_file    //利用sed替换字符串<h1 id="蒲公英上传处理"><a href="#蒲公英上传处理" class="headerlink" title="蒲公英上传处理"></a>蒲公英上传处理</h1>当我们打完包，我们需要上传到某个地方以便测试进行下载或者渠道发布，这里，我们首先集成了蒲公英的上传处理。我们先看看蒲公英的app上传文档：<br><img src="http://onu21exz8.bkt.clouddn.com/CEF0BA38-0D3C-4C8C-A982-2EED35B77EDB.png" alt=""><br>我们只需要在脚本中按照文档中所指定的上传命令就可以进行上传了，我们需要指定上传apk或者ipa文件，也需要指定在蒲公英上注册的userkey和apikey，不过我们想要显示二维码在每次上传完成之后都能够显示该次的build所生成的二维码，那么我们就需要去解析蒲公英平台的返回值。因为我们是用shell写的脚本而不是python，python自带json解析器，而shell没有，我们必须要在打包机器上下载一个开源的json解析器—–jq，官网：<a href="https://github.com/stedolan/jq" target="_blank" rel="external">https://github.com/stedolan/jq</a> ，<br>我们通过命令brew install jq进行下载，然后将jq命令复制到全局命令中：<br><img src="http://onu21exz8.bkt.clouddn.com/AD5F2541-0297-43CB-B66F-610A97D47910.png" alt=""><br>我们先看看这个蒲公英的返回值：<br><img src="http://onu21exz8.bkt.clouddn.com/5294315F-9F4B-4451-BFDE-31983419C25F%E5%89%AF%E6%9C%AC.jpg" alt=""><br>在这一系列的返回值中，我们需要用到appKey和appQRcodeUrl，分别app的下载地址和二维码地址，在这里我们需要明确一点，每次返回的二维码是具有唯一性的，也就是每次上传之后返回的二维码是不一样的,appKey也是唯一性的，每次都指向该次生成的app,然而appShortcutUrl只是一个确定的短链接，每次都指向最新的一个apk文件,。所以我们需要在脚本中收集返回值appKey和appQRcodeUrl，以便我们用来显示在构建历史中。我们看看shell中关于这部分代码的处理：<br><img src="http://onu21exz8.bkt.clouddn.com/EFAEE51C-15F9-4E26-B74A-C7CBFE4ACCD3.png" alt=""><h1 id="构建后操作"><a href="#构建后操作" class="headerlink" title="构建后操作"></a>构建后操作</h1>当我们的apk和ipa文件打包完成之后，我们应该将每一次的生成文件和apk或.ipa文件收集起来。首先通过配置中的构建后操作选择archive the artifacts选项，添加我们要收集的文件<br><img src="http://onu21exz8.bkt.clouddn.com/D85F02D8-408C-467A-BE98-AF30D84FF827%E5%89%AF%E6%9C%AC.jpg" alt=""><br>对应的显示页面如下：<br><img src="http://onu21exz8.bkt.clouddn.com/095E7793-9626-42DB-B5AA-0FA0E3731667%E5%89%AF%E6%9C%AC.jpg" alt=""><br>这个构建产生的apk和二维码png都是存储在本地的。<br>现在需要做相应的二维码显示和下载地址链接，首先通过系统管理-&gt;插件管理-&gt;可选插件中搜索set build description插件，并进行安装。安装完成后，在构建后操作会多出这个选项，因为我们需要显示二维码和下载的超链接，所以我们需要利用html标签来进行显示，如下：<br><img src="http://onu21exz8.bkt.clouddn.com/9B39AA26-C5BF-4F94-94F7-AE60F0911BBB%E5%89%AF%E6%9C%AC.jpg" alt=""><br>img图片显示引用我们存在本地的QRcord.png图片，href超链接指向蒲公英上该次build的下载地址。下面是jenkins打包生成的显示页面：<br><img src="http://onu21exz8.bkt.clouddn.com/BF6DD38A-7083-41B4-B51E-F0C951A3AAC9%E5%89%AF%E6%9C%AC.jpg" alt=""><h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1></li>
 </ul>
 <p>脚本后续再上传。可能每一个步骤的详细过程不是很详细。不过大概步骤就是这样。</p>
-
       
     </div>
 
@@ -470,7 +471,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -481,9 +482,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -506,6 +505,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -553,7 +559,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

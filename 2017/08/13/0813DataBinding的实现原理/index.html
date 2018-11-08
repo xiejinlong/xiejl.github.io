@@ -7,14 +7,14 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -32,7 +32,7 @@
 
   
   
-  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/xiejl.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -66,21 +66,23 @@
 
 
 
-<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/xiejl.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
+<link href="/xiejl.github.io/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
 
 
+  <link rel="alternate" href="/xiejl.github.io/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
 
-  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xiejl.github.io/favicon.ico?v=5.1.0">
 
 
 
@@ -127,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/08/13/0813DataBinding的实现原理/"/>
+  <link rel="canonical" href="https://xiejinlong.github.io/xiejl.github.io/2017/08/13/0813DataBinding的实现原理/">
 
 
 
@@ -158,16 +160,16 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/xiejl.github.io/"  class="brand" rel="start">
+      <a href="/xiejl.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">沉迷学习却日渐发福</span>
         <span class="logo-line-after"><i></i></span>
@@ -197,7 +199,7 @@
         <li class="menu-item menu-item-home">
           <a href="/xiejl.github.io/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -207,7 +209,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/xiejl.github.io/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -217,7 +219,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/xiejl.github.io/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -251,7 +253,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiejinlong.github.io/xiejl.github.io/xiejl.github.io/2017/08/13/0813DataBinding的实现原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -333,7 +335,6 @@
 <p>在构造方法里面进行一些初始化的相关操作，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public MyFragmentS(android.databinding.DataBindingComponent bindingComponent, View root) &#123;</div><div class="line">        super(bindingComponent, root, 1);</div><div class="line">        final Object[] bindings = mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds);</div><div class="line">        this.mboundView0 = (android.widget.RelativeLayout) bindings[0];</div><div class="line">        this.mboundView0.setTag(null);</div><div class="line">        this.mboundView2 = (android.widget.TextView) bindings[2];</div><div class="line">        this.mboundView2.setTag(null);</div><div class="line">        this.text1 = (android.widget.TextView) bindings[1];</div><div class="line">        this.text1.setTag(null);</div><div class="line">        //如果layout绑定过后，将会setTag，标识已经绑定过了</div><div class="line">        setRootTag(root);</div><div class="line">        invalidateAll();</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>在这个构造方法里面，我们必须先了解父类构造方法做的处理,也就是ViewDataBinding的处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">protected ViewDataBinding(DataBindingComponent bindingComponent, View root, int localFieldCount) &#123;</div><div class="line">        mBindingComponent = bindingComponent;</div><div class="line">        //localFieldCount表示需要监听的field数目</div><div class="line">        mLocalFieldObservers = new WeakListener[localFieldCount];</div><div class="line">        this.mRoot = root;</div><div class="line">        //方法的调用必须在主线程中</div><div class="line">        if (Looper.myLooper() == null) &#123;</div><div class="line">            throw new IllegalStateException(&quot;DataBinding must be created in view&apos;s UI Thread&quot;);</div><div class="line">        &#125;</div><div class="line">	//判断是否使用choreographer，通过垂直同步信号刷新Ui</div><div class="line">        if (USE_CHOREOGRAPHER) &#123;</div><div class="line">            mChoreographer = Choreographer.getInstance();</div><div class="line">            mFrameCallback = new Choreographer.FrameCallback() &#123;</div><div class="line">                @Override</div><div class="line">                public void doFrame(long frameTimeNanos) &#123;</div><div class="line">		    //直接通过doFrame回调，执行run方法</div><div class="line">                    mRebindRunnable.run();</div><div class="line">                &#125;</div><div class="line">            &#125;;</div><div class="line">        &#125; else &#123;</div><div class="line">            mFrameCallback = null;</div><div class="line">	    //将会通过UIHreadHandle调用post runable </div><div class="line">            mUIThreadHandler = new Handler(Looper.myLooper());</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>下面来看看run方法的执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">private final Runnable mRebindRunnable = new Runnable() &#123;</div><div class="line">        @Override</div><div class="line">        public void run() &#123;</div><div class="line">            synchronized (this) &#123;</div><div class="line">                mPendingRebind = false;</div><div class="line">            &#125;</div><div class="line">            processReferenceQueue();</div><div class="line"></div><div class="line">            if (VERSION.SDK_INT &gt;= VERSION_CODES.KITKAT) &#123;</div><div class="line">                if (!mRoot.isAttachedToWindow()) &#123;</div><div class="line">                    mRoot.removeOnAttachStateChangeListener(ROOT_REATTACHED_LISTENER);</div><div class="line">                    mRoot.addOnAttachStateChangeListener(ROOT_REATTACHED_LISTENER);</div><div class="line">                    return;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            executePendingBindings();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure></p>
 <p>在这里，最重要的就是最底下的这个方法executePendingBindings,执行数据绑定。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">public void executePendingBindings() &#123;</div><div class="line">	//内部是否包含viewBinding，也就是绑定嵌套</div><div class="line">        if (mContainingBinding == null) &#123;</div><div class="line">            executeBindingsInternal();</div><div class="line">        &#125; else &#123;</div><div class="line">            mContainingBinding.executePendingBindings();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">=============&gt;</div><div class="line"></div><div class="line">private void executeBindingsInternal() &#123;</div><div class="line">	//是否正在执行binding操作。</div><div class="line">        if (mIsExecutingPendingBindings) &#123;</div><div class="line">            requestRebind();</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">	//是否需要重新绑定，判断是否存在脏数据</div><div class="line">        if (!hasPendingBindings()) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        mIsExecutingPendingBindings = true;</div><div class="line">        mRebindHalted = false;</div><div class="line">        if (mRebindCallbacks != null) &#123;</div><div class="line">            mRebindCallbacks.notifyCallbacks(this, REBIND, null);</div><div class="line"></div><div class="line">            // The onRebindListeners will change mPendingHalted</div><div class="line">            if (mRebindHalted) &#123;</div><div class="line">                mRebindCallbacks.notifyCallbacks(this, HALTED, null);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        if (!mRebindHalted) &#123;</div><div class="line">	    //excuteBindings这个方法是在子类实现的，父类做完相应的判断之后，开始由子类执行绑定操作。</div><div class="line">            executeBindings();</div><div class="line">            if (mRebindCallbacks != null) &#123;</div><div class="line">                mRebindCallbacks.notifyCallbacks(this, REBOUND, null);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        mIsExecutingPendingBindings = false;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>对于每一个子类的bingding操作都是不一样的，和自身layout中的view密切相关。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">protected void executeBindings() &#123;</div><div class="line">        long dirtyFlags = 0;</div><div class="line">        synchronized(this) &#123;</div><div class="line">            dirtyFlags = mDirtyFlags;</div><div class="line">            mDirtyFlags = 0;</div><div class="line">        &#125;</div><div class="line">	//初始化listener和参数</div><div class="line">        android.view.View.OnClickListener fvmClicks2AndroidViewViewOnClickListener = null;</div><div class="line">        android.databinding.ObservableField&lt;java.lang.String&gt; fvmKnown = null;</div><div class="line">        java.lang.String fvmKnownGet = null;</div><div class="line">        android.view.View.OnClickListener fvmClicksAndroidViewViewOnClickListener = null;</div><div class="line">        com.example.xie.myapplication.FragmentViewModel fvm = mFvm;</div><div class="line"></div><div class="line">        if ((dirtyFlags &amp; 0x7L) != 0) &#123;</div><div class="line"></div><div class="line"></div><div class="line">            if ((dirtyFlags &amp; 0x6L) != 0) &#123;</div><div class="line"></div><div class="line">                    if (fvm != null) &#123;</div><div class="line">                        // 为click2设置对应的执行方法所在的类。</div><div class="line">                        fvmClicks2AndroidViewViewOnClickListener = (((mFvmClicks2AndroidViewViewOnClickListener == null) ? (mFvmClicks2AndroidViewViewOnClickListener = new OnClickListenerImpl()) : mFvmClicks2AndroidViewViewOnClickListener).setValue(fvm));</div><div class="line">                        // 为clicks设置对应的执行方法所在的类</div><div class="line">                        fvmClicksAndroidViewViewOnClickListener = (((mFvmClicksAndroidViewViewOnClickListener == null) ? (mFvmClicksAndroidViewViewOnClickListener = new OnClickListenerImpl1()) : mFvmClicksAndroidViewViewOnClickListener).setValue(fvm));</div><div class="line">                    &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">                if (fvm != null) &#123;</div><div class="line">                    fvmKnown = fvm.known;</div><div class="line">                &#125;</div><div class="line">                updateRegistration(0, fvmKnown);</div><div class="line"></div><div class="line"></div><div class="line">                if (fvmKnown != null) &#123;</div><div class="line">                    //真正用于设置textView的参数</div><div class="line">                    fvmKnownGet = fvmKnown.get();</div><div class="line">                &#125;</div><div class="line">        &#125;</div><div class="line">        if ((dirtyFlags &amp; 0x6L) != 0) &#123;</div><div class="line">	    //对相应的View设置listener</div><div class="line">            this.mboundView2.setOnClickListener(fvmClicks2AndroidViewViewOnClickListener);</div><div class="line">            this.text1.setOnClickListener(fvmClicksAndroidViewViewOnClickListener);</div><div class="line">        &#125;</div><div class="line">        if ((dirtyFlags &amp; 0x7L) != 0) &#123;</div><div class="line">	    //通过textViewBindingAdapter设置</div><div class="line">            android.databinding.adapters.TextViewBindingAdapter.setText(this.text1, fvmKnownGet);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>dataBinding对于每一个控件都对应了一个BindingAdapter.这样就是实现了绑定。绑定数据与监听。下面继续构造函数里的内容。在父类构造函数执行完毕之后，会调用mapBindings来初始化layout节点。然后子函数针对于序号与bindings数组的数据相互对应。<br>对于监听字段的改变，在excuteBindings有一个方法，updateRegistration(0, fvmKnown),这个方法就是注册监听的入口了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">protected boolean updateRegistration(int localFieldId, Observable observable) &#123;</div><div class="line">	//对于这个每一个设置observable的字段都有对应的一个id，CREATE_PROPERTY_LISTENER会创建一个关于这个监听字段的监听。</div><div class="line">        return updateRegistration(localFieldId, observable, CREATE_PROPERTY_LISTENER);</div><div class="line">    &#125;</div><div class="line">========&gt;CREATE_PROPERTY_LISTENER下面这个是监听器：</div><div class="line">private static class WeakPropertyListener extends Observable.OnPropertyChangedCallback</div><div class="line">            implements ObservableReference&lt;Observable&gt; &#123;</div><div class="line">        final WeakListener&lt;Observable&gt; mListener;</div><div class="line"></div><div class="line">        public WeakPropertyListener(ViewDataBinding binder, int localFieldId) &#123;</div><div class="line">            mListener = new WeakListener&lt;Observable&gt;(binder, localFieldId, this);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public WeakListener&lt;Observable&gt; getListener() &#123;</div><div class="line">            return mListener;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void addListener(Observable target) &#123;</div><div class="line">            target.addOnPropertyChangedCallback(this);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void removeListener(Observable target) &#123;</div><div class="line">            target.removeOnPropertyChangedCallback(this);</div><div class="line">        &#125;</div><div class="line">	</div><div class="line">	//接收prepertyChange的回调</div><div class="line">        @Override</div><div class="line">        public void onPropertyChanged(Observable sender, int propertyId) &#123;</div><div class="line">            ViewDataBinding binder = mListener.getBinder();</div><div class="line">            if (binder == null) &#123;</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            Observable obj = mListener.getTarget();</div><div class="line">            if (obj != sender) &#123;</div><div class="line">                return; // notification from the wrong object?</div><div class="line">            &#125;</div><div class="line">	    //处理字段改变的的事件，通常会重新绑定。</div><div class="line">            binder.handleFieldChange(mListener.mLocalFieldId, sender, propertyId);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br>当设置ObservableField或者利用Bindable注解修饰字段时,假如说字段发生了改变，前者需要会自动调用notifyChange，后者需要我们手动调用notifyPropertyChange。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//ObservableField</div><div class="line">public void set(T value) &#123;</div><div class="line">        if (value != mValue) &#123;</div><div class="line">            mValue = value;</div><div class="line">            notifyChange();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">//Bindable</div><div class="line"></div><div class="line">@Bindable</div><div class="line">    public String getTest() &#123;</div><div class="line">        return this.test;</div><div class="line">    &#125;</div><div class="line">    public void setTest(String test) &#123;</div><div class="line">        this.test = test;</div><div class="line">        notifyPropertyChanged(BR.test);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>对于设置的bindingAdapter，将会在excuteBinding中执行自定义方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//xml</div><div class="line">&lt;TextView</div><div class="line">            android:layout_below=&quot;@+id/text1&quot;</div><div class="line">            app:texts=&quot;@&#123;fvm.known&#125;&quot;</div><div class="line">            android:textColor=&quot;@color/colorAccent&quot;</div><div class="line">            android:onClick=&quot;@&#123;fvm::clicks2&#125;&quot;</div><div class="line">            android:layout_width=&quot;wrap_content&quot;</div><div class="line">            android:layout_height=&quot;wrap_content&quot; /&gt;</div><div class="line"></div><div class="line">//DataUtils</div><div class="line"> @BindingAdapter(&#123;&quot;texts&quot;&#125;)</div><div class="line">    public static void setAppTextss(TextView view, String textss) &#123;</div><div class="line">        Log.d(&quot;BindingAdapter&quot;, &quot;textView&quot;);</div><div class="line">        view.setText(textss);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">//自动生成</div><div class="line">com.example.xie.myapplication.DataUtils.setAppTextss(this.mboundView2, fvmKnownGet);</div></pre></td></tr></table></figure><br>自定义的Adapter必须与可变数据进行绑定，才能进行监听。否则不能起作用。</p>
-
       
     </div>
 
@@ -429,7 +430,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -440,9 +441,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/xiejl.github.io/images/avatar.gif"
-               alt="phiCoo" />
+          <img class="site-author-image" itemprop="image" src="/xiejl.github.io/images/avatar.gif" alt="phiCoo">
           <p class="site-author-name" itemprop="name">phiCoo</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
@@ -465,6 +464,13 @@
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/xiejl.github.io/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -512,7 +518,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>
