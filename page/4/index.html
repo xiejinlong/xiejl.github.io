@@ -247,6 +247,142 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xjlhhz.com/2017/07/09/0702Java中的锁实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/09/0702Java中的锁实现/" itemprop="url">
+                  java中的锁实现
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T13:14:00+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          锁的对比java中的锁一共有4种状态，级别从低到高分别是：
+
+无锁状态
+偏向锁
+轻量级锁
+重量级锁
+
+锁只能升级，不能降级
+偏向锁顾名思义，为了让线程获得锁的代价更低，引入了偏向锁。
+加锁当一个线程访问同步块并且获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程id，这样，这个线程便获取了这个对
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/09/0702Java中的锁实现/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xjlhhz.com/2017/06/22/0622Handler底层原理实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1396,133 +1532,6 @@ Documented:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xjlhhz.com/2017/04/05/0405android自定义图片动画的尝试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="phiCoo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沉迷学习却日渐发福">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/05/0405android自定义图片动画的尝试/" itemprop="url">
-                  android中ImageView动画的一些相关问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-05T13:14:52+08:00">
-                2017-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          图片旋转所遇到的问题最近项目中接触到一个动画的实现，遇到的最主要的难点就是在执行view动画rotate的时候，让里面的drawable只显示上半部分，虽然到现在都还没有实现，但还是把解决问题时遇到的一些东西给记录下来，以便以后再进行解决或者回顾。首先想到的第一种解决方法：利用clipDrawabl
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/04/05/0405android自定义图片动画的尝试/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1570,7 +1579,7 @@ Documented:
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
