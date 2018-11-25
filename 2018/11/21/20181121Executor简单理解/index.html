@@ -97,7 +97,7 @@ Executor： 是一个接口，它是Executor框架的基础，它将任务的提
 
 ExcutorService：这个Service是个接口，ThreadPoo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Executor简单裂解">
+<meta property="og:title" content="Executor简单理解">
 <meta property="og:url" content="https://xjlhhz.com/2018/11/21/20181121Executor简单理解/index.html">
 <meta property="og:site_name" content="沉迷学习却日渐发福">
 <meta property="og:description" content="线程池 Executor成员
@@ -107,9 +107,9 @@ Executor： 是一个接口，它是Executor框架的基础，它将任务的提
 这个execute方法就行执行任务的方法。
 
 ExcutorService：这个Service是个接口，ThreadPoo">
-<meta property="og:updated_time" content="2018-11-21T10:21:57.572Z">
+<meta property="og:updated_time" content="2018-11-25T03:07:33.190Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Executor简单裂解">
+<meta name="twitter:title" content="Executor简单理解">
 <meta name="twitter:description" content="线程池 Executor成员
 Executor： 是一个接口，它是Executor框架的基础，它将任务的提交和执行分离开123public interface Executor &amp;#123;    void execute(Runnable command);&amp;#125;
 
@@ -150,7 +150,7 @@ ExcutorService：这个Service是个接口，ThreadPoo">
 
 
 
-  <title> Executor简单裂解 | 沉迷学习却日渐发福 </title>
+  <title> Executor简单理解 | 沉迷学习却日渐发福 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -290,7 +290,7 @@ ExcutorService：这个Service是个接口，ThreadPoo">
             
             
               
-                Executor简单裂解
+                Executor简单理解
               
             
           </h1>
@@ -348,7 +348,7 @@ ExcutorService：这个Service是个接口，ThreadPoo">
 <p>这个execute方法就行执行任务的方法。</p>
 <ul>
 <li><p>ExcutorService：这个Service是个接口，ThreadPoolExecutor和ScheduledThreadpoolExecutor都是其子类。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public interface ExecutorService extends Executor &#123;</div><div class="line">    //关闭任务</div><div class="line">    void shutdown();</div><div class="line"></div><div class="line">    //尝试关闭所有任务</div><div class="line">    List&lt;Runnable&gt; shutdownNow();</div><div class="line">    </div><div class="line">    //提交任务</div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</div><div class="line">    </div><div class="line">    //提交任务，并且接收回调</div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);</div><div class="line">    //执行任务</div><div class="line">    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)</div><div class="line">        throws InterruptedException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public interface ExecutorService extends Executor &#123;</div><div class="line">    //关闭任务</div><div class="line">    void shutdown();</div><div class="line"></div><div class="line">    //尝试关闭所有任务</div><div class="line">    List&lt;Runnable&gt; shutdownNow();</div><div class="line"></div><div class="line">    //提交任务</div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</div><div class="line"></div><div class="line">    //提交任务，并且接收回调</div><div class="line">    &lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);</div><div class="line">    //执行任务</div><div class="line">    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)</div><div class="line">        throws InterruptedException;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 <li><p>ThreadPoolExecutor：是线程池的核心实现类，用来执行被提交的任务</p>
 </li>
