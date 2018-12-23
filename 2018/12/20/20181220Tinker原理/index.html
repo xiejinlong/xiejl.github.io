@@ -1,0 +1,754 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="沉迷学习却日渐发福" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="Tinker原理编译过程接入tinker我们需要改动gradle，对于我们原始的打包不会有影响。通过添加1apply plugin: &amp;apos;com.tencent.tinker.patch&amp;apos;
+在gradle中，我们可以引入tinker插件，并且添加task，tinerPatch。内部可以配置一些相应的参数。
+tinkerPatch过程这一部分涉及到了一个Plugin的源码，实现一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tinker修复流程梳理">
+<meta property="og:url" content="https://xjlhhz.com/2018/12/20/20181220Tinker原理/index.html">
+<meta property="og:site_name" content="沉迷学习却日渐发福">
+<meta property="og:description" content="Tinker原理编译过程接入tinker我们需要改动gradle，对于我们原始的打包不会有影响。通过添加1apply plugin: &amp;apos;com.tencent.tinker.patch&amp;apos;
+在gradle中，我们可以引入tinker插件，并且添加task，tinerPatch。内部可以配置一些相应的参数。
+tinkerPatch过程这一部分涉及到了一个Plugin的源码，实现一个">
+<meta property="og:image" content="http://mykotlin.com/tinker%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B.png">
+<meta property="og:updated_time" content="2018-12-23T09:07:31.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tinker修复流程梳理">
+<meta name="twitter:description" content="Tinker原理编译过程接入tinker我们需要改动gradle，对于我们原始的打包不会有影响。通过添加1apply plugin: &amp;apos;com.tencent.tinker.patch&amp;apos;
+在gradle中，我们可以引入tinker插件，并且添加task，tinerPatch。内部可以配置一些相应的参数。
+tinkerPatch过程这一部分涉及到了一个Plugin的源码，实现一个">
+<meta name="twitter:image" content="http://mykotlin.com/tinker%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xjlhhz.com/2018/12/20/20181220Tinker原理/">
+
+
+
+
+
+  <title> tinker修复流程梳理 | 沉迷学习却日渐发福 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沉迷学习却日渐发福</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我会笑着迎接每一天</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xjlhhz.com/2018/12/20/20181220Tinker原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="phiCoo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沉迷学习却日渐发福">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                tinker修复流程梳理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T13:14:00+08:00">
+                2018-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Tinker原理"><a href="#Tinker原理" class="headerlink" title="Tinker原理"></a>Tinker原理</h1><h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>接入tinker我们需要改动gradle，对于我们原始的打包不会有影响。<br>通过添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.tencent.tinker.patch&apos;</div></pre></td></tr></table></figure></p>
+<p>在gradle中，我们可以引入tinker插件，并且添加task，tinerPatch。内部可以配置一些相应的参数。</p>
+<h3 id="tinkerPatch过程"><a href="#tinkerPatch过程" class="headerlink" title="tinkerPatch过程"></a>tinkerPatch过程</h3><p>这一部分涉及到了一个Plugin的源码，实现一个插件，需要继承于Plugin<project><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class TinkerPatchPlugin implements Plugin&lt;Project&gt; &#123;</div><div class="line">     @Override</div><div class="line">    public void apply(Project project) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></project></p>
+<p>最后在apply方法中做一些操作。</p>
+<h4 id="添加扩展"><a href="#添加扩展" class="headerlink" title="添加扩展"></a>添加扩展</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">project.extensions.create(&apos;tinkerPatch&apos;, TinkerPatchExtension)</div><div class="line"></div><div class="line">      project.tinkerPatch.extensions.create(&apos;buildConfig&apos;, TinkerBuildConfigExtension, project)</div><div class="line"></div><div class="line">      project.tinkerPatch.extensions.create(&apos;dex&apos;, TinkerDexExtension, project)</div><div class="line">      project.tinkerPatch.extensions.create(&apos;lib&apos;, TinkerLibExtension)</div><div class="line">      project.tinkerPatch.extensions.create(&apos;res&apos;, TinkerResourceExtension)</div><div class="line">      project.tinkerPatch.extensions.create(&apos;packageConfig&apos;, TinkerPackageConfigExtension, project)</div><div class="line">      project.tinkerPatch.extensions.create(&apos;sevenZip&apos;, TinkerSevenZipExtension, project)</div></pre></td></tr></table></figure>
+<p>第一个扩展是tinkerPatch的task，也就是我们可以在gradle中直接使用tinkerPatch，里面可以使用的参数定义在了TinkerPatchExtension，其实就是下面的几个tinkerPatch.extensions。</p>
+<h4 id="添加任务"><a href="#添加任务" class="headerlink" title="添加任务"></a>添加任务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TinkerPatchSchemaTask tinkerPatchBuildTask = project.tasks.create(&quot;tinkerPatch$&#123;variantName&#125;&quot;, TinkerPatchSchemaTask)</div></pre></td></tr></table></figure>
+<p>我们将会在gradle中看到两个生成patch的gradle命令。tinkerPatchDebug和tinkerPatchRelease<br>然后设置参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tinkerPatchBuildTask.signConfig = variantData.variantConfiguration.signingConfig</div><div class="line"></div><div class="line">               variant.outputs.each &#123; output -&gt;</div><div class="line">                   setPatchNewApkPath(configuration, output, variant, tinkerPatchBuildTask)</div><div class="line">                   setPatchOutputFolder(configuration, output, variant, tinkerPatchBuildTask)</div><div class="line">               &#125;</div></pre></td></tr></table></figure></p>
+<p>会设置签名方式，和新apk的路径，还有path文件生产的目录。其中tinkerPatchBuildTask将会在新apk编译完成之后执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void setPatchNewApkPath(configuration, output, variant, tinkerPatchBuildTask) &#123;</div><div class="line">        def newApkPath = configuration.newApk</div><div class="line">        if (!Utils.isNullOrNil(newApkPath)) &#123;</div><div class="line">            if (FileOperation.isLegalFile(newApkPath)) &#123;</div><div class="line">                tinkerPatchBuildTask.buildApkPath = newApkPath</div><div class="line">                return</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        tinkerPatchBuildTask.buildApkPath = output.outputFile</div><div class="line">        tinkerPatchBuildTask.dependsOn variant.assemble</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>下面是tinker插入编译过程的几个比较重要的任务</p>
+<ul>
+<li><p>TinkerManifestTask<br>TinkerManifestTask会修改原始的manifest文件，将新的tinkerId添加到meta-data之后，假如说原始的manifest已经有了，那么将会先移除再替换。这个任务将会在manifestTask之后执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">manifestTask.mustRunAfter variantOutput.processManifest</div><div class="line"></div><div class="line">              variantOutput.processResources.dependsOn manifestTask</div></pre></td></tr></table></figure>
+</li>
+<li><p>TinkerResourceIdTask<br>为了修复资源文件并且保证资源文件id不出错，那么tinker会单独生成一份资源id文件。这个文件是遍历<br>values目录下生成的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> int string member_month 0x7f090551</div><div class="line">int string member_not_login_desc 0x7f090552</div><div class="line">int string member_not_login_title 0x7f090553</div><div class="line">int string member_open 0x7f090554</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个任务将会在Manifest任务执行完毕之后执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//let applyResourceTask run after manifestTask</div><div class="line">               applyResourceTask.mustRunAfter manifestTask</div><div class="line"></div><div class="line">               variantOutput.processResources.dependsOn applyResourceTask</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>TinkerProguardConfigTask<br>这个是为了混淆的配置，添加tinker会在这个任务中添加对于自身的apk的keep。</p>
+</li>
+<li><p>TinkerMultidexConfigTask<br>如果开启了multidex，那么需要保证tinker的load在主dex中加载</p>
+</li>
+</ul>
+<p>###Diff dex<br>通过apk全量差分算法，最后生成的产物为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">patch_signed_7zip.apk</div><div class="line">resources_out.zip</div></pre></td></tr></table></figure></p>
+<p>虽然是以.apk文件结尾，但是其并非是apk文件，而是新旧apk的差分文件。<br>其中patch_signed_7zip.apk包含以下几个产物：</p>
+<ul>
+<li>resource<br>  包含了所有的修改过的资源文件</li>
+<li>dex文件<br>  这个文件是class的改动</li>
+<li>assert<br>  里面记录了相关的改动</li>
+</ul>
+<ol>
+<li><p>dex_meta.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">classes3.dex,,1576d311d59ddedd90669eda381eac4b,1576d311d59ddedd90669eda381eac4b,7bf7e62455b20776f9542e48396f110c,2500353069,1637042276,jar</div><div class="line">classes2.dex,,14dfca01b4a8cb1560131fa0bd38d90b,14dfca01b4a8cb1560131fa0bd38d90b,991f5078e48003d937b04817c16d778b,3700541000,275306650,jar</div><div class="line">classes.dex,,94c904adfa2ba38bdeaf0cb9f373615b,94c904adfa2ba38bdeaf0cb9f373615b,79b82777a3b181ae8957b1cabe97bdbe,4118346810,3212732521,jar</div><div class="line">classes5.dex,,0,14471ae55489fa8bab85119466c6fe16,0,1868353943,1868353943,jar</div><div class="line">classes4.dex,,0,f60932365b5d653670abbdb4f749b580,0,1507289107,1507289107,jar</div><div class="line">test.dex,,56900442eb5b7e1de45449d0685e6e00,56900442eb5b7e1de45449d0685e6e00,0,0,0,jar</div></pre></td></tr></table></figure>
+</li>
+<li><p>res_meta.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">resources_out.zip,1443645094,c2150945805274616641d2f7a916e264</div><div class="line">pattern:3</div><div class="line">resources.arsc</div><div class="line">res/*</div><div class="line">assets/*</div><div class="line">large modify:1</div><div class="line">resources.arsc,c2150945805274616641d2f7a916e264,2065727823</div><div class="line">modify:4</div><div class="line">res/drawable-xxhdpi-v4/airship.png</div><div class="line">res/layout/activity_main.xml</div><div class="line">res/drawable-v21/avd_hide_password.xml</div><div class="line">res/drawable-v21/avd_show_password.xml</div><div class="line">add:2</div><div class="line">res/drawable-xxhdpi-v4/test_retant.png</div><div class="line">assets/only_use_to_test_tinker_resource.txt</div><div class="line">store:2</div><div class="line">res/drawable-xxhdpi-v4/airship.png</div><div class="line">res/drawable-xxhdpi-v4/test_retant.png</div></pre></td></tr></table></figure>
+</li>
+<li><p>package_meta.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#base package config field</div><div class="line">#Wed Dec 19 17:24:06 CST 2018</div><div class="line">platform=all</div><div class="line">NEW_TINKER_ID=tinker_id_3cb12a846</div><div class="line">TINKER_ID=tinker_id_3cb12a846</div><div class="line">patchMessage=tinker is sample to use</div><div class="line">patchVersion=2.0</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>##合成patch过程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TinkerInstaller.onReceiveUpgradePatch(this, Environment.getExternalStorageDirectory().getAbsolutePath() + &quot;/patch_signed_7zip.apk&quot;);</div></pre></td></tr></table></figure></p>
+<p>通过TinkerInstaller指定差异化apk路径，来进行patch合成。<br>最终，将会启动TinkerPatchService来进行修复合成。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">result = upgradePatchProcessor.tryPatch(context, path, patchResult);</div></pre></td></tr></table></figure></p>
+<p>patch合成的目录会存储在/data/data/packageName/tinker下。<br>首先是dex合成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">protected static boolean tryRecoverDexFiles(Tinker manager, ShareSecurityCheck checker, Context context, String patchVersionDirectory, File patchFile) &#123;</div><div class="line">       if (!manager.isEnabledForDex()) &#123;</div><div class="line">           TinkerLog.w(TAG, &quot;patch recover, dex is not enabled&quot;);</div><div class="line">           return true;</div><div class="line">       &#125;</div><div class="line">       //是否存在assets/dex_meta.txt文件</div><div class="line">       String dexMeta = checker.getMetaContentMap().get(DEX_META_FILE);</div><div class="line"></div><div class="line">       if (dexMeta == null) &#123;</div><div class="line">           TinkerLog.w(TAG, &quot;patch recover, dex is not contained&quot;);</div><div class="line">           return true;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       long begin = SystemClock.elapsedRealtime();</div><div class="line">       //通过差分算法进行合成修复</div><div class="line">       boolean result = patchDexExtractViaDexDiff(context, patchVersionDirectory, dexMeta, patchFile);</div><div class="line">       long cost = SystemClock.elapsedRealtime() - begin;</div><div class="line">       TinkerLog.i(TAG, &quot;recover dex result:%b, cost:%d&quot;, result, cost);</div><div class="line">       return result;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>然后是资源文件的合成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">if (!manager.isEnabledForResource()) &#123;</div><div class="line">          TinkerLog.w(TAG, &quot;patch recover, resource is not enabled&quot;);</div><div class="line">          return true;</div><div class="line">      &#125;</div><div class="line">      String resourceMeta = checker.getMetaContentMap().get(RES_META_FILE);</div><div class="line"></div><div class="line">      if (resourceMeta == null || resourceMeta.length() == 0) &#123;</div><div class="line">          TinkerLog.w(TAG, &quot;patch recover, resource is not contained&quot;);</div><div class="line">          return true;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      long begin = SystemClock.elapsedRealtime();</div><div class="line">      boolean result = patchResourceExtractViaResourceDiff(context, patchVersionDirectory, resourceMeta, patchFile);</div><div class="line">      long cost = SystemClock.elapsedRealtime() - begin;</div><div class="line">      TinkerLog.i(TAG, &quot;recover resource result:%b, cost:%d&quot;, result, cost);</div><div class="line">      return result;</div></pre></td></tr></table></figure></p>
+<p>##启动修复过程<br>首先，tinker会在编译期间生成application的子类。<br>首先会先在attachBaseContext方法中作一些相应的操作。<br>主要是加载tinker中相应的类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private void loadTinker() &#123;</div><div class="line">        //disable tinker, not need to install</div><div class="line">        if (tinkerFlags == TINKER_DISABLE) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        tinkerResultIntent = new Intent();</div><div class="line">        try &#123;</div><div class="line">            //反射获取tinkerLoadClass</div><div class="line">            Class&lt;?&gt; tinkerLoadClass = Class.forName(loaderClassName, false, getClassLoader());</div><div class="line">            </div><div class="line">            //获取tryLoad方法 </div><div class="line">            Method loadMethod = tinkerLoadClass.getMethod(TINKER_LOADER_METHOD, TinkerApplication.class);</div><div class="line">            //获取构造函数，并进行调用。</div><div class="line">            Constructor&lt;?&gt; constructor = tinkerLoadClass.getConstructor();</div><div class="line">            tinkerResultIntent = (Intent) loadMethod.invoke(constructor.newInstance(), this);</div><div class="line">        &#125; catch (Throwable e) &#123;</div><div class="line">            //has exception, put exception error code</div><div class="line">            ShareIntentUtil.setIntentReturnCode(tinkerResultIntent, ShareConstants.ERROR_LOAD_PATCH_UNKNOWN_EXCEPTION);</div><div class="line">            tinkerResultIntent.putExtra(INTENT_PATCH_EXCEPTION, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>其实做的就是反射调用TinkerLoader的tryLoad方法。然后就直接调用到了加载修复的代码tryLoadPatchFilesInternal。</p>
+<ol>
+<li>首先判断是否支持tinker，不支持直接return。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">final int tinkerFlag = app.getTinkerFlags();</div><div class="line">      //</div><div class="line">      if (!ShareTinkerInternals.isTinkerEnabled(tinkerFlag)) &#123;</div><div class="line">          Log.w(TAG, &quot;tryLoadPatchFiles: tinker is disable, just return&quot;);</div><div class="line">          ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_DISABLE);</div><div class="line">          return;</div><div class="line">      &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>2.判断当前是否是patch进程，如果不是，直接返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if (ShareTinkerInternals.isInPatchProcess(app)) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles: we don&apos;t load patch with :patch process itself, just return&quot;);</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_DISABLE);</div><div class="line">           return;</div><div class="line"></div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>3.获取tinker目录， 如果不存在，直接返回。文件目录为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/data/data/tinker.sample.android/tinker</div></pre></td></tr></table></figure></p>
+<p>详细判断代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"> //tinker</div><div class="line">       File patchDirectoryFile = SharePatchFileUtil.getPatchDirectory(app);</div><div class="line">       if (patchDirectoryFile == null) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:getPatchDirectory == null&quot;);</div><div class="line">           //treat as not exist</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_DIRECTORY_NOT_EXIST);</div><div class="line">           return;</div><div class="line">       &#125;</div><div class="line">//check patch directory whether exist</div><div class="line">       if (!patchDirectoryFile.exists()) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:patch dir not exist:&quot; + patchDirectoryPath);</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_DIRECTORY_NOT_EXIST);</div><div class="line">           return;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>4.查看patch_info文件是否存在,不存在直接返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//tinker/patch.info</div><div class="line">       File patchInfoFile = SharePatchFileUtil.getPatchInfoFile(patchDirectoryPath);</div><div class="line"></div><div class="line">       //check patch info file whether exist</div><div class="line">       if (!patchInfoFile.exists()) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:patch info not exist:&quot; + patchInfoFile.getAbsolutePath());</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_INFO_NOT_EXIST);</div><div class="line">           return;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>5.比较从lockFile和patch_info文件中读取SharePatchInfo,不存在则直接返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">File patchInfoLockFile = SharePatchFileUtil.getPatchInfoLockFile(patchDirectoryPath);</div><div class="line"></div><div class="line">        patchInfo = SharePatchInfo.readAndCheckPropertyWithLock(patchInfoFile, patchInfoLockFile);</div><div class="line">        if (patchInfo == null) &#123;</div><div class="line">            ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_INFO_CORRUPTED);</div><div class="line">            return;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>6.获取版本信息,如果version为空，那么直接返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">String oldVersion = patchInfo.oldVersion;</div><div class="line">        String newVersion = patchInfo.newVersion;</div><div class="line">        String oatDex = patchInfo.oatDir;</div><div class="line"></div><div class="line">        if (oldVersion == null || newVersion == null || oatDex == null) &#123;</div><div class="line">            //it is nice to clean patch</div><div class="line">            Log.w(TAG, &quot;tryLoadPatchFiles:onPatchInfoCorrupted&quot;);</div><div class="line">            ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_INFO_CORRUPTED);</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_OLD_VERSION, oldVersion);</div><div class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_NEW_VERSION, newVersion);</div><div class="line"></div><div class="line">        boolean mainProcess = ShareTinkerInternals.isInMainProcess(app);</div><div class="line">        boolean versionChanged = !(oldVersion.equals(newVersion));</div><div class="line">        boolean oatModeChanged = oatDex.equals(ShareConstants.CHANING_DEX_OPTIMIZE_PATH) &amp;&amp; mainProcess;</div><div class="line">        oatDex = ShareTinkerInternals.getCurrentOatMode(app, oatDex);</div><div class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_OAT_DIR, oatDex);</div><div class="line"></div><div class="line">        String version = oldVersion;</div><div class="line"></div><div class="line">        if (versionChanged &amp;&amp; mainProcess) &#123;</div><div class="line">            version = newVersion;</div><div class="line">        &#125;</div><div class="line">        if (ShareTinkerInternals.isNullOrNil(version)) &#123;</div><div class="line">            Log.w(TAG, &quot;tryLoadPatchFiles:version is blank, wait main process to restart&quot;);</div><div class="line">            ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_INFO_BLANK);</div><div class="line">            return;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>7.获取更新的patchName<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//patch-641e634c</div><div class="line">       String patchName = SharePatchFileUtil.getPatchVersionDirectory(version);</div><div class="line">       if (patchName == null) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:patchName is null&quot;);</div><div class="line">           //we may delete patch info file</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_VERSION_DIRECTORY_NOT_EXIST);</div><div class="line">           return;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>8.获取对应的patch文件，不存在直接返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//tinker/patch.info/patch-641e634c</div><div class="line">       String patchVersionDirectory = patchDirectoryPath + &quot;/&quot; + patchName;</div><div class="line"></div><div class="line">       File patchVersionDirectoryFile = new File(patchVersionDirectory);</div><div class="line"></div><div class="line">       if (!patchVersionDirectoryFile.exists()) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:onPatchVersionDirectoryNotFound&quot;);</div><div class="line">           //we may delete patch info file</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_VERSION_DIRECTORY_NOT_EXIST);</div><div class="line">           return;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>9.获取patch的apk文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//tinker/patch.info/patch-641e634c/patch-641e634c.apk</div><div class="line">     File patchVersionFile = new File(patchVersionDirectoryFile.getAbsolutePath(), SharePatchFileUtil.getPatchVersionFile(version));</div><div class="line"></div><div class="line">     if (!SharePatchFileUtil.isLegalFile(patchVersionFile)) &#123;</div><div class="line">         Log.w(TAG, &quot;tryLoadPatchFiles:onPatchVersionFileNotFound&quot;);</div><div class="line">         //we may delete patch info file</div><div class="line">         ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_VERSION_FILE_NOT_EXIST);</div><div class="line">         return;</div><div class="line">     &#125;</div></pre></td></tr></table></figure></p>
+<p>10.检查签名和tinkerId是否一致<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ShareSecurityCheck securityCheck = new ShareSecurityCheck(app);</div><div class="line"></div><div class="line">       int returnCode = ShareTinkerInternals.checkTinkerPackage(app, tinkerFlag, patchVersionFile, securityCheck);</div><div class="line">       if (returnCode != ShareConstants.ERROR_PACKAGE_CHECK_OK) &#123;</div><div class="line">           Log.w(TAG, &quot;tryLoadPatchFiles:checkTinkerPackage&quot;);</div><div class="line">           resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_PACKAGE_PATCH_CHECK, returnCode);</div><div class="line">           ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_PATCH_PACKAGE_CHECK_FAIL);</div><div class="line">           return;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>11.如果存在dex修复，那么检查dex文件的完整性,并且返回是否成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">final boolean isEnabledForDex = ShareTinkerInternals.isTinkerEnabledForDex(tinkerFlag);</div><div class="line"></div><div class="line">        if (isEnabledForDex) &#123;</div><div class="line">            //tinker/patch.info/patch-641e634c/dex</div><div class="line">            boolean dexCheck = TinkerDexLoader.checkComplete(patchVersionDirectory, securityCheck, oatDex, resultIntent);</div><div class="line">            if (!dexCheck) &#123;</div><div class="line">                //file not found, do not load patch</div><div class="line">                Log.w(TAG, &quot;tryLoadPatchFiles:dex check fail&quot;);</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>12.如果存在nativeLib修复，那么检查完整性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">if (isEnabledForNativeLib) &#123;</div><div class="line">           //tinker/patch.info/patch-641e634c/lib</div><div class="line">           boolean libCheck = TinkerSoLoader.checkComplete(patchVersionDirectory, securityCheck, resultIntent);</div><div class="line">           if (!libCheck) &#123;</div><div class="line">               //file not found, do not load patch</div><div class="line">               Log.w(TAG, &quot;tryLoadPatchFiles:native lib check fail&quot;);</div><div class="line">               return;</div><div class="line">           &#125;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>12.如果存在资源替换，那么检查资源的完整性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//check resource</div><div class="line">       final boolean isEnabledForResource = ShareTinkerInternals.isTinkerEnabledForResource(tinkerFlag);</div><div class="line">       Log.w(TAG, &quot;tryLoadPatchFiles:isEnabledForResource:&quot; + isEnabledForResource);</div><div class="line">       if (isEnabledForResource) &#123;</div><div class="line">           boolean resourceCheck = TinkerResourceLoader.checkComplete(app, patchVersionDirectory, securityCheck, resultIntent);</div><div class="line">           if (!resourceCheck) &#123;</div><div class="line">               //file not found, do not load patch</div><div class="line">               Log.w(TAG, &quot;tryLoadPatchFiles:resource check fail&quot;);</div><div class="line">               return;</div><div class="line">           &#125;</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>14.开始进行dex替换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if (isEnabledForDex) &#123;</div><div class="line">           boolean loadTinkerJars = TinkerDexLoader.loadTinkerJars(app, patchVersionDirectory, oatDex, resultIntent, isSystemOTA);</div><div class="line">           ...</div><div class="line">       &#125;</div></pre></td></tr></table></figure></p>
+<p>将会在loadTinkerJars方法中完成主要逻辑。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public static boolean loadTinkerJars(final TinkerApplication application, String directory, String oatDir, Intent intentResult, boolean isSystemOTA) &#123;</div><div class="line">       //如果没有提前生成dexList，那么直接返回。</div><div class="line">       if (loadDexList.isEmpty() &amp;&amp; classNDexInfo.isEmpty()) &#123;</div><div class="line">           Log.w(TAG, &quot;there is no dex to load&quot;);</div><div class="line">           return true;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       //获取classLoader</div><div class="line">       PathClassLoader classLoader = (PathClassLoader) TinkerDexLoader.class.getClassLoader();</div><div class="line">       ...</div><div class="line">       //从classNDexInfo和classNDexInfo生成合法文件</div><div class="line">        ArrayList&lt;File&gt; legalFiles = new ArrayList&lt;&gt;();</div><div class="line">        </div><div class="line">       return true;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>通过pathClassLoader替换dex<br>在sdk23的版本上-<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//获取pathList的Field</div><div class="line">  Field pathListField = ShareReflectUtil.findField(loader, &quot;pathList&quot;);</div><div class="line">            //获取classLoader对应的Field的值</div><div class="line">            Object dexPathList = pathListField.get(loader);</div><div class="line">            ArrayList&lt;IOException&gt; suppressedExceptions = new ArrayList&lt;IOException&gt;();</div><div class="line">            //扩展该dexPathList的dexElements</div><div class="line">            ShareReflectUtil.expandFieldArray(dexPathList, &quot;dexElements&quot;, makePathElements(dexPathList,</div><div class="line">                new ArrayList&lt;File&gt;(additionalClassPathEntries), optimizedDirectory,</div></pre></td></tr></table></figure></p>
+<p>对于dexElements的扩展，其实就是通过反射获取出原值，并且改动了下原值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> //获取dexElements的Filed</div><div class="line">  Field jlrField = findField(instance, fieldName);</div><div class="line">//获取dexElements对应的值</div><div class="line">        Object[] original = (Object[]) jlrField.get(instance);</div><div class="line">        //创建新的dexElements数组</div><div class="line">        Object[] combined = (Object[]) Array.newInstance(original.getClass().getComponentType(), original.length + extraElements.length);</div><div class="line"></div><div class="line">        //先添加extraElements，也就是热修复合并生成的dex</div><div class="line">        System.arraycopy(extraElements, 0, combined, 0, extraElements.length);</div><div class="line">        //再添加原始的dex文件。</div><div class="line">        System.arraycopy(original, 0, combined, extraElements.length, original.length);</div><div class="line">        //给dexElement设置修改后的dex文件。</div><div class="line">        jlrField.set(instance, combined);</div></pre></td></tr></table></figure></p>
+<p>在sdk24及以上，tinker通过hook整个classLoader来进行修复。<br>首先是创建新的classLoader<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line">final AndroidNClassLoader androidNClassLoader = new AndroidNClassLoader(&quot;&quot;,  originalClassLoader, application);</div><div class="line">//获取原始pathList列表</div><div class="line">final Field pathListField = ShareReflectUtil.findField(originalClassLoader, &quot;pathList&quot;);</div><div class="line">final Object originPathList = pathListField.get(originalClassLoader);</div><div class="line"></div><div class="line">//通过原始的pathList列表，创建出新的pathList列表。</div><div class="line">Object newPathList = recreateDexPathList(originPathList, androidNClassLoader);</div><div class="line"></div><div class="line">// Update new classloader&apos;s pathList.</div><div class="line">pathListField.set(androidNClassLoader, newPathList);</div><div class="line"></div><div class="line">return androidNClassLoader;</div></pre></td></tr></table></figure></p>
+<p>然后替换classLoader<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//创建classLoader</div><div class="line"> AndroidNClassLoader classLoader = createAndroidNClassLoader(originClassLoader, application);</div><div class="line">    //替换classLoader</div><div class="line">        reflectPackageInfoClassloader(application, classLoader);</div></pre></td></tr></table></figure></p>
+<p>15.开始进行资源替换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">public static void monkeyPatchExistingResources(Context context, String externalResourceFile) throws Throwable &#123;</div><div class="line">        //遍历ActivityThread的mPackages和mResourcePackages，这两个都是map</div><div class="line">        for (Field field : new Field[]&#123;packagesFiled, resourcePackagesFiled&#125;) &#123;</div><div class="line">            Object value = field.get(currentActivityThread);</div><div class="line"></div><div class="line">            for (Map.Entry&lt;String, WeakReference&lt;?&gt;&gt; entry</div><div class="line">                : ((Map&lt;String, WeakReference&lt;?&gt;&gt;) value).entrySet()) &#123;</div><div class="line">                Object loadedApk = entry.getValue().get();</div><div class="line">                if (loadedApk == null) &#123;</div><div class="line">                    continue;</div><div class="line">                &#125;</div><div class="line">                if (externalResourceFile != null) &#123;</div><div class="line">                    //资源文件mResDir是会在loadedApk中，api8为PackageInfo，api10为android.app.LoadedApk</div><div class="line">                    //通过反射设置新的资源文件的文件</div><div class="line">                    resDir.set(loadedApk, externalResourceFile);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        //反射调用addAssetPath方法，添加为我们新建的assertManager</div><div class="line">        if (((Integer) addAssetPathMethod.invoke(newAssetManager, externalResourceFile)) == 0) &#123;</div><div class="line">            throw new IllegalStateException(&quot;Could not create new AssetManager&quot;);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        //反射调用ensureStringBlocks方法，Kitkat版需要调用这个方法</div><div class="line">        ensureStringBlocksMethod.invoke(newAssetManager);</div><div class="line">        //sdk大于等于19通过反射获取ResourcesManager的mActiveResources，就是所有的资源文件，sdk小于19时，通过ActivityThread中的mActiveResources获取所有的资源</div><div class="line">        for (WeakReference&lt;Resources&gt; wr : references) &#123;</div><div class="line">            Resources resources = wr.get();</div><div class="line">            //设置mAssets的路径为新的assertManger</div><div class="line">            assetsFiled.set(resources, newAssetManager);</div><div class="line">               </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>在通过tinkerLoader方法修复完dex和资源文件之后，创建DefaultApplicationLike,并且回调里面的生命周期方法。</p>
+<p><img src="http://mykotlin.com/tinker%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B.png" alt=""></p>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/26/20181126stetho问题解决/" rel="next" title="导入stetho依赖库重复引用的解决">
+                <i class="fa fa-chevron-left"></i> 导入stetho依赖库重复引用的解决
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="phiCoo">
+          <p class="site-author-name" itemprop="name">phiCoo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tinker原理"><span class="nav-number">1.</span> <span class="nav-text">Tinker原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译过程"><span class="nav-number">1.1.</span> <span class="nav-text">编译过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tinkerPatch过程"><span class="nav-number">1.1.1.</span> <span class="nav-text">tinkerPatch过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加扩展"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">添加扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加任务"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">添加任务</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">phiCoo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
