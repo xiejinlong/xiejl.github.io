@@ -5,9 +5,9 @@
   <subtitle>我会笑着迎接每一天</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://xjlhhz.com/"/>
+  <link href="http://mykotlin.com/"/>
   <updated>2020-04-17T14:12:43.278Z</updated>
-  <id>https://xjlhhz.com/</id>
+  <id>http://mykotlin.com/</id>
   
   <author>
     <name>phiCoo</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>git相关问题解决</title>
-    <link href="https://xjlhhz.com/2020/04/16/git%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    <id>https://xjlhhz.com/2020/04/16/git相关问题解决/</id>
+    <link href="http://mykotlin.com/2020/04/16/git%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <id>http://mykotlin.com/2020/04/16/git相关问题解决/</id>
     <published>2020-04-16T05:14:00.000Z</published>
     <updated>2020-04-17T14:12:43.278Z</updated>
     
@@ -39,8 +39,8 @@
   
   <entry>
     <title>tinker修复流程梳理</title>
-    <link href="https://xjlhhz.com/2018/12/20/20181220Tinker%E5%8E%9F%E7%90%86/"/>
-    <id>https://xjlhhz.com/2018/12/20/20181220Tinker原理/</id>
+    <link href="http://mykotlin.com/2018/12/20/20181220Tinker%E5%8E%9F%E7%90%86/"/>
+    <id>http://mykotlin.com/2018/12/20/20181220Tinker原理/</id>
     <published>2018-12-20T05:14:00.000Z</published>
     <updated>2018-12-23T09:07:31.712Z</updated>
     
@@ -60,8 +60,8 @@
   
   <entry>
     <title>导入stetho依赖库重复引用的解决</title>
-    <link href="https://xjlhhz.com/2018/11/26/20181126stetho%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    <id>https://xjlhhz.com/2018/11/26/20181126stetho问题解决/</id>
+    <link href="http://mykotlin.com/2018/11/26/20181126stetho%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <id>http://mykotlin.com/2018/11/26/20181126stetho问题解决/</id>
     <published>2018-11-26T05:14:00.000Z</published>
     <updated>2018-12-09T09:53:35.351Z</updated>
     
@@ -81,8 +81,8 @@
   
   <entry>
     <title>Executor简单理解</title>
-    <link href="https://xjlhhz.com/2018/11/21/20181121Executor%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3/"/>
-    <id>https://xjlhhz.com/2018/11/21/20181121Executor简单理解/</id>
+    <link href="http://mykotlin.com/2018/11/21/20181121Executor%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3/"/>
+    <id>http://mykotlin.com/2018/11/21/20181121Executor简单理解/</id>
     <published>2018-11-21T05:14:00.000Z</published>
     <updated>2018-11-25T03:07:33.190Z</updated>
     
@@ -102,8 +102,8 @@
   
   <entry>
     <title>kotlin语法糖的理解</title>
-    <link href="https://xjlhhz.com/2018/11/18/20181118kotlin%E8%AF%AD%E6%B3%95%E7%B3%96%E7%90%86%E8%A7%A3/"/>
-    <id>https://xjlhhz.com/2018/11/18/20181118kotlin语法糖理解/</id>
+    <link href="http://mykotlin.com/2018/11/18/20181118kotlin%E8%AF%AD%E6%B3%95%E7%B3%96%E7%90%86%E8%A7%A3/"/>
+    <id>http://mykotlin.com/2018/11/18/20181118kotlin语法糖理解/</id>
     <published>2018-11-18T05:14:00.000Z</published>
     <updated>2018-11-18T14:33:49.000Z</updated>
     
@@ -124,8 +124,8 @@
   
   <entry>
     <title>HashMap及其并发的一些理解</title>
-    <link href="https://xjlhhz.com/2018/11/17/20181117HashMap%E5%8F%8A%E5%85%B6%E5%B9%B6%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/"/>
-    <id>https://xjlhhz.com/2018/11/17/20181117HashMap及其并发的一些理解/</id>
+    <link href="http://mykotlin.com/2018/11/17/20181117HashMap%E5%8F%8A%E5%85%B6%E5%B9%B6%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/"/>
+    <id>http://mykotlin.com/2018/11/17/20181117HashMap及其并发的一些理解/</id>
     <published>2018-11-17T05:14:00.000Z</published>
     <updated>2018-11-17T09:47:07.000Z</updated>
     
@@ -146,8 +146,8 @@
   
   <entry>
     <title>Adnroid Arouter的了解</title>
-    <link href="https://xjlhhz.com/2018/11/11/20181111ARouter%E7%9A%84%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3/"/>
-    <id>https://xjlhhz.com/2018/11/11/20181111ARouter的简单了解/</id>
+    <link href="http://mykotlin.com/2018/11/11/20181111ARouter%E7%9A%84%E7%AE%80%E5%8D%95%E4%BA%86%E8%A7%A3/"/>
+    <id>http://mykotlin.com/2018/11/11/20181111ARouter的简单了解/</id>
     <published>2018-11-11T05:14:00.000Z</published>
     <updated>2018-11-12T07:18:59.000Z</updated>
     
@@ -169,8 +169,8 @@
   
   <entry>
     <title>Adnroid processor的一次尝试</title>
-    <link href="https://xjlhhz.com/2018/11/04/20181104%E5%85%B3%E4%BA%8EAdnroid%20processor/"/>
-    <id>https://xjlhhz.com/2018/11/04/20181104关于Adnroid processor/</id>
+    <link href="http://mykotlin.com/2018/11/04/20181104%E5%85%B3%E4%BA%8EAdnroid%20processor/"/>
+    <id>http://mykotlin.com/2018/11/04/20181104关于Adnroid processor/</id>
     <published>2018-11-04T05:14:00.000Z</published>
     <updated>2018-11-04T09:06:35.000Z</updated>
     
@@ -191,8 +191,8 @@
   
   <entry>
     <title>flutter的常见问题</title>
-    <link href="https://xjlhhz.com/2018/10/08/20181008flutter%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"/>
-    <id>https://xjlhhz.com/2018/10/08/20181008flutter常见问题/</id>
+    <link href="http://mykotlin.com/2018/10/08/20181008flutter%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"/>
+    <id>http://mykotlin.com/2018/10/08/20181008flutter常见问题/</id>
     <published>2018-10-08T05:14:00.000Z</published>
     <updated>2018-11-04T09:30:15.000Z</updated>
     
@@ -212,8 +212,8 @@
   
   <entry>
     <title>A Tour of the Dart Language</title>
-    <link href="https://xjlhhz.com/2018/09/09/20180919Dart%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/"/>
-    <id>https://xjlhhz.com/2018/09/09/20180919Dart文档翻译/</id>
+    <link href="http://mykotlin.com/2018/09/09/20180919Dart%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/"/>
+    <id>http://mykotlin.com/2018/09/09/20180919Dart文档翻译/</id>
     <published>2018-09-09T05:14:00.000Z</published>
     <updated>2018-11-04T09:15:18.000Z</updated>
     
@@ -234,8 +234,8 @@
   
   <entry>
     <title>PathMeasure动画使用</title>
-    <link href="https://xjlhhz.com/2018/07/29/20180729PathMeasure%E7%9A%84%E5%8A%A8%E7%94%BB%E4%BD%BF%E7%94%A8/"/>
-    <id>https://xjlhhz.com/2018/07/29/20180729PathMeasure的动画使用/</id>
+    <link href="http://mykotlin.com/2018/07/29/20180729PathMeasure%E7%9A%84%E5%8A%A8%E7%94%BB%E4%BD%BF%E7%94%A8/"/>
+    <id>http://mykotlin.com/2018/07/29/20180729PathMeasure的动画使用/</id>
     <published>2018-07-29T05:14:00.000Z</published>
     <updated>2018-09-11T11:38:28.000Z</updated>
     
@@ -256,8 +256,8 @@
   
   <entry>
     <title>ViewSwitcher的使用</title>
-    <link href="https://xjlhhz.com/2018/07/18/20180718ViewSwitcher%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
-    <id>https://xjlhhz.com/2018/07/18/20180718ViewSwitcher的使用/</id>
+    <link href="http://mykotlin.com/2018/07/18/20180718ViewSwitcher%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://mykotlin.com/2018/07/18/20180718ViewSwitcher的使用/</id>
     <published>2018-07-18T05:14:00.000Z</published>
     <updated>2018-07-18T14:17:08.000Z</updated>
     
@@ -277,8 +277,8 @@
   
   <entry>
     <title>CoordinateLayout使用</title>
-    <link href="https://xjlhhz.com/2018/05/12/20180512CoordinateLayout%E4%BD%BF%E7%94%A8/"/>
-    <id>https://xjlhhz.com/2018/05/12/20180512CoordinateLayout使用/</id>
+    <link href="http://mykotlin.com/2018/05/12/20180512CoordinateLayout%E4%BD%BF%E7%94%A8/"/>
+    <id>http://mykotlin.com/2018/05/12/20180512CoordinateLayout使用/</id>
     <published>2018-05-12T05:14:00.000Z</published>
     <updated>2018-05-13T10:51:49.000Z</updated>
     
@@ -298,8 +298,8 @@
   
   <entry>
     <title>kotlin入门学习记录(6) - anko Layout绘制原理</title>
-    <link href="https://xjlhhz.com/2018/05/10/20180510Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/05/10/20180510Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/05/10/20180510Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/05/10/20180510Kotlin入门记录/</id>
     <published>2018-05-10T05:14:00.000Z</published>
     <updated>2018-05-10T10:03:42.000Z</updated>
     
@@ -319,8 +319,8 @@
   
   <entry>
     <title>kotlin入门学习记录(5) - anko Layout使用</title>
-    <link href="https://xjlhhz.com/2018/05/08/20180508Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/05/08/20180508Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/05/08/20180508Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/05/08/20180508Kotlin入门记录/</id>
     <published>2018-05-08T05:14:00.000Z</published>
     <updated>2018-05-10T10:02:33.000Z</updated>
     
@@ -340,8 +340,8 @@
   
   <entry>
     <title>kotlin入门学习记录(4)</title>
-    <link href="https://xjlhhz.com/2018/05/07/20180507Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/05/07/20180507Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/05/07/20180507Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/05/07/20180507Kotlin入门记录/</id>
     <published>2018-05-07T05:14:00.000Z</published>
     <updated>2018-05-05T15:15:15.000Z</updated>
     
@@ -361,8 +361,8 @@
   
   <entry>
     <title>kotlin入门学习记录(3)</title>
-    <link href="https://xjlhhz.com/2018/04/21/20180421Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/04/21/20180421Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/04/21/20180421Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/04/21/20180421Kotlin入门记录/</id>
     <published>2018-04-21T05:14:00.000Z</published>
     <updated>2018-05-05T15:15:53.000Z</updated>
     
@@ -382,8 +382,8 @@
   
   <entry>
     <title>kotlin入门学习记录(2)</title>
-    <link href="https://xjlhhz.com/2018/04/11/20180411Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/04/11/20180411Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/04/11/20180411Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/04/11/20180411Kotlin入门记录/</id>
     <published>2018-04-11T05:14:00.000Z</published>
     <updated>2018-04-11T14:35:29.000Z</updated>
     
@@ -403,8 +403,8 @@
   
   <entry>
     <title>kotlin入门学习记录(1)</title>
-    <link href="https://xjlhhz.com/2018/04/09/20180409Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
-    <id>https://xjlhhz.com/2018/04/09/20180409Kotlin入门记录/</id>
+    <link href="http://mykotlin.com/2018/04/09/20180409Kotlin%E5%85%A5%E9%97%A8%E8%AE%B0%E5%BD%95/"/>
+    <id>http://mykotlin.com/2018/04/09/20180409Kotlin入门记录/</id>
     <published>2018-04-09T05:14:00.000Z</published>
     <updated>2018-04-11T14:35:48.000Z</updated>
     
@@ -424,8 +424,8 @@
   
   <entry>
     <title>BlockCanary解析</title>
-    <link href="https://xjlhhz.com/2018/02/11/0211BlockCanary%E8%A7%A3%E6%9E%90/"/>
-    <id>https://xjlhhz.com/2018/02/11/0211BlockCanary解析/</id>
+    <link href="http://mykotlin.com/2018/02/11/0211BlockCanary%E8%A7%A3%E6%9E%90/"/>
+    <id>http://mykotlin.com/2018/02/11/0211BlockCanary解析/</id>
     <published>2018-02-11T05:14:00.000Z</published>
     <updated>2018-11-21T02:27:56.890Z</updated>
     
